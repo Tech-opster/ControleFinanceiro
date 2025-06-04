@@ -1,5 +1,4 @@
-// prisma/seed.ts
-import { PrismaClient } from '../generated/prisma'; // ou 'prisma/prisma-client' se estiver usando o caminho padrão
+import { PrismaClient } from '../generated/prisma';
 import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
