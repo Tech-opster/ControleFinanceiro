@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 const app = express();
 const PORT = 3001; //(Vite usa 5173)
 
-console.log("URL: ", process.env.FRONTEND_URL);
+console.log("Frontend URL: ", process.env.FRONTEND_URL);
 
 
 // Configuração com tipagem explícita (opcional)
