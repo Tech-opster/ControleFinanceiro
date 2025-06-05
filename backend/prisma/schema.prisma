@@ -18,7 +18,7 @@ model Users {
   id        Int      @id @default(autoincrement())
   email     String   @unique @db.VarChar(255)
   name      String   @db.VarChar(100)
-  cpf       String   @unique @db.VarChar(11)
+  passwordHash String   @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
