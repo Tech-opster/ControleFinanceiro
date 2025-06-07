@@ -111,8 +111,9 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./src/**/*.ts",   // Inclui todos os arquivos .ts na pasta src
-    "./src/**/*.d.ts"  // <--- ESSA LINHA É CRUCIAL! Garante que os .d.ts na src sejam incluídos
+    "./src/**/*.ts",                                      // Inclui todos os arquivos .ts na pasta src
+    "./src/**/*.d.ts",                                    // <--- ESSA LINHA É CRUCIAL! Garante que os .d.ts na src sejam incluídos
+    "./scripts/**/*.ts",                                  // Inclui todos os arquivos .ts na pasta scripts
   ],
   "exclude": [
     "node_modules",

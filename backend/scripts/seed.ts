@@ -5,7 +5,6 @@ async function main() {
   const usersData = Array.from({ length: 5 }).map(() => ({
     email: faker.internet.email(),
     name: faker.person.fullName(),
-    passwordHash: faker.string.numeric(60),
   }));
 
   await prisma.users.createMany({

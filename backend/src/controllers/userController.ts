@@ -21,10 +21,10 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const { name, email, passwordHash} = req.body;
+  const { name, email} = req.body;
   try {
     const user = await prisma.users.create({
-      data: { name, email, passwordHash },
+      data: { name, email },
     });
     res.status(201).json(user);
   } catch (err) {
@@ -34,11 +34,11 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, email, passwordHash } = req.body;
+  const { name, email } = req.body;
   try {
     const user = await prisma.users.update({
       where: { id: Number(id) },
-      data: { name, email, passwordHash },
+      data: { name, email },
     });
     res.json(user);
   } catch (err) {
