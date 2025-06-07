@@ -4,6 +4,7 @@
     {
       "name": "Iniciar Tudo (Backend + Frontend)",
       "configurations": ["Backend", "Frontend"],
+      "stopAll": true
     }
   ],
   "configurations": [

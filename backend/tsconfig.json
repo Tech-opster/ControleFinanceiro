@@ -109,5 +109,16 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+  "include": [
+    "./src/**/*.ts",   // Inclui todos os arquivos .ts na pasta src
+    "./src/**/*.d.ts"  // <--- ESSA LINHA É CRUCIAL! Garante que os .d.ts na src sejam incluídos
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "files": [
+    "./src/types/express/index.d.ts"
+  ],
 }

@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import prisma from "./lib/prisma";
 import type { CorsOptions } from "cors";
+import { authMiddleware } from './middlewares/authMiddleware';
 import userRoutes from "./routes/userRoutes";
 import authRoutes from './routes/authRoutes';
 
@@ -22,8 +23,8 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/", userRoutes);
-app.use('/', authRoutes);
+app.use("/users", authMiddleware, userRoutes);
+app.use('/auth', authRoutes);
 
 // Rota de teste
 app.get("/", (req, res) => {
