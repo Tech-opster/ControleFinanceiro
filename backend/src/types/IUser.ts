@@ -1,4 +1,4 @@
-export interface UserInterface {
+export interface CreateUserDTO {
   name: string;
   email: string;
   //picture?: string; // URL da foto, se presente
@@ -15,3 +15,6 @@ export interface UserInterface {
   //   };
   // };
 }
+
+// types/IUser.ts
+export type UpdateUserDTO = Partial<CreateUserDTO>;
