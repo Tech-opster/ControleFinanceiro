@@ -11,7 +11,7 @@ import { useState } from "react";
 import { auth } from "../../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-const Cadastro: React.FC = () => {
+const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -68,4 +68,4 @@ const Cadastro: React.FC = () => {
   );
 };
 
-export default Cadastro;
+export default Register;

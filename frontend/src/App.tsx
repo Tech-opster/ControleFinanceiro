@@ -33,11 +33,12 @@ import "@ionic/react/css/palettes/dark.system.css";
 import "./theme/variables.css";
 
 // Pages
+import { AuthProvider } from "./context/AuthProvider";
+import PrivateRoute from "../src/components/routes/PrivateRoute";
 import Home from "./pages/Home";
 import Login from "./pages/login/Login";
-import Cadastro from "./pages/register/Register";
-import PrivateRoute from "../src/components/routes/PrivateRoute";
-import { AuthProvider } from "./context/AuthContext";
+import Register from "./pages/register/Register";
+import NotFound from "./pages/notFound/NotFound";
 
 setupIonicReact();
 
@@ -48,12 +49,11 @@ const App: React.FC = () => (
         <IonRouterOutlet>
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/" component={Home} />
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/register">
-            <Cadastro />
-          </Route>
+
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+
+          {/* <Route path="*" component={NotFound} /> */}
         </IonRouterOutlet>
       </IonReactRouter>
     </AuthProvider>

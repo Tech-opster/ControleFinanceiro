@@ -2,6 +2,7 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { IonSpinner } from "@ionic/react";
 
 interface Props {
   component: React.FC;
@@ -12,17 +13,14 @@ interface Props {
 const PrivateRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
   const { user, loading } = useAuth();
 
-  if (loading) return null; // ou um loading spinner
+  if (loading) return <IonSpinner name="crescent"></IonSpinner>;
 
   return (
     <Route
       {...rest}
-      render={() =>
-        user ? <Component /> : <Redirect to="/login" />
-      }
+      render={() => (user ? <Component /> : <Redirect to="/login" />)}
     />
   );
 };
 
 export default PrivateRoute;
-
