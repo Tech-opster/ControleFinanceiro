@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, providerGoogle);
 
-      router.push("/home", "forward", "replace");
+      router.push("/", "forward", "replace");
       console.log("Login Google realizado com sucesso!", result.user);
     } catch (err) {
       console.error("Erro ao autenticar.", err);
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
 
-      router.push("/home", "forward", "replace");
+      router.push("/", "forward", "replace");
       console.log("Login realizado com sucesso!", result.user);
     } catch (err) {
       console.error("Erro ao autenticar.", err);

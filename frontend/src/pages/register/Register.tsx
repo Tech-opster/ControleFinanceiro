@@ -6,15 +6,18 @@ import {
   IonCol,
   IonInput,
   IonRow,
+  useIonRouter,
 } from "@ionic/react";
 import { useState } from "react";
 import { auth } from "../../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register: React.FC = () => {
+  const router = useIonRouter();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
+  
   const Register = async () => {
     try {
       const result = await createUserWithEmailAndPassword(
@@ -22,6 +25,8 @@ const Register: React.FC = () => {
         email,
         password
       );
+      
+      router.push("/", "forward", "replace");
       console.log("Cadastro realizado com sucesso!", result.user);
     } catch (err) {
       console.error("Erro ao autenticar.", err);
