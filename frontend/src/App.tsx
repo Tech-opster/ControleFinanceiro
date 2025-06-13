@@ -34,7 +34,7 @@ import "./theme/variables.css";
 
 // Pages
 import { AuthProvider } from "./context/AuthProvider";
-import PrivateRoute from "../src/components/routes/PrivateRoute";
+import PublicRoute from "./components/routes/PublicRoute";
 import Home from "./pages/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -50,8 +50,8 @@ const App: React.FC = () => (
           <Route path="*" component={NotFound} />
           <Route exact path="/" component={Home} />
           
-          <PrivateRoute exact path="/login" component={Login} />
-          <PrivateRoute exact path="/register" component={Register} />
+          <PublicRoute exact path="/login" component={Login} />
+          <PublicRoute exact path="/register" component={Register} />
         </IonRouterOutlet>
       </IonReactRouter>
     </AuthProvider>

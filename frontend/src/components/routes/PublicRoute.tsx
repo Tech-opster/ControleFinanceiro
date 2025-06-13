@@ -1,4 +1,3 @@
-// components/PrivateRoute.tsx
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -8,7 +7,7 @@ interface Props {
   exact?: boolean;
 }
 
-const PrivateRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
+const PublicRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
   const { user } = useAuth();
 
   return (
@@ -19,4 +18,4 @@ const PrivateRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
   );
 };
 
-export default PrivateRoute;
+export default PublicRoute;
