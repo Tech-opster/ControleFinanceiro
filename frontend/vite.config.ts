@@ -16,6 +16,6 @@ export default defineConfig({
     setupFiles: './src/setupTests.ts',
   },
   server: {
-    open: true,
+    open: false,
   }
 })
