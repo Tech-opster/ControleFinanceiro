@@ -1,10 +1,10 @@
 {
-  "name": "meu-app",
+  "name": "Controle Financeiro",
   "private": true,
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"ionic capacitor run android -l --external --target 4lztbavkdmskj7wc \"",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test.e2e": "cypress run",
@@ -12,8 +12,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/android": "^7.3.0",
     "@capacitor/app": "7.0.1",
-    "@capacitor/core": "7.3.0",
+    "@capacitor/cli": "^7.3.0",
+    "@capacitor/core": "^7.3.0",
     "@capacitor/haptics": "7.0.1",
     "@capacitor/keyboard": "7.0.1",
     "@capacitor/status-bar": "7.0.1",
@@ -29,7 +31,6 @@
     "swiper": "^11.2.8"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.3.0",
     "@testing-library/dom": ">=10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -41,6 +42,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-legacy": "^6.1.1",
     "@vitejs/plugin-react": "^4.5.2",
+    "concurrently": "^9.1.2",
     "cypress": "^14.4.1",
     "eslint": "^9.28.0",
     "eslint-plugin-react": "^7.37.5",
