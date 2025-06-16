@@ -1,4 +1,9 @@
-import { IonButton, IonContent, IonPage, useIonRouter } from "@ionic/react";
+import {
+  IonButton,
+  IonContent,
+  IonPage,
+  useIonRouter,
+} from "@ionic/react";
 import "./PublicHome.css";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,7 +18,7 @@ import growth from "../../assets/images/growth.png";
 const PublicHome: React.FC = () => {
   const router = useIonRouter();
 
-  const data = [
+  const swiperData = [
     {
       id: 1,
       title: "Abandone as planilhas",
@@ -45,42 +50,42 @@ const PublicHome: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <div id="container"  className="ion-padding">
-          <Swiper
-            style={{ paddingBottom: 24, marginBottom: 24 }}
-            modules={[Navigation, Pagination, Autoplay]}
-            spaceBetween={50}
-            slidesPerView={1}
-            navigation={{ enabled: false }}
-            pagination
-            breakpoints={{
-              480: {
-                navigation: {
-                  enabled: true,
+        <div id="container" className="ion-padding ion-text-center">
+            <Swiper
+              id="swiper"
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={50}
+              slidesPerView={1}
+              navigation={{ enabled: false }}
+              pagination
+              breakpoints={{
+                480: {
+                  navigation: {
+                    enabled: true,
+                  },
                 },
-              },
-            }}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-          >
-            {data.map((item) => (
-              <SwiperSlide key={item.id}>
-                <img src={item.image} alt={item.title} />
-                <h2>{item.title}</h2>
-                <p>{item.description}</p>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <IonButton
-            onClick={() => {
-              router.push("/login", "forward", "replace");
-            }}
-          >
-            <strong>Começar agora</strong>
-          </IonButton>
+              }}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+            >
+              {swiperData.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <img src={item.image} alt={item.title} />
+                  <h2>{item.title}</h2>
+                  <p>{item.description}</p>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <IonButton
+              onClick={() => {
+                router.push("/login", "forward", "replace");
+              }}
+            >
+              <strong>Começar agora</strong>
+            </IonButton>
         </div>
       </IonContent>
     </IonPage>
