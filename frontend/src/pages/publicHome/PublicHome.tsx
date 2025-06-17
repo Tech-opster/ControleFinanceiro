@@ -1,9 +1,4 @@
-import {
-  IonButton,
-  IonContent,
-  IonPage,
-  useIonRouter,
-} from "@ionic/react";
+import { IonButton, IonContent, IonPage, useIonRouter } from "@ionic/react";
 import "./PublicHome.css";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -14,6 +9,7 @@ import spreadsheetapp from "../../assets/images/spreadsheetapp.png";
 import planning from "../../assets/images/planning.png";
 import analytics from "../../assets/images/analytics.png";
 import growth from "../../assets/images/growth.png";
+import LoginForm from "../../components/login/loginForm";
 
 const PublicHome: React.FC = () => {
   const router = useIonRouter();
@@ -50,7 +46,8 @@ const PublicHome: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <div id="container" className="ion-padding ion-text-center">
+        <div className="container ion-padding">
+          <div id="mobileContainer" className="ion-text-center">
             <Swiper
               id="swiper"
               modules={[Navigation, Pagination, Autoplay]}
@@ -84,8 +81,12 @@ const PublicHome: React.FC = () => {
                 router.push("/login", "forward", "replace");
               }}
             >
-              <strong>Começar agora</strong>
+              Começar agora
             </IonButton>
+          </div>
+          <div id="webContainer">
+            <LoginForm></LoginForm>
+          </div>
         </div>
       </IonContent>
     </IonPage>
