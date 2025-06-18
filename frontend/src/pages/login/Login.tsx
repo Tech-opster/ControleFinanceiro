@@ -5,7 +5,9 @@ const Login: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-        <LoginForm></LoginForm>
+        <div className="container">
+          <LoginForm></LoginForm>
+        </div>
       </IonContent>
     </IonPage>
   );

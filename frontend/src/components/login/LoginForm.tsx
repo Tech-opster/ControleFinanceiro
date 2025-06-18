@@ -8,6 +8,7 @@ import {
   IonInput,
   IonInputPasswordToggle,
   IonList,
+  IonRouterLink,
 } from "@ionic/react";
 import { auth } from "../../firebase/firebase";
 import {
@@ -51,67 +52,63 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <IonCard className="ion-no-margin">
-        <IonCardHeader className="ion-text-center">
-          <IonCardTitle>
-            <h2>
-              Bem-vindo(a) ao <br />
-              Controle Financeiro
-            </h2>
-          </IonCardTitle>
-        </IonCardHeader>
-        <IonCardContent>
-          <div className="containerColumn">
-            <form
-              className="containerColumn"
-              action="cadastrar"
-              onSubmit={(e) => {
-                e.preventDefault();
-                LoginEmail();
-              }}
-            >
-              <IonList>
-                <IonInput
-                  label="Email"
-                  labelPlacement="floating"
-                  type="email"
-                  value={email}
-                  onIonInput={(e) => {
-                    setEmail(e.detail.value ?? "");
-                  }}
-                ></IonInput>
-                <IonInput
-                  label="Senha"
-                  labelPlacement="floating"
-                  type="password"
-                  value={password}
-                  onIonInput={(e) => {
-                    setPassword(e.detail.value ?? "");
-                  }}
-                >
-                  <IonIcon
-                    slot="start"
-                    icon={lockClosed}
-                    aria-hidden="true"
-                  ></IonIcon>
-                  <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-                </IonInput>
-              </IonList>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push("/register", "forward", "push");
+    <IonCard className="ion-no-margin">
+      <IonCardHeader className="ion-text-center">
+        <IonCardTitle>
+          <h2>
+            Bem-vindo(a) ao <br />
+            Controle Financeiro
+          </h2>
+        </IonCardTitle>
+      </IonCardHeader>
+      <IonCardContent>
+          <form
+            action="cadastrar"
+            onSubmit={(e) => {
+              e.preventDefault();
+              LoginEmail();
+            }}
+          >
+            <IonList>
+              <IonInput
+                label="Email"
+                labelPlacement="floating"
+                type="email"
+                value={email}
+                onIonInput={(e) => {
+                  setEmail(e.detail.value ?? "");
+                }}
+              ></IonInput>
+              <IonInput
+                label="Senha"
+                labelPlacement="floating"
+                type="password"
+                value={password}
+                onIonInput={(e) => {
+                  setPassword(e.detail.value ?? "");
                 }}
               >
-                Esqueci minha senha
-              </a>
-              <IonButton type="submit" disabled={!email || !password}>
-                Entrar
-              </IonButton>
-            </form>
+                <IonIcon
+                  slot="start"
+                  icon={lockClosed}
+                  aria-hidden="true"
+                ></IonIcon>
+                <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+              </IonInput>
+            </IonList>
+
+            <IonRouterLink routerLink="/register">
+              Esqueci minha senha
+            </IonRouterLink>
+            
+            <IonButton type="submit" disabled={!email || !password}>
+              Entrar
+            </IonButton>
+          </form>
+
+          <div className="ion-text-center">
             <span>Ou</span>
+
             <IonButton
               color="primary"
               onClick={() => {
@@ -121,19 +118,13 @@ const LoginForm: React.FC = () => {
               <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
               Continuar com Google
             </IonButton>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/register", "forward", "push");
-              }}
-            >
+
+            <IonRouterLink routerLink="/register">
               Não possui conta?
-            </a>
+            </IonRouterLink>
           </div>
-        </IonCardContent>
-      </IonCard>
-    </div>
+      </IonCardContent>
+    </IonCard>
   );
 };
 
