@@ -35,9 +35,9 @@ import "./theme/variables.css";
 // Pages
 import { AuthProvider } from "./context/AuthProvider";
 import PublicRoute from "./components/routes/PublicRoute";
-import Home from "./pages/Home";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
+import Home from "./pages/home/Home";
+import Login from "./pages/authentication/Login";
+import Register from "./pages/authentication/Register";
 import NotFound from "./pages/notFound/NotFound";
 
 setupIonicReact();
