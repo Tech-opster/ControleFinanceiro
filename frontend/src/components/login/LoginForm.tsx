@@ -4,8 +4,9 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonIcon,
   IonInput,
-  IonItem,
+  IonInputPasswordToggle,
   IonList,
 } from "@ionic/react";
 import { auth } from "../../firebase/firebase";
@@ -16,7 +17,9 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import { useIonRouter } from "@ionic/react";
+import { lockClosed } from "ionicons/icons";
 import "./LoginForm.css";
+import google_icon_dark from "../../assets/images/google_icon_dark.svg";
 
 const LoginForm: React.FC = () => {
   const router = useIonRouter();
@@ -48,69 +51,89 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <IonCard className="formContainer ion-padding">
-      <IonCardHeader className="ion-text-center">
-        <IonCardTitle>
-          <h2>Bem-vindo(a) ao Controle Financeiro</h2>
-        </IonCardTitle>
-      </IonCardHeader>
-      <IonCardContent className="formContainer">
-        <form
-          className="formContainer"
-          action="cadastrar"
-          onSubmit={(e) => {
-            e.preventDefault();
-            LoginEmail();
-          }}
-        >
-          <IonList>
-            <IonItem>
-              <IonInput
-                labelPlacement="floating"
-                value={email}
-                onIonInput={(e) => {
-                  setEmail(e.detail.value ?? "");
+    <div className="container">
+      <IonCard className="ion-no-margin">
+        <IonCardHeader className="ion-text-center">
+          <IonCardTitle>
+            <h2>
+              Bem-vindo(a) ao <br />
+              Controle Financeiro
+            </h2>
+          </IonCardTitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <div className="containerColumn">
+            <form
+              className="containerColumn"
+              action="cadastrar"
+              onSubmit={(e) => {
+                e.preventDefault();
+                LoginEmail();
+              }}
+            >
+              <IonList>
+                <IonInput
+                  label="Email"
+                  labelPlacement="floating"
+                  type="email"
+                  value={email}
+                  onIonInput={(e) => {
+                    setEmail(e.detail.value ?? "");
+                  }}
+                ></IonInput>
+                <IonInput
+                  label="Senha"
+                  labelPlacement="floating"
+                  type="password"
+                  value={password}
+                  onIonInput={(e) => {
+                    setPassword(e.detail.value ?? "");
+                  }}
+                >
+                  <IonIcon
+                    slot="start"
+                    icon={lockClosed}
+                    aria-hidden="true"
+                  ></IonIcon>
+                  <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+                </IonInput>
+              </IonList>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/register", "forward", "push");
                 }}
               >
-                <div slot="label">Email</div>
-              </IonInput>
-            </IonItem>
-
-            <IonItem>
-              <IonInput
-                labelPlacement="floating"
-                type="password"
-                value={password}
-                onIonInput={(e) => {
-                  setPassword(e.detail.value ?? "");
-                }}
-              >
-                <div slot="label">Senha</div>
-              </IonInput>
-            </IonItem>
-          </IonList>
-
-          <IonButton type="submit" disabled={!email || !password}>
-            Entrar
-          </IonButton>
-        </form>
-        <span>OU</span>
-        <IonButton
-          color="primary"
-          onClick={() => {
-            loginGoogle();
-          }}
-        >
-          Entrar com uma conta Google
-        </IonButton>
-        <IonButton
-          color="primary"
-          onClick={() => router.push("/register", "forward", "push")}
-        >
-          Não possui conta?
-        </IonButton>
-      </IonCardContent>
-    </IonCard>
+                Esqueci minha senha
+              </a>
+              <IonButton type="submit" disabled={!email || !password}>
+                Entrar
+              </IonButton>
+            </form>
+            <span>Ou</span>
+            <IonButton
+              color="primary"
+              onClick={() => {
+                loginGoogle();
+              }}
+            >
+              <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
+              Continuar com Google
+            </IonButton>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/register", "forward", "push");
+              }}
+            >
+              Não possui conta?
+            </a>
+          </div>
+        </IonCardContent>
+      </IonCard>
+    </div>
   );
 };
 

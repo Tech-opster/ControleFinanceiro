@@ -9,10 +9,12 @@ import spreadsheetapp from "../../assets/images/spreadsheetapp.png";
 import planning from "../../assets/images/planning.png";
 import analytics from "../../assets/images/analytics.png";
 import growth from "../../assets/images/growth.png";
-import LoginForm from "../../components/login/loginForm";
+import LoginForm from "../../components/login/LoginForm";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 const PublicHome: React.FC = () => {
   const router = useIonRouter();
+  const isMobile = useIsMobile();
 
   const swiperData = [
     {
@@ -76,17 +78,23 @@ const PublicHome: React.FC = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-            <IonButton
-              onClick={() => {
-                router.push("/login", "forward", "replace");
-              }}
-            >
-              Começar agora
-            </IonButton>
+
+            {isMobile && (
+              <IonButton
+                onClick={() => {
+                  router.push("/login", "forward", "push");
+                }}
+              >
+                Começar agora
+              </IonButton>
+            )}
           </div>
-          <div id="webContainer">
-            <LoginForm></LoginForm>
-          </div>
+          
+          {!isMobile && (
+            <div id="webContainer">
+              <LoginForm></LoginForm>
+            </div>
+          )}
         </div>
       </IonContent>
     </IonPage>

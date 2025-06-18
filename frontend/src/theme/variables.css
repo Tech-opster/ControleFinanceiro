@@ -1,6 +1,14 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
 
+.container {
+  height: 100%;
+  min-height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 ion-app {
   --ion-background-color: #222428;
 }

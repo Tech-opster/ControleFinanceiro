@@ -1,7 +1,21 @@
-.formContainer {
-  width: 100%;
+.containerColumn {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.containerColumn a {
+  font-size: 0.8rem;
+  margin: 10px 0;
+}
+
+.containerColumn ion-button {
+  width: 100%;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
+  -webkit-text-fill-color: #DBDBDB !important;
 }
