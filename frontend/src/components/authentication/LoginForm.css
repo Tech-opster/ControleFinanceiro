@@ -1,17 +1,5 @@
-ion-button {
-  width: 100%;
-}
-
 ion-router-link {
   display: inline-block;
   font-size: 0.9rem;
   margin: 10px 0;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:focus {
-  transition: background-color 0s 600000s, color 0s 600000s !important;
-  -webkit-text-fill-color: #dbdbdb !important;
-  background-color: #1e1e1e !important;
-  -webkit-box-shadow: 0 0 0px 1000px #1e1e1e inset !important;
 }

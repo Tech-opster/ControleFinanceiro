@@ -50,7 +50,7 @@ const Register: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="container">
-          <IonCard className="ion-no-margin">
+          <IonCard className="ion-no-margin width-400">
             <IonCardHeader className="ion-text-center">
               <IonCardTitle>
                 <h2>Cadastre-se agora</h2>
@@ -91,7 +91,7 @@ const Register: React.FC = () => {
                 </IonList>
 
                 <IonButton
-                  className="ion-margin-top"
+                  className="ion-margin-top full-width"
                   type="submit"
                   disabled={!email || !password}
                 >
@@ -103,7 +103,7 @@ const Register: React.FC = () => {
                 <span>Ou</span>
 
                 <IonButton
-                  color="primary"
+                  className="full-width"
                   onClick={() => {
                     handleGoogle();
                   }}

@@ -1,6 +1,18 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
 
+ion-app {
+  --ion-background-color: #222428;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
+  -webkit-text-fill-color: #dbdbdb !important;
+  background-color: #1e1e1e !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1e1e1e inset !important;
+}
+
 .container {
   height: 100%;
   min-height: fit-content;
@@ -9,6 +21,10 @@ http://ionicframework.com/docs/theming/ */
   align-items: center;
 }
 
-ion-app {
-  --ion-background-color: #222428;
+.full-width {
+  width: 100%;
+}
+
+.width-400 {
+  width: 400px;
 }

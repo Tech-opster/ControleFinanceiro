@@ -47,7 +47,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <IonCard className="ion-no-margin">
+    <IonCard className="ion-no-margin width-400">
       <IonCardHeader className="ion-text-center">
         <IonCardTitle>
           <h2>
@@ -93,7 +93,7 @@ const LoginForm: React.FC = () => {
               Esqueci minha senha
             </IonRouterLink>
             
-            <IonButton type="submit" disabled={!email || !password}>
+            <IonButton className="full-width" type="submit" disabled={!email || !password}>
               Entrar
             </IonButton>
           </form>
@@ -102,7 +102,7 @@ const LoginForm: React.FC = () => {
             <span>Ou</span>
 
             <IonButton
-              color="primary"
+              className="full-width"
               onClick={() => {
                 handleGoogle();
               }}

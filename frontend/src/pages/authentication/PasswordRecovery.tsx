@@ -33,7 +33,7 @@ const PasswordRecovery: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="container">
-          <IonCard className="ion-no-margin">
+          <IonCard className="ion-no-margin width-400">
             <IonCardHeader className="ion-text-center">
               <IonCardTitle>
                 <h2>Recuperação de senha</h2>
@@ -60,7 +60,7 @@ const PasswordRecovery: React.FC = () => {
                 </IonList>
 
                 <IonButton
-                  className="ion-margin-top"
+                  className="ion-margin-top full-width"
                   type="submit"
                   disabled={!email}
                 >
