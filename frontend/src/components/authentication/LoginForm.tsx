@@ -10,17 +10,13 @@ import {
   IonList,
   IonRouterLink,
 } from "@ionic/react";
-import { auth } from "../../firebase/firebase";
-import {
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
+import "./LoginForm.css";
 import { useState } from "react";
 import { useIonRouter } from "@ionic/react";
 import { lockClosed } from "ionicons/icons";
-import "./LoginForm.css";
 import google_icon_dark from "../../assets/images/google_icon_dark.svg";
+import { loginEmail, loginGoogle } from "../../services/authService";
+import  EmailValidation  from "./EmailValidation";
 
 const LoginForm: React.FC = () => {
   const router = useIonRouter();
@@ -28,10 +24,9 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const loginGoogle = async () => {
-    const providerGoogle = new GoogleAuthProvider();
+  const handleGoogle = async () => {
     try {
-      const result = await signInWithPopup(auth, providerGoogle);
+      const result = await loginGoogle();
 
       router.push("/", "forward", "replace");
       console.log("Login Google realizado com sucesso!", result.user);
@@ -40,9 +35,9 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  const LoginEmail = async () => {
+  const handleLoginEmail = async () => {
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
+      const result = await loginEmail(email, password);
 
       router.push("/", "forward", "replace");
       console.log("Login realizado com sucesso!", result.user);
@@ -66,24 +61,21 @@ const LoginForm: React.FC = () => {
             action="cadastrar"
             onSubmit={(e) => {
               e.preventDefault();
-              LoginEmail();
+              handleLoginEmail();
             }}
           >
             <IonList>
-              <IonInput
-                label="Email"
-                labelPlacement="floating"
-                type="email"
+              <EmailValidation
                 value={email}
-                onIonInput={(e) => {
-                  setEmail(e.detail.value ?? "");
-                }}
-              ></IonInput>
+                onIonInput={setEmail}
+              ></EmailValidation>
+              
               <IonInput
                 label="Senha"
                 labelPlacement="floating"
                 type="password"
                 value={password}
+                helperText=" "
                 onIonInput={(e) => {
                   setPassword(e.detail.value ?? "");
                 }}
@@ -97,7 +89,7 @@ const LoginForm: React.FC = () => {
               </IonInput>
             </IonList>
 
-            <IonRouterLink routerLink="/register">
+            <IonRouterLink routerLink="/passwordRecovery">
               Esqueci minha senha
             </IonRouterLink>
             
@@ -112,7 +104,7 @@ const LoginForm: React.FC = () => {
             <IonButton
               color="primary"
               onClick={() => {
-                loginGoogle();
+                handleGoogle();
               }}
             >
               <IonIcon slot="start" icon={google_icon_dark}></IonIcon>

@@ -9,7 +9,7 @@ import spreadsheetapp from "../../assets/images/spreadsheetapp.png";
 import planning from "../../assets/images/planning.png";
 import analytics from "../../assets/images/analytics.png";
 import growth from "../../assets/images/growth.png";
-import LoginForm from "../../components/login/LoginForm";
+import LoginForm from "../../components/authentication/LoginForm";
 import { useIsMobile } from "../../hooks/useIsMobile";
 
 const PublicHome: React.FC = () => {

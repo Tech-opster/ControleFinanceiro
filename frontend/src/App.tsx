@@ -39,6 +39,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Register";
 import NotFound from "./pages/notFound/NotFound";
+import passwordRecovery from "./pages/authentication/PasswordRecovery";
 
 setupIonicReact();
 
@@ -52,6 +53,7 @@ const App: React.FC = () => (
           
           <PublicRoute exact path="/login" component={Login} />
           <PublicRoute exact path="/register" component={Register} />
+          <PublicRoute exact path="/passwordRecovery" component={passwordRecovery} />
         </IonRouterOutlet>
       </IonReactRouter>
     </AuthProvider>

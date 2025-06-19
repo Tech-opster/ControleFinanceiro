@@ -13,10 +13,10 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { useState } from "react";
-import { auth } from "../../firebase/firebase";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { lockClosed } from "ionicons/icons";
 import google_icon_dark from "../../assets/images/google_icon_dark.svg";
+import { register, loginGoogle } from "../../services/authService";
+import EmailValidation from "../../components/authentication/EmailValidation";
 
 const Register: React.FC = () => {
   const router = useIonRouter();
@@ -24,13 +24,9 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const Register = async () => {
+  const handleRegister = async () => {
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const result = await register(email, password);
 
       router.push("/", "forward", "replace");
       console.log("Cadastro realizado com sucesso!", result.user);
@@ -39,17 +35,16 @@ const Register: React.FC = () => {
     }
   };
 
-    const loginGoogle = async () => {
-      const providerGoogle = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, providerGoogle);
-  
-        router.push("/", "forward", "replace");
-        console.log("Login Google realizado com sucesso!", result.user);
-      } catch (err) {
-        console.error("Erro ao autenticar.", err);
-      }
-    };
+  const handleGoogle = async () => {
+    try {
+      const result = await loginGoogle();
+
+      router.push("/", "forward", "replace");
+      console.log("Login Google realizado com sucesso!", result.user);
+    } catch (err) {
+      console.error("Erro ao autenticar.", err);
+    }
+  };
 
   return (
     <IonPage>
@@ -66,25 +61,22 @@ const Register: React.FC = () => {
                 action="cadastrar"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  Register();
+                  handleRegister();
                 }}
               >
                 <IonList>
-                  <IonInput
-                    label="Email"
-                    labelPlacement="floating"
-                    type="email"
+                  <EmailValidation
                     value={email}
-                    onIonInput={(e) => {
-                      setEmail(e.detail.value ?? "");
-                    }}
-                  ></IonInput>
+                    onIonInput={setEmail}
+                  ></EmailValidation>
+
                   <IonInput
                     label="Senha"
                     labelPlacement="floating"
                     type="password"
                     placeholder="Crie uma senha"
                     value={password}
+                    helperText=" "
                     onIonInput={(e) => {
                       setPassword(e.detail.value ?? "");
                     }}
@@ -98,7 +90,11 @@ const Register: React.FC = () => {
                   </IonInput>
                 </IonList>
 
-                <IonButton type="submit" disabled={!email || !password}>
+                <IonButton
+                  className="ion-margin-top"
+                  type="submit"
+                  disabled={!email || !password}
+                >
                   Cadastrar
                 </IonButton>
               </form>
@@ -109,7 +105,7 @@ const Register: React.FC = () => {
                 <IonButton
                   color="primary"
                   onClick={() => {
-                    loginGoogle();
+                    handleGoogle();
                   }}
                 >
                   <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
