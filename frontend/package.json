@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"ionic capacitor run android -l --external --target 4lztbavkdmskj7wc\"",
+    "dev": "vite --host",
+    "app": "ionic capacitor run android -l --external --target 4lztbavkdmskj7wc",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test.e2e": "cypress run",
