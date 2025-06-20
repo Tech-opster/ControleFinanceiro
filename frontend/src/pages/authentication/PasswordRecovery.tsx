@@ -8,20 +8,33 @@ import {
   IonList,
   IonPage,
   useIonRouter,
+  useIonToast,
 } from "@ionic/react";
 import { useState } from "react";
 import { passwordRecovery } from "../../services/authService";
 import EmailValidation from "../../components/authentication/EmailValidation";
+import { checkmark } from "ionicons/icons";
 
 const PasswordRecovery: React.FC = () => {
   const router = useIonRouter();
 
   const [email, setEmail] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
+  const [present] = useIonToast();
 
   const handlePasswordRecovery = async () => {
     try {
       await passwordRecovery(email);
+
+      present({
+        cssClass: "custom-toast ion-text-center",
+        color: "success",
+        position: "top",
+        positionAnchor: "header",
+        message: "Email de recuperação enviado com sucesso!",
+        icon: checkmark,
+        duration: 3000,
+      });
 
       router.push("/login", "back", "push");
       console.log("Email de recuperação enviado com sucesso!");

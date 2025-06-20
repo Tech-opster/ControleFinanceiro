@@ -24,6 +24,22 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
+  
+    const handleLoginEmail = async () => {
+      try {
+        const user = await loginEmail(email, password);
+  
+        router.push("/", "forward", "replace");
+        console.log("Login realizado com sucesso!", user);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setAuthError(error.message);
+        } else {
+          setAuthError("Erro desconhecido.");
+        }
+        console.error(error);
+      }
+    };
 
   const handleGoogle = async () => {
     try {
@@ -31,22 +47,6 @@ const LoginForm: React.FC = () => {
 
       router.push("/", "forward", "replace");
       console.log("Login Google realizado com sucesso!", user);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError("Erro desconhecido.");
-      }
-      console.error(error);
-    }
-  };
-
-  const handleLoginEmail = async () => {
-    try {
-      const user = await loginEmail(email, password);
-
-      router.push("/", "forward", "replace");
-      console.log("Login realizado com sucesso!", user);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setAuthError(error.message);
