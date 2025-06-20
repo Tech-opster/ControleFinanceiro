@@ -23,26 +23,37 @@ const Register: React.FC = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   const handleRegister = async () => {
     try {
-      const result = await register(email, password);
+      const user = await register(email, password);
 
       router.push("/", "forward", "replace");
-      console.log("Cadastro realizado com sucesso!", result.user);
-    } catch (err) {
-      console.error("Erro ao autenticar.", err);
+      console.log("Cadastro realizado com sucesso!", user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setAuthError(error.message);
+      } else {
+        setAuthError("Erro desconhecido.");
+      }
+      console.error(error);
     }
   };
 
   const handleGoogle = async () => {
     try {
-      const result = await loginGoogle();
+      const user = await loginGoogle();
 
       router.push("/", "forward", "replace");
-      console.log("Login Google realizado com sucesso!", result.user);
-    } catch (err) {
-      console.error("Erro ao autenticar.", err);
+      console.log("Login Google realizado com sucesso!", user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setAuthError(error.message);
+      } else {
+        setAuthError("Erro desconhecido.");
+      }
+      console.error(error);
     }
   };
 
@@ -88,6 +99,10 @@ const Register: React.FC = () => {
                     ></IonIcon>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
+
+                  <span>
+                    <small>{authError}</small>
+                  </span>
                 </IonList>
 
                 <IonButton

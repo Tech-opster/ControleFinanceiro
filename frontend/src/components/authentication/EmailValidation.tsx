@@ -24,7 +24,7 @@ const EmailValidation: React.FC<Props> = ({ value, onIonInput }) => {
 
   const markTouched = () => {
     setIsTouched(true);
-    
+
     if (value === "") {
       setIsValid(undefined);
       return;
@@ -35,15 +35,18 @@ const EmailValidation: React.FC<Props> = ({ value, onIonInput }) => {
 
   return (
     <IonInput
-      className={`${isValid && "ion-valid has-focus"} ${
-        isValid === false && "ion-invalid"
-      } ${isTouched && "ion-touched"}`}
+      className={`${isValid === false && "ion-invalid"} ${
+        isTouched && "ion-touched"
+      }`} // ${isValid && "ion-valid has-focus"} Para deixar com visual válido
       label="Email"
       labelPlacement="floating"
       type="email"
       value={value}
       errorText="Insira um email válido"
-      onIonInput={(e) => {validate(e); setIsValid(undefined);}}
+      onIonInput={(e) => {
+        validate(e);
+        setIsValid(undefined);
+      }}
       onIonBlur={() => markTouched()}
       onIonFocus={() => setIsTouched(false)}
     ></IonInput>

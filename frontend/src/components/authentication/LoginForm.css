@@ -3,3 +3,7 @@ ion-router-link {
   font-size: 0.9rem;
   margin: 10px 0;
 }
+
+form span {
+  color: rgb(255, 45, 45);
+}

@@ -17,15 +17,21 @@ const PasswordRecovery: React.FC = () => {
   const router = useIonRouter();
 
   const [email, setEmail] = useState<string>("");
+  const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   const handlePasswordRecovery = async () => {
     try {
       await passwordRecovery(email);
 
-      router.push("/login", "back", "replace");
+      router.push("/login", "back", "push");
       console.log("Email de recuperação enviado com sucesso!");
-    } catch (err) {
-      console.error("Erro ao enviar email de recuperação.", err);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setAuthError(error.message);
+      } else {
+        setAuthError("Erro desconhecido.");
+      }
+      console.error(error);
     }
   };
 
@@ -41,7 +47,7 @@ const PasswordRecovery: React.FC = () => {
             </IonCardHeader>
             <IonCardContent>
               <form
-                action="cadastrar"
+                action="recuperar"
                 onSubmit={(e) => {
                   e.preventDefault();
                   handlePasswordRecovery();
@@ -57,6 +63,10 @@ const PasswordRecovery: React.FC = () => {
                     value={email}
                     onIonInput={setEmail}
                   ></EmailValidation>
+
+                  <span>
+                    <small>{authError}</small>
+                  </span>
                 </IonList>
 
                 <IonButton

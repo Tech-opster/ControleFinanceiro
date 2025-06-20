@@ -16,33 +16,44 @@ import { useIonRouter } from "@ionic/react";
 import { lockClosed } from "ionicons/icons";
 import google_icon_dark from "../../assets/images/google_icon_dark.svg";
 import { loginEmail, loginGoogle } from "../../services/authService";
-import  EmailValidation  from "./EmailValidation";
+import EmailValidation from "./EmailValidation";
 
 const LoginForm: React.FC = () => {
   const router = useIonRouter();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   const handleGoogle = async () => {
     try {
-      const result = await loginGoogle();
+      const user = await loginGoogle();
 
       router.push("/", "forward", "replace");
-      console.log("Login Google realizado com sucesso!", result.user);
-    } catch (err) {
-      console.error("Erro ao autenticar.", err);
+      console.log("Login Google realizado com sucesso!", user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setAuthError(error.message);
+      } else {
+        setAuthError("Erro desconhecido.");
+      }
+      console.error(error);
     }
   };
 
   const handleLoginEmail = async () => {
     try {
-      const result = await loginEmail(email, password);
+      const user = await loginEmail(email, password);
 
       router.push("/", "forward", "replace");
-      console.log("Login realizado com sucesso!", result.user);
-    } catch (err) {
-      console.error("Erro ao autenticar.", err);
+      console.log("Login realizado com sucesso!", user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setAuthError(error.message);
+      } else {
+        setAuthError("Erro desconhecido.");
+      }
+      console.error(error);
     }
   };
 
@@ -57,64 +68,72 @@ const LoginForm: React.FC = () => {
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-          <form
-            action="cadastrar"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLoginEmail();
-            }}
-          >
-            <IonList>
-              <EmailValidation
-                value={email}
-                onIonInput={setEmail}
-              ></EmailValidation>
-              
-              <IonInput
-                label="Senha"
-                labelPlacement="floating"
-                type="password"
-                value={password}
-                helperText=" "
-                onIonInput={(e) => {
-                  setPassword(e.detail.value ?? "");
-                }}
-              >
-                <IonIcon
-                  slot="start"
-                  icon={lockClosed}
-                  aria-hidden="true"
-                ></IonIcon>
-                <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-              </IonInput>
-            </IonList>
+        <form
+          action="autenticar"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLoginEmail();
+          }}
+        >
+          <IonList>
+            <EmailValidation
+              value={email}
+              onIonInput={setEmail}
+            ></EmailValidation>
 
-            <IonRouterLink routerLink="/passwordRecovery">
-              Esqueci minha senha
-            </IonRouterLink>
-            
-            <IonButton className="full-width" type="submit" disabled={!email || !password}>
-              Entrar
-            </IonButton>
-          </form>
-
-          <div className="ion-text-center">
-            <span>Ou</span>
-
-            <IonButton
-              className="full-width"
-              onClick={() => {
-                handleGoogle();
+            <IonInput
+              label="Senha"
+              labelPlacement="floating"
+              type="password"
+              value={password}
+              helperText=" "
+              onIonInput={(e) => {
+                setPassword(e.detail.value ?? "");
               }}
             >
-              <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
-              Continuar com Google
-            </IonButton>
+              <IonIcon
+                slot="start"
+                icon={lockClosed}
+                aria-hidden="true"
+              ></IonIcon>
+              <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+            </IonInput>
 
-            <IonRouterLink routerLink="/register">
-              Não possui conta?
-            </IonRouterLink>
-          </div>
+            <span>
+              <small>{authError}</small>
+            </span>
+          </IonList>
+
+          <IonRouterLink routerLink="/passwordRecovery">
+            Esqueci minha senha
+          </IonRouterLink>
+
+          <IonButton
+            className="full-width"
+            type="submit"
+            disabled={!email || !password}
+          >
+            Entrar
+          </IonButton>
+        </form>
+
+        <div className="ion-text-center">
+          <span>Ou</span>
+
+          <IonButton
+            className="full-width"
+            onClick={() => {
+              handleGoogle();
+            }}
+          >
+            <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
+            Continuar com Google
+          </IonButton>
+
+          <IonRouterLink routerLink="/register">
+            Não possui conta?
+          </IonRouterLink>
+        </div>
       </IonCardContent>
     </IonCard>
   );
