@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { passwordRecovery } from "../../services/authService";
 import EmailValidation from "../../components/authentication/EmailValidation";
-import { checkmark } from "ionicons/icons";
+import { mailOutline } from "ionicons/icons";
 
 const PasswordRecovery: React.FC = () => {
   const router = useIonRouter();
@@ -23,6 +23,8 @@ const PasswordRecovery: React.FC = () => {
   const [present] = useIonToast();
 
   const handlePasswordRecovery = async () => {
+    setAuthError(undefined);
+    
     try {
       await passwordRecovery(email);
 
@@ -32,7 +34,7 @@ const PasswordRecovery: React.FC = () => {
         position: "top",
         positionAnchor: "header",
         message: "Email de recuperação enviado com sucesso!",
-        icon: checkmark,
+        icon: mailOutline,
         duration: 3000,
       });
 
@@ -83,7 +85,8 @@ const PasswordRecovery: React.FC = () => {
                 </IonList>
 
                 <IonButton
-                  className="ion-margin-top full-width"
+                  className="ion-margin-top"
+                  expand="block"
                   type="submit"
                   disabled={!email}
                 >

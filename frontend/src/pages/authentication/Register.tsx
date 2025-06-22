@@ -26,10 +26,12 @@ const Register: React.FC = () => {
   const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   const handleRegister = async () => {
+    setAuthError(undefined);
+
     try {
       const user = await register(email, password);
 
-      router.push("/", "forward", "replace");
+      router.push("/", "root", "replace");
       console.log("Cadastro realizado com sucesso!", user);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -45,7 +47,7 @@ const Register: React.FC = () => {
     try {
       const user = await loginGoogle();
 
-      router.push("/", "forward", "replace");
+      router.push("/", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -106,7 +108,8 @@ const Register: React.FC = () => {
                 </IonList>
 
                 <IonButton
-                  className="ion-margin-top full-width"
+                  className="ion-margin-top"
+                  expand="block"
                   type="submit"
                   disabled={!email || !password}
                 >
@@ -118,7 +121,7 @@ const Register: React.FC = () => {
                 <span>Ou</span>
 
                 <IonButton
-                  className="full-width"
+                  expand="block"
                   onClick={() => {
                     handleGoogle();
                   }}

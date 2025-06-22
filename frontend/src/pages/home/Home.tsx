@@ -1,11 +1,11 @@
 import { useAuth } from "../../context/AuthContext";
-import PublicHome from "./PublicHome";
-import AuthenticatedHome from "./AuthenticatedHome";
+import Onboarding from "./Onboarding";
+import AppTabs from "../../components/routes/AppTabs";
 
 const Home: React.FC = () => {
   const { user } = useAuth();
 
-  return user ? <AuthenticatedHome /> : <PublicHome />;
+  return user ? <AppTabs /> : <Onboarding />;
 };
 
 export default Home;

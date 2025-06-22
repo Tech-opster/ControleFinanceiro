@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+
 interface Props {
   component: React.FC;
   path: string;
@@ -13,7 +14,7 @@ const PublicRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => (!user ? <Component /> : <Redirect to="/" />)}
+      render={() => (!user ?  <Component /> : <Redirect to="/" />)}
     />
   );
 };

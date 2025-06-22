@@ -1,6 +1,14 @@
-import { Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import { Redirect, Route } from "react-router-dom";
+import {
+  IonApp,
+  IonRouterOutlet,
+  setupIonicReact,
+  useIonToast,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { alertOutline } from "ionicons/icons";
+import { AuthProvider } from "./context/AuthProvider";
+import PublicRoute from "./components/routes/PublicRoute";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -33,31 +41,49 @@ import "@ionic/react/css/palettes/dark.system.css";
 import "./theme/variables.css";
 
 // Pages
-import { AuthProvider } from "./context/AuthProvider";
-import PublicRoute from "./components/routes/PublicRoute";
 import Home from "./pages/home/Home";
 import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Register";
-import NotFound from "./pages/notFound/NotFound";
 import passwordRecovery from "./pages/authentication/PasswordRecovery";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <AuthProvider>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="*" component={NotFound} />
-          <Route exact path="/" component={Home} />
-          
-          <PublicRoute exact path="/login" component={Login} />
-          <PublicRoute exact path="/register" component={Register} />
-          <PublicRoute exact path="/passwordRecovery" component={passwordRecovery} />
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </AuthProvider>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [present] = useIonToast();
 
+  return (
+    <IonApp>
+      <AuthProvider>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/" component={Home} />
+
+            <PublicRoute exact path="/login" component={Login} />
+            <PublicRoute exact path="/register" component={Register} />
+            <PublicRoute
+              exact
+              path="/reset-password"
+              component={passwordRecovery}
+            />
+
+            <Route
+              render={() => {
+                present({
+                  cssClass: "custom-toast ion-text-center",
+                  color: "warning",
+                  position: "top",
+                  positionAnchor: "header",
+                  message: "Página não encontrada ou não existe",
+                  icon: alertOutline,
+                  duration: 3000,
+                });
+                return <Redirect to="/" />;
+              }}
+            />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </AuthProvider>
+    </IonApp>
+  );
+};
 export default App;

@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonPage, useIonRouter } from "@ionic/react";
-import "./PublicHome.css";
+import "./Onboarding.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -12,7 +12,7 @@ import growth from "../../assets/images/growth.png";
 import LoginForm from "../../components/authentication/LoginForm";
 import { useIsMobile } from "../../hooks/useIsMobile";
 
-const PublicHome: React.FC = () => {
+const Onboarding: React.FC = () => {
   const router = useIonRouter();
   const isMobile = useIsMobile();
 
@@ -101,4 +101,4 @@ const PublicHome: React.FC = () => {
   );
 };
 
-export default PublicHome;
+export default Onboarding;

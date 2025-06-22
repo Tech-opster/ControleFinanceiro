@@ -24,28 +24,30 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
-  
-    const handleLoginEmail = async () => {
-      try {
-        const user = await loginEmail(email, password);
-  
-        router.push("/", "forward", "replace");
-        console.log("Login realizado com sucesso!", user);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setAuthError(error.message);
-        } else {
-          setAuthError("Erro desconhecido.");
-        }
-        console.error(error);
+
+  const handleLoginEmail = async () => {
+    setAuthError(undefined);
+
+    try {
+      const user = await loginEmail(email, password);
+
+      router.push("/", "root", "replace");
+      console.log("Login realizado com sucesso!", user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setAuthError(error.message);
+      } else {
+        setAuthError("Erro desconhecido.");
       }
-    };
+      console.error(error);
+    }
+  };
 
   const handleGoogle = async () => {
     try {
       const user = await loginGoogle();
 
-      router.push("/", "forward", "replace");
+      router.push("/", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -104,12 +106,12 @@ const LoginForm: React.FC = () => {
             </span>
           </IonList>
 
-          <IonRouterLink routerLink="/passwordRecovery">
+          <IonRouterLink routerLink="/reset-password">
             Esqueci minha senha
           </IonRouterLink>
 
           <IonButton
-            className="full-width"
+            expand="block"
             type="submit"
             disabled={!email || !password}
           >
@@ -121,7 +123,7 @@ const LoginForm: React.FC = () => {
           <span>Ou</span>
 
           <IonButton
-            className="full-width"
+            expand="block"
             onClick={() => {
               handleGoogle();
             }}
