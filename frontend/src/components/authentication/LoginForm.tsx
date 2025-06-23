@@ -9,6 +9,7 @@ import {
   IonInputPasswordToggle,
   IonList,
   IonRouterLink,
+  useIonLoading,
 } from "@ionic/react";
 import "./LoginForm.css";
 import { useState } from "react";
@@ -24,16 +25,22 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
+  const [present, dismiss] = useIonLoading();
 
   const handleLoginEmail = async () => {
     setAuthError(undefined);
+    present();
 
     try {
       const user = await loginEmail(email, password);
 
+      dismiss();
+
       router.push("/home", "root", "replace");
       console.log("Login realizado com sucesso!", user);
     } catch (error: unknown) {
+      dismiss();
+
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {
@@ -44,12 +51,19 @@ const LoginForm: React.FC = () => {
   };
 
   const handleGoogle = async () => {
+    setAuthError(undefined);
+    present();
+
     try {
       const user = await loginGoogle();
+
+      dismiss();
 
       router.push("/home", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
+      dismiss();
+
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {

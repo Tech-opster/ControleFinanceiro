@@ -10,6 +10,7 @@ import {
   IonInputPasswordToggle,
   IonList,
   IonPage,
+  useIonLoading,
   useIonRouter,
 } from "@ionic/react";
 import { useState } from "react";
@@ -24,16 +25,22 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
+  const [present, dismiss] = useIonLoading();
 
   const handleRegister = async () => {
     setAuthError(undefined);
+    present();
 
     try {
       const user = await register(email, password);
 
+      dismiss();
+
       router.push("/home", "root", "replace");
       console.log("Cadastro realizado com sucesso!", user);
     } catch (error: unknown) {
+      dismiss();
+
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {
@@ -44,12 +51,18 @@ const Register: React.FC = () => {
   };
 
   const handleGoogle = async () => {
+    setAuthError(undefined);
+    present();
+
     try {
       const user = await loginGoogle();
+      dismiss();
 
       router.push("/home", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
+      dismiss();
+
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {

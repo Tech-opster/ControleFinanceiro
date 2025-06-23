@@ -7,6 +7,7 @@ import {
   IonContent,
   IonList,
   IonPage,
+  useIonLoading,
   useIonRouter,
   useIonToast,
 } from "@ionic/react";
@@ -20,15 +21,19 @@ const PasswordRecovery: React.FC = () => {
 
   const [email, setEmail] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
-  const [present] = useIonToast();
+  const [presentToast] = useIonToast();
+  const [present, dismiss] = useIonLoading();
 
   const handlePasswordRecovery = async () => {
     setAuthError(undefined);
-    
+    present();
+
     try {
       await passwordRecovery(email);
 
-      present({
+      dismiss();
+
+      presentToast({
         cssClass: "custom-toast ion-text-center",
         color: "success",
         position: "top",
@@ -41,6 +46,8 @@ const PasswordRecovery: React.FC = () => {
       router.push("/login", "back", "push");
       console.log("Email de recuperação enviado com sucesso!");
     } catch (error: unknown) {
+      dismiss();
+
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {
