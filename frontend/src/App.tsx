@@ -6,9 +6,9 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { alertOutline } from "ionicons/icons";
 import { AuthProvider } from "./context/AuthProvider";
 import PublicRoute from "./components/routes/PublicRoute";
+import { alertOutline } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -44,7 +44,9 @@ import "./theme/variables.css";
 import Home from "./pages/home/Home";
 import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Register";
-import passwordRecovery from "./pages/authentication/PasswordRecovery";
+import PasswordRecovery from "./pages/authentication/PasswordRecovery";
+import PrivateRoutes from "./components/routes/PrivateRoute";
+import AppTabs from "./components/routes/AppTabs";
 
 setupIonicReact();
 
@@ -56,17 +58,20 @@ const App: React.FC = () => {
       <AuthProvider>
         <IonReactRouter>
           <IonRouterOutlet>
-            <Route exact path="/" component={Home} />
+            <Redirect exact path="/" to="/home" />
+
+            <Route exact path="/home" component={Home} />
+            
+            <PrivateRoutes exact path="/incomes" component={AppTabs} />
+            <PrivateRoutes exact path="/outflow" component={AppTabs} />
+            <PrivateRoutes exact path="/expenses" component={AppTabs} />
+            <PrivateRoutes exact path="/investments" component={AppTabs} />
 
             <PublicRoute exact path="/login" component={Login} />
             <PublicRoute exact path="/register" component={Register} />
-            <PublicRoute
-              exact
-              path="/reset-password"
-              component={passwordRecovery}
-            />
+            <PublicRoute exact path="/reset-password" component={PasswordRecovery} />
 
-            <Route
+            {/* <Route
               render={() => {
                 present({
                   cssClass: "custom-toast ion-text-center",
@@ -77,9 +82,9 @@ const App: React.FC = () => {
                   icon: alertOutline,
                   duration: 3000,
                 });
-                return <Redirect to="/" />;
+                return <Redirect path="*" to="/home" />; //FIXME animação de rota
               }}
-            />
+            /> */}
           </IonRouterOutlet>
         </IonReactRouter>
       </AuthProvider>

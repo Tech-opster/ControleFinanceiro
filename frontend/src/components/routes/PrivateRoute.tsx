@@ -8,15 +8,15 @@ interface Props {
   exact?: boolean;
 }
 
-const PublicRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
+const PrivateRoutes: React.FC<Props> = ({ component: Component, ...rest }) => {
   const { user } = useAuth();
 
   return (
     <Route
       {...rest}
-      render={() => (!user ?  <Component /> : <Redirect to="/home" />)}
+      render={() => (user ?  <Component /> : <Redirect to="/home" />)}
     />
   );
 };
 
-export default PublicRoute;
+export default PrivateRoutes;

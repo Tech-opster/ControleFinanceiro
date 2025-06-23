@@ -31,7 +31,7 @@ const Register: React.FC = () => {
     try {
       const user = await register(email, password);
 
-      router.push("/", "root", "replace");
+      router.push("/home", "root", "replace");
       console.log("Cadastro realizado com sucesso!", user);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -47,7 +47,7 @@ const Register: React.FC = () => {
     try {
       const user = await loginGoogle();
 
-      router.push("/", "root", "replace");
+      router.push("/home", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
       if (error instanceof Error) {

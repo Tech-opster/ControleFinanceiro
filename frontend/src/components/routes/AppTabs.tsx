@@ -1,3 +1,4 @@
+import { Redirect, Route } from "react-router-dom";
 import {
   IonIcon,
   IonRouterOutlet,
@@ -12,49 +13,50 @@ import {
   removeCircle,
   trendingUp,
 } from "ionicons/icons";
-import { Route } from "react-router";
+import { IonReactRouter } from "@ionic/react-router";
+import HomePage from "../../pages/home/HomePage";
 import Incomes from "../../pages/incomes/Incomes";
 import OutFlow from "../../pages/outflow/Outflow";
 import Expenses from "../../pages/expenses/Expenses";
 import Investments from "../../pages/investments/Investments";
-import HomePage from "../../pages/home/HomePage";
-import { IonReactRouter } from "@ionic/react-router";
 
 const AppTabs: React.FC = () => {
   return (
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/incomes" component={Incomes} />
-            <Route exact path="/outflow" component={OutFlow} />
-            <Route exact path="/expenses" component={Expenses} />
-            <Route exact path="/investments" component={Investments} />
-          </IonRouterOutlet>
+    <IonReactRouter>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Redirect exact path="/" to="/home"/>
 
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="entradas" href="/incomes">
-              <IonIcon icon={addCircle} />
-            </IonTabButton>
+          <Route exact path="/home" render={() => <HomePage />} />
+          <Route exact path="/incomes" render={() => <Incomes />} />
+          <Route exact path="/outflow" render={() => <OutFlow />} />
+          <Route exact path="/expenses" render={() => <Expenses />} />
+          <Route exact path="/investments" render={() => <Investments />} />
+        </IonRouterOutlet>
 
-            <IonTabButton tab="saídas" href="/outflow">
-              <IonIcon icon={removeCircle} />
-            </IonTabButton>
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="incomes" href="/incomes">
+            <IonIcon icon={addCircle} />
+          </IonTabButton>
 
-            <IonTabButton tab="home" href="/">
-              <IonIcon icon={home} />
-            </IonTabButton>
+          <IonTabButton tab="outflow" href="/outflow">
+            <IonIcon icon={removeCircle} />
+          </IonTabButton>
 
-            <IonTabButton tab="despesas" href="/expenses">
-              <IonIcon icon={bagHandle} />
-            </IonTabButton>
+          <IonTabButton tab="home" href="/home">
+            <IonIcon icon={home} />
+          </IonTabButton>
 
-            <IonTabButton tab="investimentos" href="/investments">
-              <IonIcon icon={trendingUp} />
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
+          <IonTabButton tab="expenses" href="/expenses">
+            <IonIcon icon={bagHandle} />
+          </IonTabButton>
+
+          <IonTabButton tab="investments" href="/investments">
+            <IonIcon icon={trendingUp} />
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
+    </IonReactRouter>
   );
 };
 

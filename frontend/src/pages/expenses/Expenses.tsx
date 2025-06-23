@@ -10,16 +10,10 @@ import {
 const Expenses: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar></IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <h1>Despesas</h1>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent></IonContent>
+      <IonContent>
+        <div className="container">
+          <h1>Despesas</h1>
+        </div>
       </IonContent>
     </IonPage>
   );

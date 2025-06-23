@@ -10,16 +10,10 @@ import {
 const Investments: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar></IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <h1>Investimentos</h1>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent></IonContent>
+      <IonContent>
+        <div className="container">
+          <h1>Investimentos</h1>
+        </div>
       </IonContent>
     </IonPage>
   );
