@@ -13,18 +13,23 @@ import {
 import { personCircleOutline, exitOutline } from "ionicons/icons";
 import { useSignOut } from "../../hooks/useSignOut";
 
-const ProfileMenu: React.FC = () => {
+interface Props {
+  contentId: string;
+  menuId: string;
+}
+
+const ProfileMenu: React.FC<Props> = ({ contentId, menuId }) => {
   const { handleSignOut } = useSignOut();
 
   return (
     <>
-      <IonMenu contentId="main-content" menuId="profileMenu" side="end">
+      <IonMenu contentId={contentId} menuId={menuId} side="end">
         <IonHeader>
           <IonToolbar>
             <IonMenuToggle slot="end">
-              <IonButton>
+              <IonMenuButton menu="profileMenu">
                 <IonIcon icon={personCircleOutline} />
-              </IonButton>
+              </IonMenuButton>
             </IonMenuToggle>
             <IonTitle>Usuário</IonTitle>
           </IonToolbar>
@@ -36,16 +41,6 @@ const ProfileMenu: React.FC = () => {
           </IonButton>
         </IonContent>
       </IonMenu>
-
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="end">
-            <IonMenuButton menu="profileMenu">
-              <IonIcon icon={personCircleOutline} />
-            </IonMenuButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
     </>
   );
 };
