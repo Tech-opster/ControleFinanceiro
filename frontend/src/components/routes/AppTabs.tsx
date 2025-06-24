@@ -19,13 +19,16 @@ import Incomes from "../../pages/incomes/Incomes";
 import OutFlow from "../../pages/outflow/Outflow";
 import Expenses from "../../pages/expenses/Expenses";
 import Investments from "../../pages/investments/Investments";
+import ProfileMenu from "../profileMenu/ProfileMenu";
 
 const AppTabs: React.FC = () => {
   return (
     <IonReactRouter>
       <IonTabs>
-        <IonRouterOutlet>
-          <Redirect exact path="/" to="/home"/>
+        <ProfileMenu />
+
+        <IonRouterOutlet id="main-content">
+          <Redirect exact path="/" to="/home" />
 
           <Route exact path="/home" render={() => <HomePage />} />
           <Route exact path="/incomes" render={() => <Incomes />} />

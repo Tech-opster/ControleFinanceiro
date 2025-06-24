@@ -51,7 +51,7 @@ import AppTabs from "./components/routes/AppTabs";
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [present] = useIonToast();
+  const [presentToast] = useIonToast();
 
   return (
     <IonApp>
@@ -73,7 +73,7 @@ const App: React.FC = () => {
 
             {/* <Route
               render={() => {
-                present({
+                presentToast({
                   cssClass: "custom-toast ion-text-center",
                   color: "warning",
                   position: "top",

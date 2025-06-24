@@ -1,4 +1,4 @@
-import { auth } from "../firebase/firebase";
+import { auth, signOutUser } from "../firebase/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -43,6 +43,15 @@ export const loginGoogle = async () => {
 export const passwordRecovery = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    throw new Error(getFirebaseErrorMessage(error));
+  }
+};
+
+export const signOut = async () => {
+  try {
+    await signOutUser(auth);
+    console.log("Desconectado com sucesso!");
   } catch (error) {
     throw new Error(getFirebaseErrorMessage(error));
   }
