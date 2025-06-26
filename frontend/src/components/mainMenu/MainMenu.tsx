@@ -29,7 +29,7 @@ interface Props {
 const MainMenu: React.FC<Props> = ({ contentId, menuId }) => {
   return (
     <>
-      <IonMenu contentId={contentId} menuId={menuId} side="start">
+      <IonMenu contentId={contentId} menuId={menuId} side="start" type="push">
         <IonHeader>
           <IonToolbar>
             <IonMenuToggle slot="start">

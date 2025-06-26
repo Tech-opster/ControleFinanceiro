@@ -1,16 +1,15 @@
 import { IonButton, IonContent, IonPage, useIonRouter } from "@ionic/react";
-import "./Onboarding.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import spreadsheetapp from "../../assets/images/spreadsheetapp.png";
 import planning from "../../assets/images/planning.png";
 import analytics from "../../assets/images/analytics.png";
 import growth from "../../assets/images/growth.png";
 import LoginForm from "../../components/authentication/LoginForm";
-import { useIsMobile } from "../../hooks/useIsMobile";
 
 const Onboarding: React.FC = () => {
   const router = useIonRouter();
@@ -48,15 +47,16 @@ const Onboarding: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <div className="container ion-padding">
-          <div id="mobileContainer" className="ion-text-center">
+        <div className="h-full min-h-fit flex justify-center items-center ion-padding">
+          <div className="w-full flex-2 ion-text-center">
             <Swiper
-              id="swiper"
+              className="!max-w-[600px] !pb-[32px] !mb-[20px]"
               modules={[Navigation, Pagination, Autoplay]}
               spaceBetween={50}
               slidesPerView={1}
               navigation={{ enabled: false }}
               pagination
+              loop={true}
               breakpoints={{
                 480: {
                   navigation: {
@@ -71,10 +71,10 @@ const Onboarding: React.FC = () => {
               }}
             >
               {swiperData.map((item) => (
-                <SwiperSlide key={item.id}>
-                  <img src={item.image} alt={item.title} />
+                <SwiperSlide className="!flex !flex-col !justify-center !items-center" key={item.id}>
+                  <img className="max-h-[340px]" src={item.image} alt={item.title} />
                   <h2>{item.title}</h2>
-                  <p>{item.description}</p>
+                  <p className="text-[16px] leading-[22px] text-[#8c8c8c] m-0">{item.description}</p>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -91,7 +91,7 @@ const Onboarding: React.FC = () => {
           </div>
           
           {!isMobile && (
-            <div id="webContainer">
+            <div className="flex flex-1">
               <LoginForm></LoginForm>
             </div>
           )}

@@ -74,7 +74,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <IonCard className="ion-no-margin width-400">
+    <IonCard className="ion-no-margin w-[400px]">
       <IonCardHeader className="ion-text-center">
         <IonCardTitle>
           <h2>

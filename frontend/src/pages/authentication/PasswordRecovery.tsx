@@ -60,8 +60,8 @@ const PasswordRecovery: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-        <div className="container">
-          <IonCard className="ion-no-margin width-400">
+        <div className="h-full min-h-fit flex justify-center items-center">
+          <IonCard className="ion-no-margin w-[400px]">
             <IonCardHeader className="ion-text-center">
               <IonCardTitle>
                 <h2>Recuperação de senha</h2>

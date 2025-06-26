@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return (
       <IonPage>
         <IonContent>
-          <div className="container">
+          <div className="h-full min-h-fit flex justify-center items-center">
             <IonSpinner name="crescent"></IonSpinner>
           </div>
         </IonContent>

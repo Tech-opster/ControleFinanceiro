@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { setupIonicReact } from '@ionic/react';
+import './tailwind.css';
 
 setupIonicReact({
   mode: 'ios', // Força iOS para tudo
