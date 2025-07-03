@@ -3,3 +3,11 @@
 .custom-gray {
     background-color: rgb(31, 31, 31);
 }
+
+.custom-gray400 {
+    color: rgb(160, 160, 160);
+}
+
+.active-button ion-icon{
+    color: rgb(77, 141, 255)
+}

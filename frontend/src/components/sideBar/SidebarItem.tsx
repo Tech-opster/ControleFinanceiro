@@ -1,59 +1,55 @@
-import { useContext } from "react";
-import { SidebarContext } from "../../context/SidebarContext";
+import { useIonRouter } from "@ionic/react";
+import { useLocation } from "react-router-dom";
 
 interface Props {
-    icon: React.ReactNode,
-    text: string,
-    active?: boolean,
-    alert?: boolean
+  icon: React.ReactNode;
+  text: string;
+  to: string;
+  alert?: boolean;
 }
 
-const SidebarItem: React.FC<Props> = ({ icon, text, active, alert }) => {
-  const { expanded } = useContext(SidebarContext);
+const SidebarItem: React.FC<Props> = ({ icon, text, to, alert }) => {
+  const router = useIonRouter();
+  const location = useLocation();
+  const active = location.pathname === to;
+
+  const handleClick = () => {
+    router.push(to, "root", "replace");
+  };
 
   return (
     <li
       className={`
-        relative flex items-center py-2 px-3 my-1
+        h-12 relative flex items-center py-2 px-3 my-2
         font-medium rounded-md cursor-pointer
         transition-colors group
         ${
           active
-            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 active-button"
             : "hover:bg-indigo-500"
         }
     `}
+      onClick={handleClick}
     >
       {icon}
-      <span
-        className={`overflow-hidden transition-all ${
-          expanded ? "w-52 ml-3" : "w-0"
-        }`}
-      >
-        {text}
-      </span>
+
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
-            expanded ? "" : "top-2"
-          }`}
+          className="absolute right-2 w-2 h-2 rounded bg-indigo-400 top-2"
         />
       )}
 
-      {!expanded && (
-        <div
-          className={`
-          absolute left-full rounded-md px-2 py-1 ml-6
+      <div
+        className="
+          z-999 absolute left-full rounded-md px-2 py-1 ml-6
           bg-indigo-100 text-indigo-800 text-sm
           invisible opacity-20 -translate-x-3 transition-all
-          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-      `}
-        >
-          {text}
-        </div>
-      )}
+          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0"
+      >
+        {text}
+      </div>
     </li>
   );
-}
+};
 
 export default SidebarItem;

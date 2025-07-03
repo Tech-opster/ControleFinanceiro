@@ -1,6 +1,5 @@
 import { Redirect, Route } from "react-router-dom";
 import {
-  IonHeader,
   IonIcon,
   IonRouterOutlet,
   IonTabBar,
@@ -30,46 +29,97 @@ const AppTabs: React.FC = () => {
 
   return (
     <IonReactRouter>
-      <IonTabs>
+      <div className="flex">
+        {!isMobile && (
           <Sidebar>
-            <SidebarItem icon={<IonIcon icon={home} />} text="Home" />
-            <SidebarItem icon={<IonIcon icon={removeCircle} />} text="Entradas" />
-            <SidebarItem icon={<IonIcon icon={removeCircle} />} text="Despesas" />
-            <SidebarItem icon={<IonIcon icon={bagHandle} />} text="Despesas" />
-            <SidebarItem icon={<IonIcon icon={trendingUp} />} text="Despesas" />
+            <SidebarItem
+              icon={
+                <IonIcon className="custom-gray400" size="large" icon={home} />
+              }
+              text="Home"
+              to="/home"
+            />
+            <SidebarItem
+              icon={
+                <IonIcon
+                  className="custom-gray400"
+                  size="large"
+                  icon={addCircle}
+                />
+              }
+              text="Entradas"
+              to="/incomes"
+            />
+            <SidebarItem
+              icon={
+                <IonIcon
+                  className="custom-gray400"
+                  size="large"
+                  icon={removeCircle}
+                />
+              }
+              text="Saídas"
+              to="/outflow"
+            />
+            <SidebarItem
+              icon={
+                <IonIcon
+                  className="custom-gray400"
+                  size="large"
+                  icon={bagHandle}
+                />
+              }
+              text="Despesas"
+              to="/expenses"
+            />
+            <SidebarItem
+              icon={
+                <IonIcon
+                  className="custom-gray400"
+                  size="large"
+                  icon={trendingUp}
+                />
+              }
+              text="Investimentos"
+              to="/investments"
+            />
           </Sidebar>
-
-        <IonRouterOutlet id="main-content">
-          <Redirect exact path="/" to="/home" />
-
-          <Route exact path="/incomes" component={Incomes} />
-          <Route exact path="/outflow" component={OutFlow} />
-          <Route exact path="/home" component={HomePage} />
-          <Route exact path="/expenses" component={Expenses} />
-          <Route exact path="/investments" component={Investments} />
-        </IonRouterOutlet>
-
-        {/* FIXME corrigir selected icon quando carregar página*/}
-        {isMobile && (
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="incomes" href="/incomes">
-              <IonIcon icon={addCircle} />
-            </IonTabButton>
-            <IonTabButton tab="outflow" href="/outflow">
-              <IonIcon icon={removeCircle} />
-            </IonTabButton>
-            <IonTabButton tab="home" href="/home">
-              <IonIcon icon={home} />
-            </IonTabButton>
-            <IonTabButton tab="expenses" href="/expenses">
-              <IonIcon icon={bagHandle} />
-            </IonTabButton>
-            <IonTabButton tab="investments" href="/investments">
-              <IonIcon icon={trendingUp} />
-            </IonTabButton>
-          </IonTabBar>
         )}
-      </IonTabs>
+
+        <div className={`flex-1 ${!isMobile && "relative"}`}>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Redirect exact path="/" to="/home" />
+              <Route exact path="/incomes" component={Incomes} />
+              <Route exact path="/outflow" component={OutFlow} />
+              <Route exact path="/home" component={HomePage} />
+              <Route exact path="/expenses" component={Expenses} />
+              <Route exact path="/investments" component={Investments} />
+            </IonRouterOutlet>
+
+            {/* FIXME corrigir selected icon quando carregar página*/}
+            {isMobile && (
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="incomes" href="/incomes">
+                  <IonIcon icon={addCircle} />
+                </IonTabButton>
+                <IonTabButton tab="outflow" href="/outflow">
+                  <IonIcon icon={removeCircle} />
+                </IonTabButton>
+                <IonTabButton tab="home" href="/home">
+                  <IonIcon icon={home} />
+                </IonTabButton>
+                <IonTabButton tab="expenses" href="/expenses">
+                  <IonIcon icon={bagHandle} />
+                </IonTabButton>
+                <IonTabButton tab="investments" href="/investments">
+                  <IonIcon icon={trendingUp} />
+                </IonTabButton>
+              </IonTabBar>
+            )}
+          </IonTabs>
+        </div>
+      </div>
     </IonReactRouter>
   );
 };
