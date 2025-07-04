@@ -1,10 +1,6 @@
 import {
   IonContent,
-  IonFooter,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 
 const Incomes: React.FC = () => {

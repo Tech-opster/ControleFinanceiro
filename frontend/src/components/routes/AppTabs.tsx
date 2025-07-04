@@ -1,10 +1,14 @@
 import { Redirect, Route } from "react-router-dom";
 import {
+  IonButtons,
+  IonHeader,
   IonIcon,
+  IonMenuButton,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonToolbar,
 } from "@ionic/react";
 import {
   addCircle,
@@ -15,6 +19,7 @@ import {
 } from "ionicons/icons";
 import { IonReactRouter } from "@ionic/react-router";
 import { useIsMobile } from "../../hooks/useIsMobile";
+import { auth } from "../../firebase/firebase";
 
 import HomePage from "../../pages/home/HomePage";
 import Incomes from "../../pages/incomes/Incomes";
@@ -23,6 +28,7 @@ import Expenses from "../../pages/expenses/Expenses";
 import Investments from "../../pages/investments/Investments";
 import Sidebar from "../sideBar/Sidebar";
 import SidebarItem from "../sideBar/SidebarItem";
+import ProfileMenu from "../profileMenu/ProfileMenu";
 
 const AppTabs: React.FC = () => {
   const isMobile = useIsMobile();
@@ -87,8 +93,12 @@ const AppTabs: React.FC = () => {
         )}
 
         <div className={`flex-1 ${!isMobile && "relative"}`}>
+          {isMobile && (
+            <ProfileMenu contentId="main-content" menuId="profileMenu" />
+          )}
+
           <IonTabs>
-            <IonRouterOutlet>
+            <IonRouterOutlet id="main-content">
               <Redirect exact path="/" to="/home" />
               <Route exact path="/incomes" component={Incomes} />
               <Route exact path="/outflow" component={OutFlow} />
@@ -99,23 +109,39 @@ const AppTabs: React.FC = () => {
 
             {/* FIXME corrigir selected icon quando carregar página*/}
             {isMobile && (
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="incomes" href="/incomes">
-                  <IonIcon icon={addCircle} />
-                </IonTabButton>
-                <IonTabButton tab="outflow" href="/outflow">
-                  <IonIcon icon={removeCircle} />
-                </IonTabButton>
-                <IonTabButton tab="home" href="/home">
-                  <IonIcon icon={home} />
-                </IonTabButton>
-                <IonTabButton tab="expenses" href="/expenses">
-                  <IonIcon icon={bagHandle} />
-                </IonTabButton>
-                <IonTabButton tab="investments" href="/investments">
-                  <IonIcon icon={trendingUp} />
-                </IonTabButton>
-              </IonTabBar>
+              <>
+                <IonHeader>
+                  <IonToolbar className="!py-2">
+                    <IonButtons slot="end">
+                      <IonMenuButton menu="profileMenu">
+                        <img
+                          src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.email?.split("@")[0]}&length=2`}
+                          alt=""
+                          className="w-10 rounded-md"
+                        />
+                      </IonMenuButton>
+                    </IonButtons>
+                  </IonToolbar>
+                </IonHeader>
+
+                <IonTabBar slot="bottom">
+                  <IonTabButton tab="incomes" href="/incomes">
+                    <IonIcon icon={addCircle} />
+                  </IonTabButton>
+                  <IonTabButton tab="outflow" href="/outflow">
+                    <IonIcon icon={removeCircle} />
+                  </IonTabButton>
+                  <IonTabButton tab="home" href="/home">
+                    <IonIcon icon={home} />
+                  </IonTabButton>
+                  <IonTabButton tab="expenses" href="/expenses">
+                    <IonIcon icon={bagHandle} />
+                  </IonTabButton>
+                  <IonTabButton tab="investments" href="/investments">
+                    <IonIcon icon={trendingUp} />
+                  </IonTabButton>
+                </IonTabBar>
+              </>
             )}
           </IonTabs>
         </div>

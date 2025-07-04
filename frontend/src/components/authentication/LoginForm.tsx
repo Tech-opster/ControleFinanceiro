@@ -34,42 +34,38 @@ const LoginForm: React.FC = () => {
     try {
       const user = await loginEmail(email, password);
 
-      dismiss();
-
       router.push("/home", "root", "replace");
       console.log("Login realizado com sucesso!", user);
     } catch (error: unknown) {
-      dismiss();
-
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {
         setAuthError("Erro desconhecido.");
       }
       console.error(error);
+    } finally {
+      dismiss();
     }
   };
 
   const handleGoogle = async () => {
     setAuthError(undefined);
-    present();
+    present({duration: 5000});
 
     try {
       const user = await loginGoogle();
 
-      dismiss();
-
       router.push("/home", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
-      dismiss();
-
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {
         setAuthError("Erro desconhecido.");
       }
       console.error(error);
+    } finally {
+      dismiss();
     }
   };
 

@@ -31,8 +31,6 @@ const PasswordRecovery: React.FC = () => {
     try {
       await passwordRecovery(email);
 
-      dismiss();
-
       presentToast({
         cssClass: "custom-toast ion-text-center",
         color: "success",
@@ -46,14 +44,14 @@ const PasswordRecovery: React.FC = () => {
       router.push("/login", "back", "push");
       console.log("Email de recuperação enviado com sucesso!");
     } catch (error: unknown) {
-      dismiss();
-
       if (error instanceof Error) {
         setAuthError(error.message);
       } else {
         setAuthError("Erro desconhecido.");
       }
       console.error(error);
+    } finally {
+      dismiss();
     }
   };
 
