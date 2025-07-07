@@ -9,49 +9,51 @@ import {
   IonPage,
   useIonLoading,
   useIonRouter,
-  useIonToast,
 } from "@ionic/react";
 import { useState } from "react";
 import { passwordRecovery } from "../../services/authService";
 import EmailValidation from "../../components/authentication/EmailValidation";
-import { mailOutline } from "ionicons/icons";
+import { closeOutline, mailOutline } from "ionicons/icons";
+import { emailRegex } from "../../utils/emailRegex";
+import { useToast } from "../../hooks/useToast";
 
 const PasswordRecovery: React.FC = () => {
   const router = useIonRouter();
 
   const [email, setEmail] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
-  const [presentToast] = useIonToast();
   const [present, dismiss] = useIonLoading();
+  const showToast = useToast();
 
   const handlePasswordRecovery = async () => {
     setAuthError(undefined);
-    present();
 
     try {
+      await present();
       await passwordRecovery(email);
 
-      presentToast({
-        cssClass: "custom-toast ion-text-center",
-        color: "success",
-        position: "top",
-        positionAnchor: "header",
+      showToast({
         message: "Email de recuperação enviado com sucesso!",
+        color: "success",
         icon: mailOutline,
-        duration: 3000,
       });
 
       router.push("/login", "back", "push");
       console.log("Email de recuperação enviado com sucesso!");
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError("Erro desconhecido.");
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro desconhecido.";
+
+      showToast({
+        message: errorMessage,
+        color: "danger",
+        icon: closeOutline,
+      });
+
+      setAuthError(errorMessage);
       console.error(error);
     } finally {
-      dismiss();
+      await dismiss();
     }
   };
 
@@ -93,7 +95,7 @@ const PasswordRecovery: React.FC = () => {
                   className="ion-margin-top"
                   expand="block"
                   type="submit"
-                  disabled={!email}
+                  disabled={!emailRegex.test(email)}
                 >
                   Enviar
                 </IonButton>

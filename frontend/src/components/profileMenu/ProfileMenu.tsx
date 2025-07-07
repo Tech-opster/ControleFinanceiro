@@ -27,18 +27,23 @@ const ProfileMenu: React.FC<Props> = ({ contentId, menuId }) => {
             className="!flex justify-between gap-1 p-3 pr-2 text-indigo-800
           bg-indigo-100 "
           >
-            <div>
-              <h4 className="font-semibold !mt-0 [overflow-wrap:anywhere]">
-                {auth.currentUser?.email?.split("@")[0]}
-              </h4>{" "}
+            <div className="w-full flex justify-between items-start gap-1">
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold !mt-0 [overflow-wrap:anywhere]">
+                  {auth.currentUser?.displayName}
+                </h4>
+                <span className="text-xs text-gray-400 block truncate">
+                  {auth.currentUser?.email}
+                </span>
+              </div>
+              <IonMenuButton className="h-fit">
+                <img
+                  src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.displayName}&length=2`}
+                  alt=""
+                  className="w-10 rounded-md"
+                />
+              </IonMenuButton>
             </div>
-            <IonMenuButton className="h-fit">
-              <img
-                src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.email?.split("@")[0]}&length=2`}
-                alt=""
-                className="w-10 rounded-md"
-              />
-            </IonMenuButton>
           </IonCard>
         </IonHeader>
         <IonContent className="ion-padding">

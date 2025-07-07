@@ -11,14 +11,14 @@ const ProfileItem = forwardRef<HTMLDivElement>((_, ref) => {
     <div
       ref={ref}
       className="
-          z-999 w-[250px] min-w-fit absolute flex justify-between items-end left-full bottom-1 rounded-md p-3 ml-6 gap-1 text-indigo-800
+          z-999 min-w-[250px] max-w-[30vw] absolute flex justify-between items-end left-full bottom-1 rounded-md p-3 pr-2 ml-6 gap-2 text-indigo-800
           bg-indigo-100 text-sm -translate-x-3"
     >
-      <div className="leading-4 text-start">
+      <div className="flex-1 min-w-0">
         <h4 className="font-semibold !mt-0 [overflow-wrap:anywhere]">
-          {auth.currentUser?.email?.split("@")[0]}
+          {auth.currentUser?.displayName}
         </h4>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-400 block truncate">
           {auth.currentUser?.email}
         </span>
       </div>

@@ -5,14 +5,19 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   sendPasswordResetEmail,
+  updateProfile,
 } from "firebase/auth";
 import { getFirebaseErrorMessage } from "./firebaseErrors";
 
 // Cadastro
-export const register = async (email: string, password: string) => {
+export const register = async (email: string, password: string, name: string) => {
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
-    return result.user;
+    const user = result.user;
+
+    await updateProfile(user, {
+      displayName: name
+    });
   } catch (error) {
     throw new Error(getFirebaseErrorMessage(error));
   }

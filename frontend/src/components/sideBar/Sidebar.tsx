@@ -58,7 +58,7 @@ const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               }`}
             >
               <img
-                src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.email?.split("@")[0]}&length=2`}
+                src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.displayName}&length=2`}
                 alt=""
                 className="w-10 h-10 rounded-md"
               />

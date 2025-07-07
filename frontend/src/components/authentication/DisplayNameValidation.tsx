@@ -1,26 +1,24 @@
 import { useState } from "react";
 import { IonInput } from "@ionic/react";
-import { emailRegex } from "../../utils/emailRegex";
 
 interface Props {
   value: string;
   onIonInput: (value: string) => void;
 }
 
-const EmailValidation: React.FC<Props> = ({ value, onIonInput }) => {
+const DisplayNameValidation: React.FC<Props> = ({ value, onIonInput }) => {
   const [isTouched, setIsTouched] = useState(false);
   const [isValid, setIsValid] = useState<boolean>();
 
-  const validateEmail = (email: string) => {
-    return email.match(
-      emailRegex
-    );
+  const validateName = (name: string) => {
+      return name.trim().match(/^[A-Za-zÀ-ÿ\s-]{3,}$/);
   };
 
   const validate = (event: Event) => {
     const value = (event.target as HTMLInputElement).value;
+    const onlyLetters = value.replace(/[^A-Za-zÀ-ÿ\s-]/g, "");
 
-    onIonInput(value);
+    onIonInput(onlyLetters);
   };
 
   const markTouched = () => {
@@ -31,7 +29,7 @@ const EmailValidation: React.FC<Props> = ({ value, onIonInput }) => {
       return;
     }
 
-    setIsValid(validateEmail(value) !== null);
+    setIsValid(validateName(value) !== null);
   };
 
   return (
@@ -39,11 +37,11 @@ const EmailValidation: React.FC<Props> = ({ value, onIonInput }) => {
       className={`${isValid === false && "ion-invalid"} ${
         isTouched && "ion-touched"
       }`} // ${isValid && "ion-valid has-focus"} Para deixar com visual válido
-      label="Email"
+      label="Nome"
       labelPlacement="floating"
-      type="email"
+      type="text"
       value={value}
-      errorText="Insira um email válido"
+      errorText="O nome deve conter pelo menos 3 caracteres."
       onIonInput={(e) => {
         validate(e);
         setIsValid(undefined);
@@ -53,4 +51,4 @@ const EmailValidation: React.FC<Props> = ({ value, onIonInput }) => {
     ></IonInput>
   );
 };
-export default EmailValidation;
+export default DisplayNameValidation;

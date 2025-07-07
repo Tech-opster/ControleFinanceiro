@@ -14,59 +14,79 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { useState } from "react";
-import { lockClosed } from "ionicons/icons";
+import { checkmarkOutline, closeOutline, lockClosed } from "ionicons/icons";
 import google_icon_dark from "../../assets/images/google_icon_dark.svg";
 import { register, loginGoogle } from "../../services/authService";
 import EmailValidation from "../../components/authentication/EmailValidation";
+import DisplayNameValidation from "../../components/authentication/DisplayNameValidation";
+import { emailRegex } from "../../utils/emailRegex";
+import { useToast } from "../../hooks/useToast";
 
 const Register: React.FC = () => {
   const router = useIonRouter();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
   const [present, dismiss] = useIonLoading();
+  const showToast = useToast();
 
   const handleRegister = async () => {
     setAuthError(undefined);
-    present();
 
     try {
-      const user = await register(email, password);
+      await present();
+      const user = await register(email, password, name);
+
+      showToast({
+        message: "Cadastro realizado com sucesso!",
+        color: "success",
+        icon: checkmarkOutline,
+      });
 
       router.push("/home", "root", "replace");
       console.log("Cadastro realizado com sucesso!", user);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError("Erro desconhecido.");
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro desconhecido.";
+
+      showToast({
+        message: errorMessage,
+        color: "danger",
+        icon: closeOutline,
+      });
+
+      setAuthError(errorMessage);
       console.error(error);
     } finally {
-      dismiss();
+      await dismiss();
     }
   };
 
   const handleGoogle = async () => {
     setAuthError(undefined);
-    present({duration: 5000});
 
     try {
+      await present();
       const user = await loginGoogle();
-      dismiss();
 
       router.push("/home", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
-      dismiss();
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro desconhecido.";
 
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError("Erro desconhecido.");
-      }
+      showToast({
+        message: errorMessage,
+        color: "danger",
+        icon: closeOutline,
+      });
+
+      setAuthError(errorMessage);
       console.error(error);
+    } finally {
+      await dismiss();
     }
   };
 
@@ -89,6 +109,11 @@ const Register: React.FC = () => {
                 }}
               >
                 <IonList>
+                  <DisplayNameValidation
+                    value={name}
+                    onIonInput={setName}
+                  ></DisplayNameValidation>
+
                   <EmailValidation
                     value={email}
                     onIonInput={setEmail}
@@ -122,7 +147,11 @@ const Register: React.FC = () => {
                   className="ion-margin-top"
                   expand="block"
                   type="submit"
-                  disabled={!email || !password}
+                  disabled={
+                    !emailRegex.test(email) ||
+                    password.length < 6 ||
+                    name.length < 3
+                  }
                 >
                   Cadastrar
                 </IonButton>

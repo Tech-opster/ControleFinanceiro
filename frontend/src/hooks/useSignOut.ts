@@ -1,16 +1,17 @@
-import { useIonLoading, useIonRouter, useIonToast } from "@ionic/react";
-import { alertOutline } from "ionicons/icons";
+import { useIonLoading, useIonRouter } from "@ionic/react";
+import { closeOutline } from "ionicons/icons";
 import { signOut } from "../services/authService";
+import { useToast } from "../hooks/useToast";
 
 export function useSignOut() {
   const router = useIonRouter();
-  const [presentToast] = useIonToast();
   const [present, dismiss] = useIonLoading();
+  const showToast = useToast();
 
   const handleSignOut = async () => {
-    present();
-
+    
     try {
+      await present();
       await signOut();
 
       router.push("/home", "root", "replace");
@@ -20,19 +21,15 @@ export function useSignOut() {
           ? error.message
           : "Erro desconhecido ao desconectar.";
 
-      presentToast({
-        cssClass: "custom-toast ion-text-center",
+      showToast({
         color: "danger",
-        position: "top",
-        positionAnchor: "header",
         message: message,
-        icon: alertOutline,
-        duration: 3000,
+        icon: closeOutline,
       });
 
       console.error(error);
     } finally {
-      dismiss();
+      await dismiss();
     }
   };
 

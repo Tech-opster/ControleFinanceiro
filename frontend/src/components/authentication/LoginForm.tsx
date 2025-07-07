@@ -14,10 +14,12 @@ import {
 import "./LoginForm.css";
 import { useState } from "react";
 import { useIonRouter } from "@ionic/react";
-import { lockClosed } from "ionicons/icons";
+import { closeOutline, lockClosed } from "ionicons/icons";
 import google_icon_dark from "../../assets/images/google_icon_dark.svg";
 import { loginEmail, loginGoogle } from "../../services/authService";
 import EmailValidation from "./EmailValidation";
+import { emailRegex } from "../../utils/emailRegex";
+import { useToast } from "../../hooks/useToast";
 
 const LoginForm: React.FC = () => {
   const router = useIonRouter();
@@ -26,46 +28,57 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [authError, setAuthError] = useState<string | undefined>(undefined);
   const [present, dismiss] = useIonLoading();
+  const showToast = useToast();
 
   const handleLoginEmail = async () => {
     setAuthError(undefined);
-    present();
 
     try {
+      await present();
       const user = await loginEmail(email, password);
 
       router.push("/home", "root", "replace");
       console.log("Login realizado com sucesso!", user);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError("Erro desconhecido.");
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro desconhecido.";
+
+      showToast({
+        message: errorMessage,
+        color: "danger",
+        icon: closeOutline,
+      });
+
+      setAuthError(errorMessage);
       console.error(error);
     } finally {
-      dismiss();
+      await dismiss();
     }
   };
 
   const handleGoogle = async () => {
     setAuthError(undefined);
-    present({duration: 5000});
 
     try {
+      await present();
       const user = await loginGoogle();
 
       router.push("/home", "root", "replace");
       console.log("Login Google realizado com sucesso!", user);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError("Erro desconhecido.");
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro desconhecido.";
+
+      showToast({
+        message: errorMessage,
+        color: "danger",
+        icon: closeOutline,
+      });
+
+      setAuthError(errorMessage);
       console.error(error);
     } finally {
-      dismiss();
+      await dismiss();
     }
   };
 
@@ -79,7 +92,7 @@ const LoginForm: React.FC = () => {
           </h2>
         </IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>
+      <IonCardContent className="!pb-[18px]">
         <form
           action="autenticar"
           onSubmit={(e) => {
@@ -123,7 +136,7 @@ const LoginForm: React.FC = () => {
           <IonButton
             expand="block"
             type="submit"
-            disabled={!email || !password}
+            disabled={!emailRegex.test(email) || password.length < 6}
           >
             Entrar
           </IonButton>

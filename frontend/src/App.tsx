@@ -3,12 +3,12 @@ import {
   IonApp,
   IonRouterOutlet,
   setupIonicReact,
-  useIonToast,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { AuthProvider } from "./context/AuthProvider";
 import PublicRoute from "./components/routes/PublicRoute";
 import { alertOutline } from "ionicons/icons";
+import { useToast } from "./hooks/useToast";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -51,7 +51,7 @@ import AppTabs from "./components/routes/AppTabs";
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [presentToast] = useIonToast();
+  const showToast  = useToast();
 
   return (
     <IonApp>
@@ -73,14 +73,10 @@ const App: React.FC = () => {
 
             {/* <Route
               render={() => {
-                presentToast({
-                  cssClass: "custom-toast ion-text-center",
+                showToast({
                   color: "warning",
-                  position: "top",
-                  positionAnchor: "header",
                   message: "Página não encontrada ou não existe",
                   icon: alertOutline,
-                  duration: 3000,
                 });
                 return <Redirect path="*" to="/home" />; //FIXME animação de rota
               }}
