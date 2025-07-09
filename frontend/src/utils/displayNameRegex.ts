@@ -1,0 +1,1 @@
+export const displayNameRegex = /^[A-Za-zÀ-ÿ\s-]{3,}$/;

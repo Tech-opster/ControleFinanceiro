@@ -143,7 +143,7 @@ const LoginForm: React.FC = () => {
         </form>
 
         <div className="ion-text-center">
-          <span>Ou</span>
+          <p className="!my-2">Ou</p>
 
           <IonButton
             expand="block"
@@ -151,8 +151,8 @@ const LoginForm: React.FC = () => {
               handleGoogle();
             }}
           >
-            <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
-            Continuar com Google
+            <IonIcon className="!mr-3" slot="start" icon={google_icon_dark} />
+            <span>Continuar com Google</span>
           </IonButton>
 
           <IonRouterLink routerLink="/register">

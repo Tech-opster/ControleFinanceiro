@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IonInput } from "@ionic/react";
+import {displayNameRegex} from "../../utils/displayNameRegex"
 
 interface Props {
   value: string;
@@ -11,7 +12,7 @@ const DisplayNameValidation: React.FC<Props> = ({ value, onIonInput }) => {
   const [isValid, setIsValid] = useState<boolean>();
 
   const validateName = (name: string) => {
-      return name.trim().match(/^[A-Za-zÀ-ÿ\s-]{3,}$/);
+      return name.trim().match(displayNameRegex);
   };
 
   const validate = (event: Event) => {

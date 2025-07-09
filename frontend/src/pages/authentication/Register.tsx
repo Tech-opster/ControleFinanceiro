@@ -158,7 +158,7 @@ const Register: React.FC = () => {
               </form>
 
               <div className="ion-text-center">
-                <span>Ou</span>
+                <p className="!my-2">Ou</p>
 
                 <IonButton
                   expand="block"
@@ -166,8 +166,12 @@ const Register: React.FC = () => {
                     handleGoogle();
                   }}
                 >
-                  <IonIcon slot="start" icon={google_icon_dark}></IonIcon>
-                  Continuar com Google
+                  <IonIcon
+                    className="!mr-3"
+                    slot="start"
+                    icon={google_icon_dark}
+                  />
+                  <span>Continuar com Google</span>
                 </IonButton>
               </div>
             </IonCardContent>
