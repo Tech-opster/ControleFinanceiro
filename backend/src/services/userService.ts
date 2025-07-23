@@ -17,12 +17,14 @@ export const createUserService = async (data: CreateUserDTO) => {
     data,
   });
 };
+
 export const updateUserService = async (where: Prisma.UsersWhereUniqueInput, data: UpdateUserDTO) => {
   return prisma.users.update({
     where,
     data,
   });
 };
+
 export const deleteUserService = async (where: Prisma.UsersWhereUniqueInput) => {
   return prisma.users.delete({
     where,

@@ -1,23 +1,39 @@
 import { auth, signOutUser } from "../firebase/firebase";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   sendPasswordResetEmail,
-  updateProfile,
 } from "firebase/auth";
 import { getFirebaseErrorMessage } from "./firebaseErrors";
 
 // Cadastro
-export const register = async (email: string, password: string, name: string) => {
+export const register = async (
+  email: string,
+  password: string,
+  name: string
+) => {
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    const user = result.user;
-
-    await updateProfile(user, {
-      displayName: name
+    const response = await fetch("http://localhost:3001/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password, name }),
     });
+
+    const data = await response.json();
+
+    if (!response.ok) {      
+      throw new Error(getFirebaseErrorMessage(data));
+    }
+
+    const user = await loginEmail(email, password);
+
+    return {
+      uid: data.uid,
+      user,
+    };
   } catch (error) {
     throw new Error(getFirebaseErrorMessage(error));
   }

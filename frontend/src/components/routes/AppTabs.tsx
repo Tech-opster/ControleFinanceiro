@@ -127,18 +127,23 @@ const AppTabs: React.FC = () => {
                 <IonTabBar slot="bottom">
                   <IonTabButton tab="incomes" href="/incomes">
                     <IonIcon icon={addCircle} />
+                    Entradas
                   </IonTabButton>
                   <IonTabButton tab="outflow" href="/outflow">
                     <IonIcon icon={removeCircle} />
+                    Saídas
                   </IonTabButton>
                   <IonTabButton tab="home" href="/home">
                     <IonIcon icon={home} />
+                    Home
                   </IonTabButton>
                   <IonTabButton tab="expenses" href="/expenses">
                     <IonIcon icon={bagHandle} />
+                    Despesas
                   </IonTabButton>
                   <IonTabButton tab="investments" href="/investments">
                     <IonIcon icon={trendingUp} />
+                    Investimentos
                   </IonTabButton>
                 </IonTabBar>
               </>

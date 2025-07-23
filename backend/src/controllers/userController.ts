@@ -7,6 +7,8 @@ import {
   createUserService,
 } from "../services/userService";
 import { CreateUserDTO } from "../types/IUser";
+import { validationResult } from "express-validator";
+import admin from "../firebase/firebaseAdmin";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -30,21 +32,43 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
-  const { name, email } = req.body;
-  const data: CreateUserDTO = { name, email };
+export const createUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const errors = validationResult(req);
 
-  if (!name || !email) {
-    res.status(400).json({ error: "Nome e email são obrigatórios" });
-    return;
+  if (!errors.isEmpty()) {
+    res.status(400).json({ errors: errors.array() });
   }
 
+  const { name, email, password } = req.body;
+  const data: CreateUserDTO = { name, email };
+
   try {
-    const user = await createUserService(data);
-    res.status(201).json(user);
-  } catch (err) {
+    const user = await admin.auth().createUser({
+      email,
+      password,
+      displayName: name.trim(),
+    });
+
+    //TODO Criação de usuário no banco de dados
+    // try {
+    //   await createUserService(data);
+
+    //   res.status(201).json({ uid: user.uid });
+    // } catch (err) {
+    //   console.error(err);
+      
+    //   await admin.auth().deleteUser(user.uid);
+
+    //   res
+    //     .status(500)
+    //     .json({ error: "Erro ao criar usuário no banco de dados" });
+    // }
+  } catch (err: any) {
     console.error(err);
-    res.status(400).json({ error: "Erro ao criar usuário" });
+    res.status(500).json({ code: err.code, message: err.message });
   }
 };
 
