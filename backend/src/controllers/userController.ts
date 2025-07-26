@@ -16,7 +16,7 @@ export const getUsers = async (req: Request, res: Response) => {
     res.json(users);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Erro ao buscar usuários" });
+    res.status(500).json({ error: "Usuários não encontrados" });
   }
 };
 
@@ -43,7 +43,7 @@ export const createUser = async (
   }
 
   const { name, email, password } = req.body;
-  const data: CreateUserDTO = { name, email };
+  // const data: CreateUserDTO = { name, email };
 
   try {
     const user = await admin.auth().createUser({
@@ -51,6 +51,8 @@ export const createUser = async (
       password,
       displayName: name.trim(),
     });
+
+    res.status(201).json({ uid: user.uid });
 
     //TODO Criação de usuário no banco de dados
     // try {
@@ -83,7 +85,7 @@ export const updateUser = async (req: Request, res: Response) => {
     res.json(user);
   } catch (err) {
     console.error(err);
-    res.status(404).json({ error: "Usuário não encontrado" });
+    res.status(404).json({ error: "Não foi possível atualizar usuário" });
   }
 };
 
@@ -94,6 +96,6 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (err) {
     console.error(err);
-    res.status(404).json({ error: "Usuário não encontrado" });
+    res.status(404).json({ error: "Não foi possível deletar usuário" });
   }
 };

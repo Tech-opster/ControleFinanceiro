@@ -8,7 +8,8 @@
     "dev": "ts-node-dev src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed": "ts-node scripts/seed.ts",
+    "seed:users": "ts-node scripts/seedUsers.ts",
+    "seed:outflows": "ts-node scripts/seedOutflows.ts",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:studio": "npx prisma studio"
   },

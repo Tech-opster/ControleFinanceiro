@@ -21,3 +21,12 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Outflows {
+  id Int      @id @default(autoincrement())
+  despesa String @db.VarChar(255)
+  valor Decimal @db.Decimal(10, 2)
+  data     DateTime @default(now())
+  categoria String @db.VarChar(255)
+  status   Boolean @default(true)
+}

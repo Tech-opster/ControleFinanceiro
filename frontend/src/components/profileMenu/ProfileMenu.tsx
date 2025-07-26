@@ -30,7 +30,7 @@ const ProfileMenu: React.FC<Props> = ({ contentId, menuId }) => {
             <div className="w-full flex justify-between items-start gap-1">
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold !mt-0 [overflow-wrap:anywhere]">
-                  {auth.currentUser?.displayName}
+                  Olá, {auth.currentUser?.displayName?.split(" ")[0]}
                 </h4>
                 <span className="text-xs text-gray-400 block truncate">
                   {auth.currentUser?.email}

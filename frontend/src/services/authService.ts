@@ -6,6 +6,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { getFirebaseErrorMessage } from "./firebaseErrors";
+import { post } from "./api";
 
 // Cadastro
 export const register = async (
@@ -14,19 +15,7 @@ export const register = async (
   name: string
 ) => {
   try {
-    const response = await fetch("http://localhost:3001/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password, name }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {      
-      throw new Error(getFirebaseErrorMessage(data));
-    }
+    const data = await post("/users/register", { email, password, name });
 
     const user = await loginEmail(email, password);
 
