@@ -10,6 +10,7 @@
     "start": "node dist/server.js",
     "seed:users": "ts-node scripts/seedUsers.ts",
     "seed:outflows": "ts-node scripts/seedOutflows.ts",
+    "seed:incomes": "ts-node scripts/seedIncomes.ts",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:studio": "npx prisma studio"
   },

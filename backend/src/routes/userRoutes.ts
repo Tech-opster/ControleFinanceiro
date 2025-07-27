@@ -6,7 +6,7 @@ import {
   deleteUser,
   getUserById,
 } from '../controllers/userController';
-import { validateRegister } from '../controllers/validateRegister';
+import { validateRegister } from '../middlewares/validateRegister';
 
 const router = Router();
 

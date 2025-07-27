@@ -18,7 +18,7 @@ const Outflows: React.FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const outflowData = await api.get<Data[]>("/outflows/outflow");
+        const outflowData = await api.get<Data[]>("/outflows");
         const parsed = outflowData.map((item) => ({
           ...item,
           data: new Date(item.data),

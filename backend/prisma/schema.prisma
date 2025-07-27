@@ -30,3 +30,10 @@ model Outflows {
   categoria String @db.VarChar(255)
   status   Boolean @default(true)
 }
+
+model Incomes {
+  id Int      @id @default(autoincrement())
+  receita String @db.VarChar(255)
+  valor Decimal @db.Decimal(10, 2)
+  data     DateTime @default(now())
+}

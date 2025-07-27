@@ -6,7 +6,8 @@ import cors from "cors";
 import prisma from "./lib/prisma";
 import type { CorsOptions } from "cors";
 import userRoutes from "./routes/userRoutes";
-import outFlowRoute from "./routes/outflowsRouter"
+import outFlowRoutes from "./routes/outflowRoutes"
+import incomeRoutes from "./routes/incomeRoutes";
 
 const app = express();
 const PORT = 3001; //(Vite usa 5173)
@@ -23,7 +24,8 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/users", userRoutes);
-app.use("/outflows", outFlowRoute);
+app.use("/outflows", outFlowRoutes);
+app.use("/incomes", incomeRoutes)
 
 // Rota de teste
 app.get("/", (req, res) => {
