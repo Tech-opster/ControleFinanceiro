@@ -11,6 +11,10 @@
     "seed:users": "ts-node scripts/seedUsers.ts",
     "seed:outflows": "ts-node scripts/seedOutflows.ts",
     "seed:incomes": "ts-node scripts/seedIncomes.ts",
+    "seed:investments": "ts-node scripts/seedInvestments.ts",
+    "seed:expenses": "ts-node scripts/seedExpenses.ts",
+    "seed:cryptos": "ts-node scripts/seedCryptos.ts",
+    "seed:rewards": "ts-node scripts/seedRewards.ts",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:studio": "npx prisma studio"
   },

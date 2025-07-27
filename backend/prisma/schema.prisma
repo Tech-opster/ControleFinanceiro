@@ -61,7 +61,7 @@ model Expenses {
   @@map("expenses")
 }
 
-model Investiments {
+model Investments {
   id             Int      @id @default(autoincrement())
   emissor        String   @db.VarChar(64)
   titulo         String   @db.VarChar(32)

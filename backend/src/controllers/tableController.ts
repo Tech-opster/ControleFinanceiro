@@ -9,7 +9,7 @@ function tableController(service: any, entityName: string) {
         res.json(items);
       } catch (err) {
         console.error(err);
-        res.status(500).json({ error: `${entityName}s não encontrados(as)` });
+        res.status(500).json({ error: `${entityName} não encontrados(as)` });
       }
     },
 
