@@ -8,8 +8,12 @@ type Data = {
   despesa: string;
   valor: number;
   data: Date;
-  categoria: string;
+  categoriaId: number;
   status: boolean;
+  categoria: {
+    id: number;
+    categoria: string;
+  };
 };
 
 const Outflows: React.FC = () => {
@@ -23,7 +27,7 @@ const Outflows: React.FC = () => {
           ...item,
           data: new Date(item.data),
         }));
-        
+
         setData(parsed);
       } catch (err) {
         console.error(err);
@@ -44,6 +48,10 @@ const Outflows: React.FC = () => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
         },
+      },
+      {
+        accessorKey: "categoria.categoria",
+        header: "Categoria",
       },
       {
         accessorKey: "status",

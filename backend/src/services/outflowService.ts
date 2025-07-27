@@ -3,7 +3,11 @@ import { Prisma } from "../../generated/prisma";
 import { CreateOutflowDTO, UpdateOutflowDTO } from "../types/IOutflow";
 
 export const getOutflowService = async () => {
-  return prisma.outflows.findMany();
+  return prisma.outflows.findMany({
+    include: {
+      categoria: true,
+    },
+  });
 };
 
 export const getOutflowByIdService = async (where: Prisma.OutflowsWhereUniqueInput) => {

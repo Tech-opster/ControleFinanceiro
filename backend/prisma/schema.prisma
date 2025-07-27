@@ -20,20 +20,83 @@ model Users {
   name      String   @db.VarChar(100)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
 
-model Outflows {
-  id Int      @id @default(autoincrement())
-  despesa String @db.VarChar(255)
-  valor Decimal @db.Decimal(10, 2)
-  data     DateTime @default(now())
-  categoria String @db.VarChar(255)
-  status   Boolean @default(true)
+  @@map("users")
 }
 
 model Incomes {
-  id Int      @id @default(autoincrement())
-  receita String @db.VarChar(255)
-  valor Decimal @db.Decimal(10, 2)
-  data     DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  receita   String   @db.VarChar(64)
+  valor     Decimal  @db.Decimal(10, 2)
+  data      DateTime @default(now())
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt      
+
+  @@map("incomes")
+}
+
+model Outflows {
+  id        Int      @id @default(autoincrement())
+  despesa   String   @db.VarChar(64)
+  valor     Decimal  @db.Decimal(10, 2)
+  data      DateTime @default(now())
+  categoriaId Int
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt      
+
+  categoria   Expenses @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+
+  @@map("outflows")
+}
+
+model Expenses {
+  id        Int      @id @default(autoincrement())
+  categoria String   @unique @db.VarChar(64)
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt      
+
+  outflows  Outflows[]
+
+  @@map("expenses")
+}
+
+model Investiments {
+  id             Int      @id @default(autoincrement())
+  emissor        String   @db.VarChar(64)
+  titulo         String   @db.VarChar(32)
+  valor          Decimal  @db.Decimal(15, 2)
+  dataCompra     DateTime @default(now())
+  dataVencimento DateTime 
+  rentabilidade  Decimal  @db.Decimal(10, 4)
+  banco          String   @db.VarChar(64)
+  createdAt      DateTime @default(now()) 
+  updatedAt      DateTime @updatedAt      
+
+  @@map("investiments")
+}
+
+model Cryptos {
+  id         Int      @id @default(autoincrement())
+  moeda      String   @db.VarChar(64)
+  valor      Decimal  @db.Decimal(10, 2)
+  cotacao    Decimal  @db.Decimal(15, 8) 
+  quantidade Decimal  @db.Decimal(18, 8)
+  dataCompra DateTime @default(now())
+  createdAt  DateTime @default(now()) 
+  updatedAt  DateTime @updatedAt      
+
+  @@map("cryptos")
+}
+
+model Rewards {
+  id             Int      @id @default(autoincrement())
+  programa       String   @db.VarChar(64)
+  quantidade     Decimal  @db.Decimal(10, 2)
+  dataVencimento DateTime 
+  emissor        String   @db.VarChar(64)
+  createdAt      DateTime @default(now()) 
+  updatedAt      DateTime @updatedAt      
+
+  @@map("rewards")
 }
