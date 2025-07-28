@@ -5,7 +5,7 @@ import { CreateOutflowDTO, UpdateOutflowDTO } from "../types/IOutflow";
 export const getOutflowService = async () => {
   return prisma.outflows.findMany({
     include: {
-      categoria: true,
+      category: true,
     },
   });
 };

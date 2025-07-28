@@ -3,11 +3,11 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const cryptoData = Array.from({ length: 5 }).map(() => ({
-    moeda: faker.finance.currencyCode(),
-    valor: parseFloat(faker.finance.amount()),
-    cotacao: parseFloat(faker.finance.amount()),
-    quantidade: parseFloat(faker.finance.amount()),
-    dataCompra: faker.date.past(),
+    currency: faker.finance.currencyCode(),
+    amount: parseFloat(faker.finance.amount()),
+    price: parseFloat(faker.finance.amount()),
+    quantity: parseFloat(faker.finance.amount()),
+    purchaseDate: faker.date.past(),
   }));
 
   await prisma.cryptos.createMany({

@@ -5,16 +5,17 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  emissor: string;
-  titulo: string;
-  valor: number;
-  dataCompra: Date;
-  dataVencimento: Date;
-  rentabilidade: number;
-  banco: string;
+  issuer: string;
+  investmentType: string;
+  amount: number;
+  purchaseDate: Date;
+  dueDate: Date;
+  yieldValue: number;
+  yieldType: string;
+  bank: string;
 };
 
-const Incomes: React.FC = () => {
+const Investments: React.FC = () => {
 
   const [data, setData] = React.useState<Data[]>([]);
   
@@ -24,8 +25,8 @@ const Incomes: React.FC = () => {
           const outflowData = await api.get<Data[]>("/investments");
           const parsed = outflowData.map((item) => ({
             ...item,
-            dataCompra: new Date(item.dataCompra),
-            dataVencimento: new Date(item.dataVencimento),
+            purchaseDate: new Date(item.purchaseDate),
+            dueDate: new Date(item.dueDate),
           }));
           
           setData(parsed);
@@ -39,11 +40,11 @@ const Incomes: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "emissor", header: "Emissor" },
-      { accessorKey: "titulo", header: "Título" },
-      { accessorKey: "valor", header: "Valor"},
+      { accessorKey: "issuer", header: "Emissor" },
+      { accessorKey: "investmentType", header: "Título" },
+      { accessorKey: "amount", header: "Valor"},
       {
-        accessorKey: "dataCompra",
+        accessorKey: "purchaseDate",
         header: "Compra",
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
@@ -51,15 +52,16 @@ const Incomes: React.FC = () => {
         },
       },
       {
-        accessorKey: "dataVencimento",
+        accessorKey: "dueDate",
         header: "Vencimento",
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
         },
       },
-      { accessorKey: "rentabilidade", header: "Rentabilidade" },
-      { accessorKey: "banco", header: "Banco" },
+      { accessorKey: "yieldValue", header: "Rentabilidade" },
+      { accessorKey: "yieldType", header: "Tipo" },
+      { accessorKey: "bank", header: "Banco" },
     ],
     []
   );
@@ -75,4 +77,4 @@ const Incomes: React.FC = () => {
   );
 };
 
-export default Incomes;
+export default Investments;

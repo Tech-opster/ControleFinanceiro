@@ -5,10 +5,10 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  programa: string;
-  quantidade: number;
-  dataVencimento: Date;
-  emissor: string;
+  loyaltyProgram: string;
+  quantity: number;
+  dueDate: Date;
+  issuer: string;
 };
 
 const Rewards: React.FC = () => {
@@ -21,7 +21,7 @@ const Rewards: React.FC = () => {
           const outflowData = await api.get<Data[]>("/rewards");
           const parsed = outflowData.map((item) => ({
             ...item,
-            dataVencimento: new Date(item.dataVencimento),
+            dueDate: new Date(item.dueDate),
           }));
           
           setData(parsed);
@@ -35,17 +35,17 @@ const Rewards: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "programa", header: "Programa" },
-      { accessorKey: "quantidade", header: "Quantidade" },
+      { accessorKey: "loyaltyProgram", header: "Programa" },
+      { accessorKey: "quantity", header: "Quantidade" },
       {
-        accessorKey: "dataVencimento",
+        accessorKey: "dueDate",
         header: "Vencimento",
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
         },
       },
-      { accessorKey: "emissor", header: "Emissor" },
+      { accessorKey: "issuer", header: "Emissor" },
     ],
     []
   );

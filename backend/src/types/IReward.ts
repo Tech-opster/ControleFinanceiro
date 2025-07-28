@@ -1,8 +1,8 @@
 export interface CreateRewardDTO {
-  programa: string;
-  quantidade: number;
-  dataVencimento: Date;
-  emissor: string;
+  loyaltyProgram: string;
+  quantity: number;
+  dueDate: Date;
+  issuer: string;
 }
 
 export type UpdateRewardDTO = Partial<CreateRewardDTO>;

@@ -5,11 +5,12 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  moeda: string;
-  valor: number;
-  cotacao: number;
-  quantidade: number;
-  dataCompra: Date;
+  currency: string;
+  amount: number;
+  price: number;
+  quantity: number;
+  purchaseDate: Date;
+  bank: string;
 };
 
 const Cryptos: React.FC = () => {
@@ -22,7 +23,7 @@ const Cryptos: React.FC = () => {
           const outflowData = await api.get<Data[]>("/cryptos");
           const parsed = outflowData.map((item) => ({
             ...item,
-            dataCompra: new Date(item.dataCompra),
+            purchaseDate: new Date(item.purchaseDate),
           }));
           
           setData(parsed);
@@ -36,19 +37,19 @@ const Cryptos: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "moeda", header: "Moeda" },
-      { accessorKey: "valor", header: "Valor"},
-      { accessorKey: "cotacao", header: "Cotação" },
-      { accessorKey: "quantidade", header: "Quantidade" },
+      { accessorKey: "currency", header: "Moeda" },
+      { accessorKey: "amount", header: "Valor"},
+      { accessorKey: "price", header: "Cotação" },
+      { accessorKey: "quantity", header: "Quantidade" },
       {
-        accessorKey: "dataCompra",
+        accessorKey: "purchaseDate",
         header: "Compra",
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
         },
       },
-      { accessorKey: "banco", header: "Banco" },
+      { accessorKey: "bank", header: "Banco" },
     ],
     []
   );

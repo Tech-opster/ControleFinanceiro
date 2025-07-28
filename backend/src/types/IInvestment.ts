@@ -1,11 +1,12 @@
 export interface CreateInvestmentDTO {
-  emissor: string;
-  titulo: string;
-  valor: number;
-  dataCompra: Date;
-  dataVencimento: Date;
-  rentabilidade: number;
-  banco: string;
+  issuer: string;
+  investmentType: string;
+  amount: number;
+  purchaseDate: Date;
+  dueDate: Date;
+  yieldValue: number;
+  yieldType: string;
+  bank: string;
 }
 
 export type UpdateInvestmentDTO = Partial<CreateInvestmentDTO>;

@@ -5,9 +5,9 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  receita: string;
-  valor: number;
-  data: Date;
+  income: string;
+  amount: number;
+  date: Date;
 };
 
 const Incomes: React.FC = () => {
@@ -20,7 +20,7 @@ const Incomes: React.FC = () => {
           const outflowData = await api.get<Data[]>("/incomes");
           const parsed = outflowData.map((item) => ({
             ...item,
-            data: new Date(item.data),
+            date: new Date(item.date),
           }));
           
           setData(parsed);
@@ -34,10 +34,10 @@ const Incomes: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "receita", header: "Receita" },
-      { accessorKey: "valor", header: "Valor" },
+      { accessorKey: "income", header: "Receita" },
+      { accessorKey: "amount", header: "Valor" },
       {
-        accessorKey: "data",
+        accessorKey: "date",
         header: "Data",
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();

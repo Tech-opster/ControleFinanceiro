@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const categoryData = Array.from({ length: 10 }).map(() => ({
-    categoria: faker.commerce.product(),
+    category: faker.commerce.product(),
   }));
 
   await prisma.categories.createMany({

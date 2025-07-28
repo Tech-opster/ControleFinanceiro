@@ -3,13 +3,14 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const investmentData = Array.from({ length: 10 }).map(() => ({
-    emissor: faker.company.name(),
-    titulo: faker.finance.transactionType(),
-    valor: parseFloat(faker.commerce.price()),
-    dataCompra: faker.date.recent({ days: 90 }),
-    dataVencimento: faker.date.future(),
-    rentabilidade: faker.number.float({min: 1, max: 500,fractionDigits: 2 }),
-    banco: faker.company.name()
+    issuer: faker.company.name(),
+    investmentType: faker.finance.transactionType(),
+    amount: parseFloat(faker.commerce.price()),
+    purchaseDate: faker.date.recent({ days: 90 }),
+    dueDate: faker.date.future(),
+    yieldValue: faker.number.float({min: 1, max: 500,fractionDigits: 2 }),
+    yieldType: faker.finance.currencyCode(),
+    bank: faker.company.name()
   }));
 
   await prisma.investments.createMany({

@@ -1,9 +1,9 @@
 export interface CreateCryptoDTO {
-  moeda: string;
-  valor: number;
-  cotacao: number;
-  quantidade: number;
-  dataCompra: Date;
+  currency: string;
+  amount: number;
+  price: number;
+  quantity: number;
+  purchaseDate: Date;
 }
 
 export type UpdateCryptoDTO = Partial<CreateCryptoDTO>;

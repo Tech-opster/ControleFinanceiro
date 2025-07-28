@@ -5,7 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  categoria: string;
+  category: string;
 };
 
 const Categories: React.FC = () => {
@@ -30,7 +30,7 @@ const Categories: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "categoria", header: "Categoria" },
+      { accessorKey: "category", header: "Categoria" },
     ],
     []
   );

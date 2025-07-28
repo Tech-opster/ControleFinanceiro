@@ -1,8 +1,8 @@
 export interface CreateOutflowDTO {
-  despesa: string;
-  valor: number;
-  data: Date;
-  categoriaId: number;
+  outflow: string;
+  amount: number;
+  date: Date;
+  categoryId: number;
   status: boolean;
 }
 

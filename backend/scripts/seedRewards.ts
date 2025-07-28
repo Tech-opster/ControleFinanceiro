@@ -3,10 +3,10 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const rewardData = Array.from({ length: 5 }).map(() => ({
-    programa: faker.company.name(),
-    quantidade: parseFloat(faker.finance.amount()),
-    dataVencimento: faker.date.future(),
-    emissor: faker.company.name(),
+    loyaltyProgram: faker.company.name(),
+    quantity: parseFloat(faker.finance.amount()),
+    dueDate: faker.date.future(),
+    issuer: faker.company.name(),
   }));
 
   await prisma.rewards.createMany({

@@ -1,7 +1,7 @@
 export interface CreateIncomeDTO {
-  receita: string;
-  valor: number;
-  data: Date;
+  income: string;
+  amount: number;
+  date: Date;
 }
 
 export type UpdateIncomeDTO = Partial<CreateIncomeDTO>;

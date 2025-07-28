@@ -2,7 +2,7 @@ import prisma from "../src/lib/prisma";
 import { faker } from "@faker-js/faker";
 
 async function main() {
-  const categorias = [
+  const categories = [
     "Mercado",
     "Transporte",
     "Lazer",
@@ -15,24 +15,24 @@ async function main() {
     "Fixas",
   ];
 
-  for (const categoria of categorias) {
+  for (const category of categories) {
     await prisma.categories.upsert({
-      where: { categoria },
+      where: { category },
       update: {},
-      create: { categoria },
+      create: { category },
     });
   }
 
-  const categoriasDB = await prisma.categories.findMany();
-  const categoriaIds = categoriasDB.map((cat) => cat.id);
+  const categoriesDB = await prisma.categories.findMany();
+  const categoriaIds = categoriesDB.map((cat) => cat.id);
 
-  console.log(`✅ ${categoriasDB.length} categorias de teste criadas`);
+  console.log(`✅ ${categoriesDB.length} categorias de teste criadas`);
 
   const outflowData = Array.from({ length: 10 }).map(() => ({
-    despesa: faker.commerce.product(),
-    valor: parseFloat(faker.commerce.price()),
-    data: faker.date.recent({ days: 90 }),
-    categoriaId: faker.helpers.arrayElement(categoriaIds),
+    outflow: faker.commerce.product(),
+    amount: parseFloat(faker.commerce.price()),
+    date: faker.date.recent({ days: 90 }),
+    categoryId: faker.helpers.arrayElement(categoriaIds),
     status: faker.datatype.boolean(),
   }));
 

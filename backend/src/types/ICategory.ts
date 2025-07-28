@@ -1,5 +1,5 @@
 export interface CreateCategoryDTO {
-  categoria: string;
+  category: string;
 }
 
 export type UpdateCategoryDTO = Partial<CreateCategoryDTO>;
