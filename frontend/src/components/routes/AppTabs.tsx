@@ -14,6 +14,8 @@ import {
   addCircle,
   bagHandle,
   home,
+  infiniteOutline,
+  logoBitcoin,
   removeCircle,
   trendingUp,
 } from "ionicons/icons";
@@ -23,12 +25,14 @@ import { auth } from "../../firebase/firebase";
 
 import HomePage from "../../pages/home/HomePage";
 import Incomes from "../../pages/incomes/Incomes";
-import OutFlow from "../../pages/outflow/Outflow";
+import OutFlow from "../../pages/outflows/Outflows";
 import Expenses from "../../pages/expenses/Expenses";
 import Investments from "../../pages/investments/Investments";
 import Sidebar from "../sideBar/Sidebar";
 import SidebarItem from "../sideBar/SidebarItem";
 import ProfileMenu from "../profileMenu/ProfileMenu";
+import Cryptos from "../../pages/cryptos/Cryptos";
+import Rewards from "../../pages/rewards/Rewards";
 
 const AppTabs: React.FC = () => {
   const isMobile = useIsMobile();
@@ -89,6 +93,28 @@ const AppTabs: React.FC = () => {
               text="Investimentos"
               to="/investments"
             />
+            <SidebarItem
+              icon={
+                <IonIcon
+                  className="custom-gray400"
+                  size="large"
+                  icon={logoBitcoin}
+                />
+              }
+              text="Criptomoedas"
+              to="/cryptos"
+            />
+            <SidebarItem
+              icon={
+                <IonIcon
+                  className="custom-gray400"
+                  size="large"
+                  icon={infiniteOutline}
+                />
+              }
+              text="Pontuações"
+              to="/rewards"
+            />
           </Sidebar>
         )}
 
@@ -105,6 +131,8 @@ const AppTabs: React.FC = () => {
               <Route exact path="/home" component={HomePage} />
               <Route exact path="/expenses" component={Expenses} />
               <Route exact path="/investments" component={Investments} />
+              <Route exact path="/cryptos" component={Cryptos} />
+              <Route exact path="/rewards" component={Rewards} />
             </IonRouterOutlet>
 
             {/* FIXME corrigir selected icon quando carregar página*/}
@@ -115,7 +143,9 @@ const AppTabs: React.FC = () => {
                     <IonButtons slot="end">
                       <IonMenuButton menu="profileMenu">
                         <img
-                          src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.email?.split("@")[0]}&length=2`}
+                          src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${
+                            auth.currentUser?.email?.split("@")[0]
+                          }&length=2`}
                           alt=""
                           className="w-10 rounded-md"
                         />
@@ -137,13 +167,13 @@ const AppTabs: React.FC = () => {
                     <IonIcon icon={home} />
                     Home
                   </IonTabButton>
-                  <IonTabButton tab="expenses" href="/expenses">
-                    <IonIcon icon={bagHandle} />
-                    Despesas
-                  </IonTabButton>
                   <IonTabButton tab="investments" href="/investments">
                     <IonIcon icon={trendingUp} />
                     Investimentos
+                  </IonTabButton>
+                  <IonTabButton tab="cryptos" href="/cryptos">
+                    <IonIcon icon={logoBitcoin} />
+                    Criptos
                   </IonTabButton>
                 </IonTabBar>
               </>

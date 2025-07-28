@@ -5,26 +5,22 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  emissor: string;
-  titulo: string;
-  valor: number;
-  dataCompra: Date;
+  programa: string;
+  quantidade: number;
   dataVencimento: Date;
-  rentabilidade: number;
-  banco: string;
+  emissor: string;
 };
 
-const Incomes: React.FC = () => {
+const Rewards: React.FC = () => {
 
   const [data, setData] = React.useState<Data[]>([]);
   
     React.useEffect(() => {
       const fetchData = async () => {
         try {
-          const outflowData = await api.get<Data[]>("/investments");
+          const outflowData = await api.get<Data[]>("/rewards");
           const parsed = outflowData.map((item) => ({
             ...item,
-            dataCompra: new Date(item.dataCompra),
             dataVencimento: new Date(item.dataVencimento),
           }));
           
@@ -39,17 +35,8 @@ const Incomes: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "emissor", header: "Emissor" },
-      { accessorKey: "titulo", header: "Título" },
-      { accessorKey: "valor", header: "Valor"},
-      {
-        accessorKey: "dataCompra",
-        header: "Compra",
-        Cell: ({ cell }) => {
-          const date = cell.getValue<Date>();
-          return date.toLocaleDateString("pt-BR");
-        },
-      },
+      { accessorKey: "programa", header: "Programa" },
+      { accessorKey: "quantidade", header: "Quantidade" },
       {
         accessorKey: "dataVencimento",
         header: "Vencimento",
@@ -58,8 +45,7 @@ const Incomes: React.FC = () => {
           return date.toLocaleDateString("pt-BR");
         },
       },
-      { accessorKey: "rentabilidade", header: "Rentabilidade" },
-      { accessorKey: "banco", header: "Banco" },
+      { accessorKey: "emissor", header: "Emissor" },
     ],
     []
   );
@@ -75,4 +61,4 @@ const Incomes: React.FC = () => {
   );
 };
 
-export default Incomes;
+export default Rewards;

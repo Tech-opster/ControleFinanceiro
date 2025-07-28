@@ -5,27 +5,24 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  emissor: string;
-  titulo: string;
+  moeda: string;
   valor: number;
+  cotacao: number;
+  quantidade: number;
   dataCompra: Date;
-  dataVencimento: Date;
-  rentabilidade: number;
-  banco: string;
 };
 
-const Incomes: React.FC = () => {
+const Cryptos: React.FC = () => {
 
   const [data, setData] = React.useState<Data[]>([]);
   
     React.useEffect(() => {
       const fetchData = async () => {
         try {
-          const outflowData = await api.get<Data[]>("/investments");
+          const outflowData = await api.get<Data[]>("/cryptos");
           const parsed = outflowData.map((item) => ({
             ...item,
             dataCompra: new Date(item.dataCompra),
-            dataVencimento: new Date(item.dataVencimento),
           }));
           
           setData(parsed);
@@ -39,9 +36,10 @@ const Incomes: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "emissor", header: "Emissor" },
-      { accessorKey: "titulo", header: "Título" },
+      { accessorKey: "moeda", header: "Moeda" },
       { accessorKey: "valor", header: "Valor"},
+      { accessorKey: "cotacao", header: "Cotação" },
+      { accessorKey: "quantidade", header: "Quantidade" },
       {
         accessorKey: "dataCompra",
         header: "Compra",
@@ -50,15 +48,6 @@ const Incomes: React.FC = () => {
           return date.toLocaleDateString("pt-BR");
         },
       },
-      {
-        accessorKey: "dataVencimento",
-        header: "Vencimento",
-        Cell: ({ cell }) => {
-          const date = cell.getValue<Date>();
-          return date.toLocaleDateString("pt-BR");
-        },
-      },
-      { accessorKey: "rentabilidade", header: "Rentabilidade" },
       { accessorKey: "banco", header: "Banco" },
     ],
     []
@@ -75,4 +64,4 @@ const Incomes: React.FC = () => {
   );
 };
 
-export default Incomes;
+export default Cryptos;
