@@ -26,7 +26,7 @@ import { auth } from "../../firebase/firebase";
 import HomePage from "../../pages/home/HomePage";
 import Incomes from "../../pages/incomes/Incomes";
 import OutFlow from "../../pages/outflows/Outflows";
-import Expenses from "../../pages/expenses/Expenses";
+import Categories from "../../pages/categories/Categories";
 import Investments from "../../pages/investments/Investments";
 import Sidebar from "../sideBar/Sidebar";
 import SidebarItem from "../sideBar/SidebarItem";
@@ -80,7 +80,7 @@ const AppTabs: React.FC = () => {
                 />
               }
               text="Despesas"
-              to="/expenses"
+              to="/categories"
             />
             <SidebarItem
               icon={
@@ -129,7 +129,7 @@ const AppTabs: React.FC = () => {
               <Route exact path="/incomes" component={Incomes} />
               <Route exact path="/outflow" component={OutFlow} />
               <Route exact path="/home" component={HomePage} />
-              <Route exact path="/expenses" component={Expenses} />
+              <Route exact path="/categories" component={Categories} />
               <Route exact path="/investments" component={Investments} />
               <Route exact path="/cryptos" component={Cryptos} />
               <Route exact path="/rewards" component={Rewards} />

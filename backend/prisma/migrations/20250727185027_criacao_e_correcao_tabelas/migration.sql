@@ -53,13 +53,13 @@ CREATE TABLE "outflows" (
 );
 
 -- CreateTable
-CREATE TABLE "expenses" (
+CREATE TABLE "categories" (
     "id" SERIAL NOT NULL,
     "categoria" VARCHAR(64) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "expenses_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -109,7 +109,7 @@ CREATE TABLE "rewards" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "expenses_categoria_key" ON "expenses"("categoria");
+CREATE UNIQUE INDEX "categories_categoria_key" ON "categories"("categoria");
 
 -- AddForeignKey
-ALTER TABLE "outflows" ADD CONSTRAINT "outflows_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "expenses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "outflows" ADD CONSTRAINT "outflows_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

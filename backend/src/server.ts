@@ -10,7 +10,7 @@ import outFlowRoutes from "./routes/outflowRoutes"
 import incomeRoutes from "./routes/incomeRoutes";
 import investmentRoutes from "./routes/investmentRoutes";
 import cryptoRoutes from "./routes/cryptoRoutes";
-import expenseRoutes from "./routes/expenseRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
 import rewardRoutes from "./routes/rewardRoutes";
 
 const app = express();
@@ -31,7 +31,7 @@ app.use("/users", userRoutes);
 app.use("/incomes", incomeRoutes);
 app.use("/outflows", outFlowRoutes);
 app.use("/investments", investmentRoutes);
-app.use("/expenses", expenseRoutes);
+app.use("/categories", categoryRoutes);
 app.use("/cryptos", cryptoRoutes);
 app.use("/rewards", rewardRoutes);
 

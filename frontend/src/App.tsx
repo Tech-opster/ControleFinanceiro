@@ -64,7 +64,7 @@ const App: React.FC = () => {
             
             <PrivateRoutes exact path="/incomes" component={AppTabs} />
             <PrivateRoutes exact path="/outflow" component={AppTabs} />
-            <PrivateRoutes exact path="/expenses" component={AppTabs} />
+            <PrivateRoutes exact path="/categories" component={AppTabs} />
             <PrivateRoutes exact path="/investments" component={AppTabs} />
             <PrivateRoutes exact path="/cryptos" component={AppTabs} />
             <PrivateRoutes exact path="/rewards" component={AppTabs} />

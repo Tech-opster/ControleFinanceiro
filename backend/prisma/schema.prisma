@@ -45,12 +45,12 @@ model Outflows {
   createdAt DateTime @default(now()) 
   updatedAt DateTime @updatedAt      
 
-  categoria   Expenses @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+  categoria   Categories @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
 
   @@map("outflows")
 }
 
-model Expenses {
+model Categories {
   id        Int      @id @default(autoincrement())
   categoria String   @unique @db.VarChar(64)
   createdAt DateTime @default(now()) 
@@ -58,7 +58,7 @@ model Expenses {
 
   outflows  Outflows[]
 
-  @@map("expenses")
+  @@map("categories")
 }
 
 model Investments {

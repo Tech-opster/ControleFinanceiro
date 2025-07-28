@@ -2,12 +2,12 @@ import prisma from '../src/lib/prisma';
 import { faker } from '@faker-js/faker';
 
 async function main() {
-  const expenseData = Array.from({ length: 10 }).map(() => ({
+  const categoryData = Array.from({ length: 10 }).map(() => ({
     categoria: faker.commerce.product(),
   }));
 
-  await prisma.expenses.createMany({
-    data: expenseData,
+  await prisma.categories.createMany({
+    data: categoryData,
     skipDuplicates: true,
   });
 

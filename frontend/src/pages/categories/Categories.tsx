@@ -8,13 +8,13 @@ type Data = {
   categoria: string;
 };
 
-const Expenses: React.FC = () => {
+const Categories: React.FC = () => {
   const [data, setData] = React.useState<Data[]>([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const outflowData = await api.get<Data[]>("/expenses");
+        const outflowData = await api.get<Data[]>("/categories");
         const parsed = outflowData.map((item) => ({
           ...item,
         }));
@@ -46,4 +46,4 @@ const Expenses: React.FC = () => {
   );
 };
 
-export default Expenses;
+export default Categories;
