@@ -1,5 +1,5 @@
 export interface CreateIncomeDTO {
-  income: string;
+  name: string;
   amount: number;
   date: Date;
 }

@@ -1,5 +1,5 @@
 export interface CreateInvestmentDTO {
-  issuer: string;
+  name: string;
   investmentType: string;
   amount: number;
   purchaseDate: Date;

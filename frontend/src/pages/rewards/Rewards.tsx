@@ -5,7 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  loyaltyProgram: string;
+  name: string;
   quantity: number;
   dueDate: Date;
   issuer: string;
@@ -35,7 +35,7 @@ const Rewards: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "loyaltyProgram", header: "Programa" },
+      { accessorKey: "name", header: "Programa" },
       { accessorKey: "quantity", header: "Quantidade" },
       {
         accessorKey: "dueDate",
@@ -54,7 +54,7 @@ const Rewards: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} origin="Pontuação"/>
         </div>
       </IonContent>
     </IonPage>

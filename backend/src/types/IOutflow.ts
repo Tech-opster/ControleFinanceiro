@@ -1,5 +1,5 @@
 export interface CreateOutflowDTO {
-  outflow: string;
+  name: string;
   amount: number;
   date: Date;
   categoryId: number;

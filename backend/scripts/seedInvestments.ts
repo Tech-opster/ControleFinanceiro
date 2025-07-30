@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const investmentData = Array.from({ length: 10 }).map(() => ({
-    issuer: faker.company.name(),
+    name: faker.company.name(),
     investmentType: faker.finance.transactionType(),
     amount: parseFloat(faker.commerce.price()),
     purchaseDate: faker.date.recent({ days: 90 }),

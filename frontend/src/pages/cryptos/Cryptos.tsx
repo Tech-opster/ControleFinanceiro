@@ -5,7 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  currency: string;
+  name: string;
   amount: number;
   price: number;
   quantity: number;
@@ -37,7 +37,7 @@ const Cryptos: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "currency", header: "Moeda" },
+      { accessorKey: "name", header: "Moeda" },
       { accessorKey: "amount", header: "Valor"},
       { accessorKey: "price", header: "Cotação" },
       { accessorKey: "quantity", header: "Quantidade" },
@@ -58,7 +58,7 @@ const Cryptos: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} origin="Criptomoeda"/>
         </div>
       </IonContent>
     </IonPage>

@@ -29,7 +29,7 @@ async function main() {
   console.log(`✅ ${categoriesDB.length} categorias de teste criadas`);
 
   const outflowData = Array.from({ length: 10 }).map(() => ({
-    outflow: faker.commerce.product(),
+    name: faker.commerce.product(),
     amount: parseFloat(faker.commerce.price()),
     date: faker.date.recent({ days: 90 }),
     categoryId: faker.helpers.arrayElement(categoriaIds),

@@ -17,6 +17,7 @@ const Categories: React.FC = () => {
         const outflowData = await api.get<Data[]>("/categories");
         const parsed = outflowData.map((item) => ({
           ...item,
+          name: item.category,
         }));
 
         setData(parsed);
@@ -39,7 +40,7 @@ const Categories: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} origin="Categoria" />
         </div>
       </IonContent>
     </IonPage>

@@ -26,7 +26,7 @@ model Users {
 
 model Incomes {
   id        Int      @id @default(autoincrement())
-  income    String   @db.VarChar(64)
+  name      String   @db.VarChar(64)
   amount    Decimal  @db.Decimal(10, 2)
   date      DateTime @default(now())
   createdAt DateTime @default(now())
@@ -37,7 +37,7 @@ model Incomes {
 
 model Outflows {
   id         Int      @id @default(autoincrement())
-  outflow    String   @db.VarChar(64)
+  name       String   @db.VarChar(64)
   amount     Decimal  @db.Decimal(10, 2)
   date       DateTime @default(now())
   categoryId Int
@@ -63,7 +63,7 @@ model Categories {
 
 model Investments {
   id             Int      @id @default(autoincrement())
-  issuer         String   @db.VarChar(64)
+  name           String   @db.VarChar(64)
   investmentType String   @db.VarChar(32)
   amount         Decimal  @db.Decimal(15, 2)
   purchaseDate   DateTime @default(now())
@@ -79,7 +79,7 @@ model Investments {
 
 model Cryptos {
   id           Int      @id @default(autoincrement())
-  currency     String   @db.VarChar(64)
+  name         String   @db.VarChar(64)
   amount       Decimal  @db.Decimal(10, 2)
   price        Decimal  @db.Decimal(15, 8)
   quantity     Decimal  @db.Decimal(18, 8)
@@ -91,13 +91,13 @@ model Cryptos {
 }
 
 model Rewards {
-  id             Int      @id @default(autoincrement())
-  loyaltyProgram String   @db.VarChar(64)
-  quantity       Decimal  @db.Decimal(10, 2)
-  dueDate        DateTime
-  issuer         String   @db.VarChar(64)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(64)
+  quantity  Decimal  @db.Decimal(10, 2)
+  dueDate   DateTime
+  issuer    String   @db.VarChar(64)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("rewards")
 }

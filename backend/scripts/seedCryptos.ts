@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const cryptoData = Array.from({ length: 5 }).map(() => ({
-    currency: faker.finance.currencyCode(),
+    name: faker.finance.currencyCode(),
     amount: parseFloat(faker.finance.amount()),
     price: parseFloat(faker.finance.amount()),
     quantity: parseFloat(faker.finance.amount()),

@@ -1,5 +1,5 @@
 export interface CreateRewardDTO {
-  loyaltyProgram: string;
+  name: string;
   quantity: number;
   dueDate: Date;
   issuer: string;

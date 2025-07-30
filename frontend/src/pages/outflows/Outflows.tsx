@@ -5,7 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  outflow: string;
+  name: string;
   amount: number;
   date: Date;
   categoryId: number;
@@ -39,7 +39,7 @@ const Outflows: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "outflow", header: "Despesa" },
+      { accessorKey: "name", header: "Despesa" },
       { accessorKey: "amount", header: "Valor" },
       {
         accessorKey: "date",
@@ -66,7 +66,7 @@ const Outflows: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} origin="Saída"/>
         </div>
       </IonContent>
     </IonPage>

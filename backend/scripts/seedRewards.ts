@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 async function main() {
   const rewardData = Array.from({ length: 5 }).map(() => ({
-    loyaltyProgram: faker.company.name(),
+    name: faker.company.name(),
     quantity: parseFloat(faker.finance.amount()),
     dueDate: faker.date.future(),
     issuer: faker.company.name(),

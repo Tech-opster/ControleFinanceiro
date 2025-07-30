@@ -5,7 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
-  income: string;
+  name: string;
   amount: number;
   date: Date;
 };
@@ -34,7 +34,7 @@ const Incomes: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "income", header: "Receita" },
+      { accessorKey: "name", header: "Receita" },
       { accessorKey: "amount", header: "Valor" },
       {
         accessorKey: "date",
@@ -52,7 +52,7 @@ const Incomes: React.FC = () => {
     <IonPage>
       <IonContent>
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} origin="Entrada"/>
         </div>
       </IonContent>
     </IonPage>
