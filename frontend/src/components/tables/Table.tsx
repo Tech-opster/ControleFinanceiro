@@ -9,6 +9,7 @@ import {
 import {
   Box,
   Button,
+  darken,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -30,7 +31,11 @@ const Table = <T extends { [key: string]: unknown }>({
   origin,
 }: Props<T>) => {
   const openDeleteConfirmModal = (row: MRT_Row<T>) => {
-    if (window.confirm(`Você tem certeza que quer deletar o registro ${row.original.name}?`)) {
+    if (
+      window.confirm(
+        `Você tem certeza que quer deletar o registro ${row.original.name}?`
+      )
+    ) {
       // deleteRow(row.original.id);
     }
   };
@@ -39,6 +44,21 @@ const Table = <T extends { [key: string]: unknown }>({
     columns,
     data,
     enableEditing: true,
+    enableFullScreenToggle: false,
+    initialState: { density: "compact" },
+    mrtTheme: (theme) => ({
+      baseBackgroundColor: "rgb(160, 160, 160)"
+    }),
+    muiTablePaperProps: {
+      sx: {
+        minHeight: "100% !important",
+      },
+    },
+    muiTableContainerProps: {
+      sx: {
+        width: "100vw !important",
+      },
+    },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Adicionar {origin}</DialogTitle>
@@ -52,7 +72,6 @@ const Table = <T extends { [key: string]: unknown }>({
         </DialogActions>
       </>
     ),
-    //optionally customize modal content
     renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Editar {origin}</DialogTitle>
@@ -84,13 +103,7 @@ const Table = <T extends { [key: string]: unknown }>({
       <Button
         variant="contained"
         onClick={() => {
-          table.setCreatingRow(true); //simplest way to open the create row modal with no default values
-          //or you can pass in a row object to set default values with the `createRow` helper function
-          // table.setCreatingRow(
-          //   createRow(table, {
-          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
-          //   }),
-          // );
+          table.setCreatingRow(true);
         }}
       >
         Adicionar {origin}

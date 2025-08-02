@@ -15,11 +15,19 @@ datasource db {
 }
 
 model Users {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique @db.VarChar(255)
-  name      String   @db.VarChar(100)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int           @id @default(autoincrement())
+  firebaseUid String        @unique @db.VarChar(128)
+  email       String        @unique @db.VarChar(255)
+  name        String        @db.VarChar(100)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  Incomes     Incomes[]
+  Outflows    Outflows[]
+  Categories  Categories[]
+  Investments Investments[]
+  Cryptos     Cryptos[]
+  Rewards     Rewards[]
 
   @@map("users")
 }
@@ -31,6 +39,9 @@ model Incomes {
   date      DateTime @default(now())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  userId Int
+  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("incomes")
 }
@@ -45,6 +56,9 @@ model Outflows {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  userId Int
+  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   category Categories @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
   @@map("outflows")
@@ -55,6 +69,9 @@ model Categories {
   category  String   @unique @db.VarChar(64)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  userId Int
+  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   outflows Outflows[]
 
@@ -74,6 +91,9 @@ model Investments {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
+  userId Int
+  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("investments")
 }
 
@@ -87,6 +107,9 @@ model Cryptos {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  userId Int
+  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("cryptos")
 }
 
@@ -98,6 +121,9 @@ model Rewards {
   issuer    String   @db.VarChar(64)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  userId    Int
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("rewards")
 }

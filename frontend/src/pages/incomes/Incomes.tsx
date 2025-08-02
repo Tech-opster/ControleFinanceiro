@@ -50,7 +50,7 @@ const Incomes: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent>
+      <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
           <Table columns={columns} data={data} origin="Entrada"/>
         </div>

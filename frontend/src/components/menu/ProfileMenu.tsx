@@ -24,8 +24,8 @@ const ProfileMenu: React.FC<Props> = ({ contentId, menuId }) => {
       <IonMenu contentId={contentId} menuId={menuId} side="end">
         <IonHeader className="p-1">
           <IonCard
-            className="!flex justify-between gap-1 p-3 pr-2 text-indigo-800
-          bg-indigo-100 "
+            className="!flex justify-between gap-1 py-3 px-2 text-indigo-800
+          bg-indigo-100"
           >
             <div className="w-full flex justify-between items-start gap-1">
               <div className="flex-1 min-w-0">
@@ -36,11 +36,11 @@ const ProfileMenu: React.FC<Props> = ({ contentId, menuId }) => {
                   {auth.currentUser?.email}
                 </span>
               </div>
-              <IonMenuButton className="h-fit">
+              <IonMenuButton className="h-fit" menu={menuId}>
                 <img
                   src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${auth.currentUser?.displayName}&length=2`}
-                  alt=""
                   className="w-10 rounded-md"
+                  alt=""
                 />
               </IonMenuButton>
             </div>

@@ -1,18 +1,17 @@
 import { Redirect, Route } from "react-router-dom";
 import {
-  IonButtons,
-  IonHeader,
   IonIcon,
   IonMenuButton,
+  IonMenuToggle,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonToolbar,
 } from "@ionic/react";
 import {
   addCircle,
   bagHandle,
+  gridOutline,
   home,
   infiniteOutline,
   logoBitcoin,
@@ -30,9 +29,11 @@ import Categories from "../../pages/categories/Categories";
 import Investments from "../../pages/investments/Investments";
 import Sidebar from "../sideBar/Sidebar";
 import SidebarItem from "../sideBar/SidebarItem";
-import ProfileMenu from "../profileMenu/ProfileMenu";
+import ProfileMenu from "../menu/ProfileMenu";
 import Cryptos from "../../pages/cryptos/Cryptos";
 import Rewards from "../../pages/rewards/Rewards";
+import Menu from "../menu/Menu";
+import MenuItem from "../menu/MenuItem";
 
 const AppTabs: React.FC = () => {
   const isMobile = useIsMobile();
@@ -79,7 +80,7 @@ const AppTabs: React.FC = () => {
                   icon={bagHandle}
                 />
               }
-              text="Despesas"
+              text="Categorias"
               to="/categories"
             />
             <SidebarItem
@@ -120,7 +121,35 @@ const AppTabs: React.FC = () => {
 
         <div className={`flex-1 ${!isMobile && "relative"}`}>
           {isMobile && (
-            <ProfileMenu contentId="main-content" menuId="profileMenu" />
+            <>
+              <ProfileMenu contentId="main-content" menuId="profileMenu" />
+              <Menu contentId="main-content" menuId="menu">
+                <IonMenuToggle menu="menu">
+                  <MenuItem
+                    icon={
+                      <IonIcon
+                        className="custom-gray400"
+                        size="large"
+                        icon={bagHandle}
+                      />
+                    }
+                    text="Categorias"
+                    to="/categories"
+                  />
+                  <MenuItem
+                    icon={
+                      <IonIcon
+                        className="custom-gray400"
+                        size="large"
+                        icon={infiniteOutline}
+                      />
+                    }
+                    text="Pontuações"
+                    to="/rewards"
+                  />
+                </IonMenuToggle>
+              </Menu>
+            </>
           )}
 
           <IonTabs>
@@ -135,24 +164,30 @@ const AppTabs: React.FC = () => {
               <Route exact path="/rewards" component={Rewards} />
             </IonRouterOutlet>
 
-            {/* FIXME corrigir selected icon quando carregar página*/}
             {isMobile && (
               <>
-                <IonHeader>
-                  <IonToolbar className="!py-2">
-                    <IonButtons slot="end">
-                      <IonMenuButton menu="profileMenu">
-                        <img
-                          src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${
-                            auth.currentUser?.email?.split("@")[0]
-                          }&length=2`}
-                          alt=""
-                          className="w-10 rounded-md"
-                        />
-                      </IonMenuButton>
-                    </IonButtons>
-                  </IonToolbar>
-                </IonHeader>
+                <IonTabBar className="justify-between" slot="top">
+                  <IonTabButton className="max-w-fit" tab="menu">
+                    <IonMenuButton menu="menu">
+                      <IonIcon
+                        className="custom-gray400"
+                        size="large"
+                        icon={gridOutline}
+                      />
+                    </IonMenuButton>
+                  </IonTabButton>
+                  <IonTabButton className="max-w-fit" tab="profileMenu">
+                    <IonMenuButton menu="profileMenu">
+                      <img
+                        src={`https://ui-avatars.com/api/?background=a0a0a0&color=000&name=${
+                          auth.currentUser?.email?.split("@")[0]
+                        }&length=2`}
+                        alt=""
+                        className="w-10 rounded-md"
+                      />
+                    </IonMenuButton>
+                  </IonTabButton>
+                </IonTabBar>
 
                 <IonTabBar slot="bottom">
                   <IonTabButton tab="incomes" href="/incomes">
