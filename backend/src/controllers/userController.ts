@@ -40,37 +40,47 @@ export const createUser = async (
 
   if (!errors.isEmpty()) {
     res.status(400).json({ errors: errors.array() });
+    return;
   }
 
   const { name, email, password } = req.body;
-  // const data: CreateUserDTO = { name, email };
 
   try {
-    const user = await admin.auth().createUser({
+    const firebaseUser = await admin.auth().createUser({
       email,
       password,
       displayName: name.trim(),
     });
 
-    res.status(201).json({ uid: user.uid });
+    const data: CreateUserDTO = {
+      name,
+      email,
+      firebaseUid: firebaseUser.uid,
+    };
 
-    //TODO Criação de usuário no banco de dados
-    // try {
-    //   await createUserService(data);
+    try {
+      await createUserService(data);
 
-    //   res.status(201).json({ uid: user.uid });
-    // } catch (err) {
-    //   console.error(err);
-      
-    //   await admin.auth().deleteUser(user.uid);
+      res.status(201).json({ uid: firebaseUser.uid });
+    } catch (err) {
+      console.error("Erro ao criar usuário no banco:", err);
 
-    //   res
-    //     .status(500)
-    //     .json({ error: "Erro ao criar usuário no banco de dados" });
-    // }
+      try {
+        await admin.auth().deleteUser(firebaseUser.uid);
+      } catch (err) {
+        console.error("Erro ao fazer rollback do Firebase:", err);
+      }
+
+      res.status(500).json({
+        error: "Erro ao criar usuário no banco de dados",
+      });
+    }
   } catch (err: any) {
-    console.error(err);
-    res.status(500).json({ code: err.code, message: err.message });
+    console.error("Erro ao criar usuário no Firebase:", err);
+    res.status(500).json({
+      code: err.code,
+      message: err.message,
+    });
   }
 };
 
