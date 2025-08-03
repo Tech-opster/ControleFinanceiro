@@ -2,17 +2,18 @@ import prisma from '../src/lib/prisma';
 import { faker } from '@faker-js/faker';
 
 async function main() {
-  const usersData = Array.from({ length: 5 }).map(() => ({
+  const usersData = Array.from({ length: 30 }).map(() => ({
     email: faker.internet.email(),
     name: faker.person.fullName(),
+    firebaseUid: faker.string.uuid(),
   }));
 
-  await prisma.users.createMany({
+  const result = await prisma.users.createMany({
     data: usersData,
     skipDuplicates: true,
   });
 
-  console.log('✅ Usuários de teste criados');
+  console.log(`✅ ${result.count} usuários criados com sucesso`);
 }
 
 main()

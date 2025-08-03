@@ -7,6 +7,7 @@ export interface CreateInvestmentDTO {
   yieldValue: number;
   yieldType: string;
   bank: string;
+  userId: number;
 }
 
 export type UpdateInvestmentDTO = Partial<CreateInvestmentDTO>;

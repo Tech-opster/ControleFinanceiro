@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import {
   MaterialReactTable,
   MRT_EditActionButtons,
@@ -9,7 +8,6 @@ import {
 import {
   Box,
   Button,
-  darken,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -46,7 +44,7 @@ const Table = <T extends { [key: string]: unknown }>({
     enableEditing: true,
     enableFullScreenToggle: false,
     initialState: { density: "compact" },
-    mrtTheme: (theme) => ({
+    mrtTheme: () => ({
       baseBackgroundColor: "rgb(160, 160, 160)"
     }),
     muiTablePaperProps: {

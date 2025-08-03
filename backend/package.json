@@ -8,7 +8,7 @@
     "dev": "ts-node-dev src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed:all": "ts-node scripts/seedUsers.ts && ts-node scripts/seedIncomes.ts && ts-node scripts/seedOutflows.ts && ts-node scripts/seedInvestments.ts && ts-node scripts/seedCryptos.ts && ts-node scripts/seedRewards.ts",
+    "seed:all": "ts-node scripts/seedUsers.ts && ts-node scripts/seedCategories.ts && ts-node scripts/seedIncomes.ts && ts-node scripts/seedOutflows.ts && ts-node scripts/seedInvestments.ts && ts-node scripts/seedCryptos.ts && ts-node scripts/seedRewards.ts",
     "seed:users": "ts-node scripts/seedUsers.ts",
     "seed:incomes": "ts-node scripts/seedIncomes.ts",
     "seed:outflows": "ts-node scripts/seedOutflows.ts",

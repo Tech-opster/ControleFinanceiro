@@ -4,6 +4,7 @@ export interface CreateOutflowDTO {
   date: Date;
   categoryId: number;
   status: boolean;
+  userId: number;
 }
 
 export type UpdateOutflowDTO = Partial<CreateOutflowDTO>;

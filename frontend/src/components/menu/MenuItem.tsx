@@ -14,7 +14,7 @@ const MenuItem: React.FC<Props> = ({ icon, text, to, alert }) => {
   const active = location.pathname === to;
 
   const handleClick = () => {
-    router.push(to, "root", "replace");
+    router.push(to, "root");
   };
 
   return (

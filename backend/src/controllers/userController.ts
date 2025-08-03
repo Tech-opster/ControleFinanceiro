@@ -76,8 +76,8 @@ export const createUser = async (
 
 export const updateUser = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const { name, email } = req.body;
-  const data: CreateUserDTO = { name, email };
+  const { name, email, firebaseUid } = req.body;
+  const data: CreateUserDTO = { name, email, firebaseUid };
 
   try {
     const user = await updateUserService({ id }, data);

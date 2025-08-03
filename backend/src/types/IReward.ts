@@ -3,6 +3,7 @@ export interface CreateRewardDTO {
   quantity: number;
   dueDate: Date;
   issuer: string;
+  userId: number;
 }
 
 export type UpdateRewardDTO = Partial<CreateRewardDTO>;
