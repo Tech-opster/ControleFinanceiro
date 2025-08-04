@@ -6,7 +6,7 @@ import {
   deleteUserService,
   createUserService,
 } from "../services/userService";
-import { CreateUserDTO } from "../types/IUser";
+import { CreateUserDTO, UpdateUserDTO } from "../types/IUser";
 import { validationResult } from "express-validator";
 import admin from "../firebase/firebaseAdmin";
 
@@ -87,7 +87,7 @@ export const createUser = async (
 export const updateUser = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { name, email, firebaseUid } = req.body;
-  const data: CreateUserDTO = { name, email, firebaseUid };
+  const data: UpdateUserDTO = { name, email, firebaseUid };
 
   try {
     const user = await updateUserService({ id }, data);

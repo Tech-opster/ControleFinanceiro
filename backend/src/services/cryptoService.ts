@@ -2,8 +2,10 @@ import prisma from "../lib/prisma";
 import { Prisma } from "../../generated/prisma";
 import { CreateCryptoDTO, UpdateCryptoDTO } from "../types/ICrypto";
 
-export const getCryptoService = async () => {
-  return prisma.cryptos.findMany();
+export const getCryptoService = async (where?: Prisma.CryptosWhereInput) => {
+  return prisma.cryptos.findMany({
+    where,
+  });
 };
 
 export const getCryptoByIdService = async (where: Prisma.CryptosWhereUniqueInput) => {

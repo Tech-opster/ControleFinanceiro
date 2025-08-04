@@ -2,8 +2,10 @@ import prisma from "../lib/prisma";
 import { Prisma } from "../../generated/prisma";
 import { CreateIncomeDTO, UpdateIncomeDTO } from "../types/IIncome";
 
-export const getIncomeService = async () => {
-  return prisma.incomes.findMany();
+export const getIncomeService = async (where?: Prisma.IncomesWhereInput) => {
+  return prisma.incomes.findMany({
+    where,
+  });
 };
 
 export const getIncomeByIdService = async (where: Prisma.IncomesWhereUniqueInput) => {

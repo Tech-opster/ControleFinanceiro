@@ -2,8 +2,10 @@ import prisma from "../lib/prisma";
 import { Prisma } from "../../generated/prisma";
 import { CreateRewardDTO, UpdateRewardDTO } from "../types/IReward";
 
-export const getRewardService = async () => {
-  return prisma.rewards.findMany();
+export const getRewardService = async (where?: Prisma.RewardsWhereInput) => {
+  return prisma.rewards.findMany({
+    where,
+  });
 };
 
 export const getRewardByIdService = async (where: Prisma.RewardsWhereUniqueInput) => {

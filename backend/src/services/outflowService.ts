@@ -2,8 +2,9 @@ import prisma from "../lib/prisma";
 import { Prisma } from "../../generated/prisma";
 import { CreateOutflowDTO, UpdateOutflowDTO } from "../types/IOutflow";
 
-export const getOutflowService = async () => {
+export const getOutflowService = async (where?: Prisma.OutflowsWhereInput) => {
   return prisma.outflows.findMany({
+    where,
     include: {
       category: true,
     },
