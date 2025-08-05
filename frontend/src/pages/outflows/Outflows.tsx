@@ -55,7 +55,7 @@ const Outflows: React.FC = () => {
       },
       {
         accessorKey: "status",
-        header: "Status",
+        header: "Situação",
         Cell: ({ cell }) => (cell.getValue<boolean>() ? "Pago" : "Não pago"),
       },
     ],

@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 
 function tableController(service: any, entityName: string) {
- 
   return {
     getAll: async (req: Request, res: Response) => {
       try {
-        const items = await service.getAll();
+        const userId = req.userId!;
+
+        const items = await service.getAll({userId});
         res.json(items);
       } catch (err) {
         console.error(err);
@@ -16,7 +17,9 @@ function tableController(service: any, entityName: string) {
     getById: async (req: Request, res: Response) => {
       const id = Number(req.params.id);
       try {
-        const item = await service.getById({ id });
+        const userId = req.userId!;
+
+        const item = await service.getById({ id, userId });
         res.json(item);
       } catch (err) {
         console.error(err);
@@ -26,7 +29,9 @@ function tableController(service: any, entityName: string) {
 
     create: async (req: Request, res: Response) => {
       try {
-        const item = await service.create(req.body);
+        const userId = req.userId!;
+
+        const item = await service.create({ ...req.body, userId });
         res.status(201).json(item);
       } catch (err) {
         console.error(err);
@@ -37,24 +42,32 @@ function tableController(service: any, entityName: string) {
     update: async (req: Request, res: Response) => {
       const id = Number(req.params.id);
       try {
-        const item = await service.update({ id }, req.body);
+        const userId = req.userId!;
+
+        const item = await service.update({ id, userId }, req.body);
         res.json(item);
       } catch (err) {
         console.error(err);
-        res.status(404).json({ error: `Não foi possível atualizar ${entityName}` });
+        res
+          .status(404)
+          .json({ error: `Não foi possível atualizar ${entityName}` });
       }
     },
 
     delete: async (req: Request, res: Response) => {
       const id = Number(req.params.id);
       try {
-        await service.delete({ id });
+        const userId = req.userId!;
+
+        await service.delete({ id, userId });
         res.status(204).send();
       } catch (err) {
         console.error(err);
-        res.status(404).json({ error: `Não foi possível deletar ${entityName}` });
+        res
+          .status(404)
+          .json({ error: `Não foi possível deletar ${entityName}` });
       }
-    }
+    },
   };
 }
 

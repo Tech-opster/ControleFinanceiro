@@ -3,16 +3,16 @@ import {
   IonPage,
 } from "@ionic/react";
 
-const HomePage: React.FC = () => {
+const Dashboard: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
         <div className="h-full min-h-fit flex justify-center items-center">
-          <h1>Home</h1>
+          <h1>Dashboard</h1>
         </div>
       </IonContent>
     </IonPage>
   );
 };
 
-export default HomePage;
+export default Dashboard;

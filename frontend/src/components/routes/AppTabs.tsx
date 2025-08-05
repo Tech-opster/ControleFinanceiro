@@ -22,7 +22,7 @@ import { IonReactRouter } from "@ionic/react-router";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { auth } from "../../firebase/firebase";
 
-import HomePage from "../../pages/home/HomePage";
+import Dashboard from "../../pages/home/Dashboard";
 import Incomes from "../../pages/incomes/Incomes";
 import OutFlow from "../../pages/outflows/Outflows";
 import Categories from "../../pages/categories/Categories";
@@ -157,7 +157,7 @@ const AppTabs: React.FC = () => {
               <Redirect exact path="/" to="/home" />
               <Route exact path="/incomes" component={Incomes} />
               <Route exact path="/outflow" component={OutFlow} />
-              <Route exact path="/home" component={HomePage} />
+              <Route exact path="/home" component={Dashboard} />
               <Route exact path="/categories" component={Categories} />
               <Route exact path="/investments" component={Investments} />
               <Route exact path="/cryptos" component={Cryptos} />

@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { outflowController } from "../controllers/outflowController";
+import { authenticateUser } from "../middlewares/authMiddleware";
 
 const router = Router();
+
+router.use(authenticateUser);
 
 router.get("/", outflowController.getAll);
 router.get("/:id", outflowController.getById);

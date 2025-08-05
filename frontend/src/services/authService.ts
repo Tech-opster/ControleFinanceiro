@@ -6,7 +6,11 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { getFirebaseErrorMessage } from "./firebaseErrors";
-import { post } from "./api";
+import { postPublic } from "./api";
+
+interface RegisterResponse {
+  uid: string;
+}
 
 // Cadastro
 export const register = async (
@@ -15,8 +19,10 @@ export const register = async (
   name: string
 ) => {
   try {
-    const data = await post("/users/register", { email, password, name });
+    // ✅ Usa postPublic pois registro é rota pública
+    const data = await postPublic<RegisterResponse>("/users/register", { email, password, name });
 
+    // ✅ Após registrar, faz login para obter o token
     const user = await loginEmail(email, password);
 
     return {

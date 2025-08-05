@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { rewardController } from "../controllers/rewardController";
+import { authenticateUser } from "../middlewares/authMiddleware";
 
 const router = Router();
+
+router.use(authenticateUser);
 
 router.get("/", rewardController.getAll);
 router.get("/:id", rewardController.getById);
