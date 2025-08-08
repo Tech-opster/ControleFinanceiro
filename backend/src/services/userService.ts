@@ -58,6 +58,7 @@ export const updateUserService = async (
       id: true,
       email: true,
       name: true,
+      firebaseUid: true,
       updatedAt: true,
     },
   });
@@ -78,5 +79,12 @@ export const deleteUserService = async (
 export const getUserByFirebaseUidService = async (firebaseUid: string) => {
   return prisma.users.findUnique({
     where: { firebaseUid },
+  });
+};
+
+export const getUserByEmailService = async (email: string) => {
+  return prisma.users.findUnique({
+    where: { email },
+    select: { id: true, email: true, name: true, firebaseUid: true }
   });
 };

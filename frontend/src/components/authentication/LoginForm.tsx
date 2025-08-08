@@ -61,10 +61,10 @@ const LoginForm: React.FC = () => {
 
     try {
       await present();
-      const user = await loginGoogle();
+      await loginGoogle();
 
       router.push("/home", "root", "replace");
-      console.log("Login Google realizado com sucesso!", user);
+      console.log("Login Google realizado com sucesso!");
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "Erro desconhecido.";

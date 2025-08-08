@@ -5,13 +5,15 @@ import {
   updateUser,
   deleteUser,
   getUserById,
+  syncGoogleUser,
 } from '../controllers/userController';
 import { validateRegister } from '../middlewares/validateRegister';
-import { authenticateUser } from '../middlewares/authMiddleware';
+import { authenticateFirebaseOnly, authenticateUser } from '../middlewares/authMiddleware';
 
 const router = Router();
 
 router.post('/register', validateRegister, createUser);
+router.post('/sync-google', authenticateFirebaseOnly, syncGoogleUser);
 
 router.get('/', authenticateUser, getUsers);
 router.get('/:id', authenticateUser, getUserById);

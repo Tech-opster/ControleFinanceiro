@@ -6,10 +6,20 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { getFirebaseErrorMessage } from "./firebaseErrors";
-import { postPublic } from "./api";
+import { post, postPublic } from "./api";
 
 interface RegisterResponse {
   uid: string;
+}
+
+interface SyncUserResponse {
+  message: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    firebaseUid: string;
+  };
 }
 
 // Cadastro
@@ -20,7 +30,11 @@ export const register = async (
 ) => {
   try {
     // ✅ Usa postPublic pois registro é rota pública
-    const data = await postPublic<RegisterResponse>("/users/register", { email, password, name });
+    const data = await postPublic<RegisterResponse>("/users/register", {
+      email,
+      password,
+      name,
+    });
 
     // ✅ Após registrar, faz login para obter o token
     const user = await loginEmail(email, password);
@@ -29,8 +43,8 @@ export const register = async (
       uid: data.uid,
       user,
     };
-  } catch (error) {
-    throw new Error(getFirebaseErrorMessage(error));
+  } catch (err) {
+    throw new Error(getFirebaseErrorMessage(err));
   }
 };
 
@@ -39,8 +53,8 @@ export const loginEmail = async (email: string, password: string) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
     return result.user;
-  } catch (error) {
-    throw new Error(getFirebaseErrorMessage(error));
+  } catch (err) {
+    throw new Error(getFirebaseErrorMessage(err));
   }
 };
 
@@ -49,9 +63,19 @@ export const loginGoogle = async () => {
   try {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
-    return result.user;
-  } catch (error) {
-    throw new Error(getFirebaseErrorMessage(error));
+
+    // ✅ Sincroniza diretamente (usuário já tem token após signInWithPopup)
+    try {
+      await post<SyncUserResponse>("/users/sync-google", {});
+      console.log("✅ Usuário sincronizado com o banco");
+      return result.user;
+    } catch (err) {
+      await signOutUser(auth);
+      console.error("⚠️ Erro na sincronização:", err);
+      throw new Error("Erro ao sincronizar usuário");
+    }
+  } catch (err) {
+    throw new Error(getFirebaseErrorMessage(err));
   }
 };
 
@@ -59,8 +83,8 @@ export const loginGoogle = async () => {
 export const passwordRecovery = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
-  } catch (error) {
-    throw new Error(getFirebaseErrorMessage(error));
+  } catch (err) {
+    throw new Error(getFirebaseErrorMessage(err));
   }
 };
 
@@ -68,7 +92,7 @@ export const signOut = async () => {
   try {
     await signOutUser(auth);
     console.log("Desconectado com sucesso!");
-  } catch (error) {
-    throw new Error(getFirebaseErrorMessage(error));
+  } catch (err) {
+    throw new Error(getFirebaseErrorMessage(err));
   }
 };
