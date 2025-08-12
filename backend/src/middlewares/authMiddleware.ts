@@ -11,7 +11,6 @@ declare global {
       userId?: number;
       firebaseUid?: string;
       user?: {
-        // Para compatibilidade com seu controller
         uid: string;
         email?: string;
       };

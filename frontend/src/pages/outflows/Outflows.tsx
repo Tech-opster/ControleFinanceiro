@@ -18,23 +18,38 @@ type Data = {
 
 const Outflows: React.FC = () => {
   const [data, setData] = React.useState<Data[]>([]);
+  const [categories, setCategories] = React.useState<
+    { id: number; category: string }[]
+  >([]);
+
+  const fetchData = async () => {
+    try {
+      const outflowData = await api.get<Data[]>("/outflows");
+      const parsed = outflowData.map((item) => ({
+        ...item,
+        date: new Date(item.date),
+      }));
+
+      setData(parsed);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const categoryData = await api.get<{ id: number; category: string }[]>(
+        "/categories"
+      );
+      setCategories(categoryData);
+    } catch (err) {
+      console.error("Erro ao buscar categorias:", err);
+    }
+  };
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const outflowData = await api.get<Data[]>("/outflows");
-        const parsed = outflowData.map((item) => ({
-          ...item,
-          date: new Date(item.date),
-        }));
-
-        setData(parsed);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
     fetchData();
+    fetchCategories();
   }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
@@ -48,25 +63,54 @@ const Outflows: React.FC = () => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
         },
+        muiEditTextFieldProps: {
+          type: "date",
+          InputLabelProps: {
+            shrink: true,
+          },
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+          },
+        },
       },
       {
         accessorKey: "category.category",
         header: "Categoria",
+        Cell: ({ row }) => {
+          return row.original.category?.category || "Sem categoria";
+        },
+        editSelectOptions: categories.map((cat) => ({
+          value: cat.id.toString(),
+          label: cat.category,
+        })),
+        muiEditTextFieldProps: {
+          select: true,
+        },
       },
       {
         accessorKey: "status",
         header: "Situação",
         Cell: ({ cell }) => (cell.getValue<boolean>() ? "Pago" : "Não pago"),
+        editVariant: "select",
+        editSelectOptions: [
+          { value: "true", label: "Pago" },
+          { value: "false", label: "Não pago" },
+        ],
+        muiEditTextFieldProps: {
+          select: true,
+        },
       },
     ],
-    []
+    [categories]
   );
 
   return (
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Saída"/>
+          <Table columns={columns} data={data} origin="Saída" />
         </div>
       </IonContent>
     </IonPage>

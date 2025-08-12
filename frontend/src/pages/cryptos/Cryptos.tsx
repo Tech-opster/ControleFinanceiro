@@ -14,31 +14,30 @@ type Data = {
 };
 
 const Cryptos: React.FC = () => {
-
   const [data, setData] = React.useState<Data[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const outflowData = await api.get<Data[]>("/cryptos");
+      const parsed = outflowData.map((item) => ({
+        ...item,
+        purchaseDate: new Date(item.purchaseDate),
+      }));
+
+      setData(parsed);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   
-    React.useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const outflowData = await api.get<Data[]>("/cryptos");
-          const parsed = outflowData.map((item) => ({
-            ...item,
-            purchaseDate: new Date(item.purchaseDate),
-          }));
-          
-          setData(parsed);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-  
-      fetchData();
-    }, []);
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
       { accessorKey: "name", header: "Moeda" },
-      { accessorKey: "amount", header: "Valor"},
+      { accessorKey: "amount", header: "Valor" },
       { accessorKey: "price", header: "Cotação" },
       { accessorKey: "quantity", header: "Quantidade" },
       {
@@ -47,6 +46,17 @@ const Cryptos: React.FC = () => {
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
+        },
+        muiEditTextFieldProps: {
+          type: "date",
+          InputLabelProps: {
+            shrink: true,
+          },
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+          },
         },
       },
       { accessorKey: "bank", header: "Banco" },
@@ -58,7 +68,7 @@ const Cryptos: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Criptomoeda"/>
+          <Table columns={columns} data={data} origin="Criptomoeda" />
         </div>
       </IonContent>
     </IonPage>

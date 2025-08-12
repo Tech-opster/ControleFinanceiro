@@ -12,26 +12,25 @@ type Data = {
 };
 
 const Rewards: React.FC = () => {
-
   const [data, setData] = React.useState<Data[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const outflowData = await api.get<Data[]>("/rewards");
+      const parsed = outflowData.map((item) => ({
+        ...item,
+        dueDate: new Date(item.dueDate),
+      }));
+
+      setData(parsed);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   
-    React.useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const outflowData = await api.get<Data[]>("/rewards");
-          const parsed = outflowData.map((item) => ({
-            ...item,
-            dueDate: new Date(item.dueDate),
-          }));
-          
-          setData(parsed);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-  
-      fetchData();
-    }, []);
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
@@ -44,6 +43,17 @@ const Rewards: React.FC = () => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
         },
+        muiEditTextFieldProps: {
+          type: "date",
+          InputLabelProps: {
+            shrink: true,
+          },
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+          },
+        },
       },
       { accessorKey: "issuer", header: "Emissor" },
     ],
@@ -54,7 +64,7 @@ const Rewards: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Pontuação"/>
+          <Table columns={columns} data={data} origin="Pontuação" />
         </div>
       </IonContent>
     </IonPage>

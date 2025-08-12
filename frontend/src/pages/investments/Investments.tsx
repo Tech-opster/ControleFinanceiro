@@ -16,39 +16,49 @@ type Data = {
 };
 
 const Investments: React.FC = () => {
-
   const [data, setData] = React.useState<Data[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const outflowData = await api.get<Data[]>("/investments");
+      const parsed = outflowData.map((item) => ({
+        ...item,
+        purchaseDate: new Date(item.purchaseDate),
+        dueDate: new Date(item.dueDate),
+      }));
+
+      setData(parsed);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   
-    React.useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const outflowData = await api.get<Data[]>("/investments");
-          const parsed = outflowData.map((item) => ({
-            ...item,
-            purchaseDate: new Date(item.purchaseDate),
-            dueDate: new Date(item.dueDate),
-          }));
-          
-          setData(parsed);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-  
-      fetchData();
-    }, []);
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
       { accessorKey: "name", header: "Emissor" },
       { accessorKey: "investmentType", header: "Título" },
-      { accessorKey: "amount", header: "Valor"},
+      { accessorKey: "amount", header: "Valor" },
       {
         accessorKey: "purchaseDate",
         header: "Compra",
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
+        },
+        muiEditTextFieldProps: {
+          type: "date",
+          InputLabelProps: {
+            shrink: true,
+          },
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+          },
         },
       },
       {
@@ -57,6 +67,17 @@ const Investments: React.FC = () => {
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
+        },
+        muiEditTextFieldProps: {
+          type: "date",
+          InputLabelProps: {
+            shrink: true,
+          },
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+          },
         },
       },
       { accessorKey: "yieldValue", header: "Rentabilidade" },
