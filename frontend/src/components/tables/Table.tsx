@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   MaterialReactTable,
   MRT_EditActionButtons,
@@ -16,25 +17,86 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import * as api from "../../services/api";
+import { normalizeValues } from "../../utils/normalizerValues";
+import { createNormalizerConfigFromColumns  } from "../../utils/createNormalizerConfigFromColumns"
 
 type Props<T extends object> = {
   columns: MRT_ColumnDef<T>[];
   data: T[];
   origin: string;
+  route: string;
+  onRefresh?: () => void;
 };
 
 const Table = <T extends { [key: string]: unknown }>({
   data,
   columns,
   origin,
+  route,
+  onRefresh,
 }: Props<T>) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Função para criar novo registro
+  const handleCreateRecord = async (values: T) => {
+    setIsLoading(true);
+    try {
+      await api.post(route, values);
+
+      // Chama a função de refresh se fornecida
+      if (onRefresh) {
+        onRefresh();
+      }
+    } catch (error) {
+      console.error("Erro ao criar registro:", error);
+      // Aqui você pode adicionar tratamento de erro (toast, alert, etc.)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Função para atualizar registro
+  const handleUpdateRecord = async (values: T) => {
+    setIsLoading(true);
+    try {
+      await api.put(`${route}/${values.id}`, values);
+
+      if (onRefresh) {
+        onRefresh();
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar registro:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Função para deletar registro
+  const handleDeleteRecord = async (id: string | number) => {
+    setIsLoading(true);
+    try {
+      await api.del(`${route}/${id}`);
+
+      if (onRefresh) {
+        onRefresh();
+      }
+    } catch (error) {
+      console.error("Erro ao deletar registro:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const openDeleteConfirmModal = (row: MRT_Row<T>) => {
     if (
       window.confirm(
-        `Você tem certeza que quer deletar o registro ${row.original.name}?`
+        `Você tem certeza que quer deletar o registro ${
+          row.original.name || "selecionado"
+        }?`
       )
     ) {
-      // deleteRow(row.original.id);
+      handleDeleteRecord(row.original.id as string | number);
     }
   };
 
@@ -44,8 +106,11 @@ const Table = <T extends { [key: string]: unknown }>({
     enableEditing: true,
     enableFullScreenToggle: false,
     initialState: { density: "compact" },
+    state: {
+      isLoading,
+    },
     mrtTheme: () => ({
-      baseBackgroundColor: "rgb(160, 160, 160)"
+      baseBackgroundColor: "rgb(160, 160, 160)",
     }),
     muiTablePaperProps: {
       sx: {
@@ -56,6 +121,18 @@ const Table = <T extends { [key: string]: unknown }>({
       sx: {
         width: "100vw !important",
       },
+    },
+    onCreatingRowSave: async ({ values, table }) => {
+      const config = createNormalizerConfigFromColumns (columns);
+      const normalizedValues = normalizeValues(values, config);      
+      await handleCreateRecord(normalizedValues);
+      table.setCreatingRow(null);
+    },
+    onEditingRowSave: async ({ values, table }) => {
+      const config = createNormalizerConfigFromColumns (columns);
+      const normalizedValues = normalizeValues(values, config);
+      await handleUpdateRecord(normalizedValues);
+      table.setEditingRow(null);
     },
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>

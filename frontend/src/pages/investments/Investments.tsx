@@ -17,10 +17,11 @@ type Data = {
 
 const Investments: React.FC = () => {
   const [data, setData] = React.useState<Data[]>([]);
+  const route = "/investments";
 
   const fetchData = async () => {
     try {
-      const outflowData = await api.get<Data[]>("/investments");
+      const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item) => ({
         ...item,
         purchaseDate: new Date(item.purchaseDate),
@@ -32,19 +33,20 @@ const Investments: React.FC = () => {
       console.error(err);
     }
   };
-  
+
   React.useEffect(() => {
     fetchData();
   }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "name", header: "Emissor" },
-      { accessorKey: "investmentType", header: "Título" },
-      { accessorKey: "amount", header: "Valor" },
+      { accessorKey: "name", header: "Emissor", meta: { type: "string" } },
+      { accessorKey: "investmentType", header: "Título", meta: { type: "string" } },
+      { accessorKey: "amount", header: "Valor", meta: { type: "number" } },
       {
         accessorKey: "purchaseDate",
         header: "Compra",
+        meta: { type: "date" },
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
@@ -64,6 +66,7 @@ const Investments: React.FC = () => {
       {
         accessorKey: "dueDate",
         header: "Vencimento",
+        meta: { type: "date" },
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
@@ -80,9 +83,9 @@ const Investments: React.FC = () => {
           },
         },
       },
-      { accessorKey: "yieldValue", header: "Rentabilidade" },
-      { accessorKey: "yieldType", header: "Tipo" },
-      { accessorKey: "bank", header: "Banco" },
+      { accessorKey: "yieldValue", header: "Rentabilidade", meta: { type: "number" } },
+      { accessorKey: "yieldType", header: "Tipo", meta: { type: "string" } },
+      { accessorKey: "bank", header: "Banco", meta: { type: "string" } },
     ],
     []
   );
@@ -91,7 +94,13 @@ const Investments: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Investimento" />
+          <Table
+            columns={columns}
+            data={data}
+            origin="Investimento"
+            route={route}
+            onRefresh={fetchData}
+          />
         </div>
       </IonContent>
     </IonPage>

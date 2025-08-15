@@ -9,13 +9,13 @@ datasource db {
 }
 
 model Users {
-  id                Int            @id @default(autoincrement())
-  firebaseUid       String         @unique @db.VarChar(128)
-  email             String         @unique @db.VarChar(255)
-  name              String         @db.VarChar(100)
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-  
+  id          Int      @id @default(autoincrement())
+  firebaseUid String   @unique @db.VarChar(128)
+  email       String   @unique @db.VarChar(255)
+  name        String   @db.VarChar(100)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   Incomes           Incomes[]
   Outflows          Outflows[]
   UserCategory      UserCategory[]
@@ -36,8 +36,8 @@ model Incomes {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId    Int
-  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("incomes")
 }
@@ -113,8 +113,9 @@ model Cryptos {
   price        Decimal  @db.Decimal(15, 8)
   quantity     Decimal  @db.Decimal(18, 8)
   purchaseDate DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  bank         String   @db.VarChar(64)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId Int
   user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)

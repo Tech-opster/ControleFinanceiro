@@ -51,6 +51,19 @@ async function main() {
         from: new Date('2023-01-01'), 
         to: new Date() 
       }),
+      bank: faker.helpers.arrayElement([
+        'Binance',
+        'Mercado Bitcoin',
+        'Santander',
+        'BTG Pactual',
+        'XP Investimentos',
+        'Nubank',
+        'Inter',
+        'C6 Bank',
+        'Modal',
+        'Rico',
+        'Clear'
+      ]),
       userId: faker.helpers.arrayElement(userIds)
     };
   });

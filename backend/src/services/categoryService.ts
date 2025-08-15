@@ -29,8 +29,60 @@ export const getCategoryByIdService = async (where: Prisma.CategoriesWhereUnique
 };
 
 export const createCategoryService = async (data: CreateCategoryDTO) => {
-  return prisma.categories.create({
-    data,
+  return prisma.$transaction(async (tx) => {
+    // 1. Verificar se já existe uma categoria com esse nome
+    let category = await tx.categories.findFirst({
+      where: {
+        category: data.category,
+      },
+    });
+
+    // 2. Se não existir, criar nova
+    if (!category) {
+      category = await tx.categories.create({
+        data: {
+          category: data.category,
+          createdBy: data.userId,
+          isDefault: false,
+        },
+      });
+    }
+
+    // 3. Verificar se o usuário já tem associação com esta categoria
+    const existingAssociation = await tx.userCategory.findUnique({
+      where: {
+        userId_categoryId: {
+          userId: data.userId,
+          categoryId: category.id,
+        },
+      },
+    });
+
+    // 4. Se não tiver associação, criar
+    if (!existingAssociation) {
+      await tx.userCategory.create({
+        data: {
+          userId: data.userId,
+          categoryId: category.id,
+          isActive: true,
+        },
+      });
+    } else if (!existingAssociation.isActive) {
+      // 5. Se tiver associação mas estiver inativa, reativar
+      await tx.userCategory.update({
+        where: {
+          userId_categoryId: {
+            userId: data.userId,
+            categoryId: category.id,
+          },
+        },
+        data: {
+          isActive: true,
+        },
+      });
+    }
+
+    return category;
   });
 };
 

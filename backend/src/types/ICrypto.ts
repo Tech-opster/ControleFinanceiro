@@ -4,6 +4,7 @@ export interface CreateCryptoDTO {
   price: number;
   quantity: number;
   purchaseDate: Date;
+  bank: string;
   userId: number;
 }
 

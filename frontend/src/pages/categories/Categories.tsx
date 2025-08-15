@@ -10,13 +10,13 @@ type Data = {
 
 const Categories: React.FC = () => {
   const [data, setData] = React.useState<Data[]>([]);
+  const route = "/categories";
 
   const fetchData = async () => {
     try {
-      const outflowData = await api.get<Data[]>("/categories");
+      const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item) => ({
-        ...item,
-        name: item.category,
+        ...item
       }));
 
       setData(parsed);
@@ -24,13 +24,13 @@ const Categories: React.FC = () => {
       console.error(err);
     }
   };
-  
+
   React.useEffect(() => {
     fetchData();
   }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
-    () => [{ accessorKey: "category", header: "Categoria" }],
+    () => [{ accessorKey: "category", header: "Categoria", meta: { type: "string" } }],
     []
   );
 
@@ -38,7 +38,13 @@ const Categories: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Categoria" />
+          <Table
+            columns={columns}
+            data={data}
+            origin="Categoria"
+            route={route}
+            onRefresh={fetchData}
+          />
         </div>
       </IonContent>
     </IonPage>

@@ -1,6 +1,6 @@
 import { auth } from '../firebase/firebase'; // Ajuste o caminho
 
-const BASE_URL = "http://localhost:3001";
+const baseUrl = import.meta.env.VITE_URL_BACKEND;
 
 // ✅ Função para pegar o token automaticamente
 const getAuthHeaders = async () => {
@@ -22,7 +22,7 @@ export const get = async <T = unknown>(path: string): Promise<T> => {
   try {
     const headers = await getAuthHeaders();
     
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'GET',
       headers
     });
@@ -43,7 +43,7 @@ export const post = async <T = unknown>(path: string, data: unknown): Promise<T>
   try {
     const headers = await getAuthHeaders();
     
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'POST',
       headers,
       body: JSON.stringify(data)
@@ -65,7 +65,7 @@ export const put = async <T = unknown>(path: string, data: unknown): Promise<T> 
   try {
     const headers = await getAuthHeaders();
     
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(data)
@@ -87,7 +87,7 @@ export const del = async <T = unknown>(path: string): Promise<T> => {
   try {
     const headers = await getAuthHeaders();
     
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'DELETE',
       headers
     });
@@ -112,7 +112,7 @@ export const del = async <T = unknown>(path: string): Promise<T> => {
 // ✅ Para rotas públicas (sem autenticação) - ex: registro
 export const postPublic = async <T = unknown>(path: string, data: unknown): Promise<T> => {
   try {
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

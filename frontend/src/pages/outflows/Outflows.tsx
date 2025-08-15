@@ -21,10 +21,11 @@ const Outflows: React.FC = () => {
   const [categories, setCategories] = React.useState<
     { id: number; category: string }[]
   >([]);
+  const route = "/outflows";
 
   const fetchData = async () => {
     try {
-      const outflowData = await api.get<Data[]>("/outflows");
+      const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item) => ({
         ...item,
         date: new Date(item.date),
@@ -54,11 +55,12 @@ const Outflows: React.FC = () => {
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "name", header: "Despesa" },
-      { accessorKey: "amount", header: "Valor" },
+      { accessorKey: "name", header: "Despesa", meta: { type: "string" } },
+      { accessorKey: "amount", header: "Valor", meta: { type: "number" } },
       {
         accessorKey: "date",
         header: "Data",
+        meta: { type: "date" },
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
@@ -76,8 +78,9 @@ const Outflows: React.FC = () => {
         },
       },
       {
-        accessorKey: "category.category",
+        accessorKey: "categoryId",
         header: "Categoria",
+        meta: { type: "number" },
         Cell: ({ row }) => {
           return row.original.category?.category || "Sem categoria";
         },
@@ -92,6 +95,7 @@ const Outflows: React.FC = () => {
       {
         accessorKey: "status",
         header: "Situação",
+        meta: { type: "boolean" },
         Cell: ({ cell }) => (cell.getValue<boolean>() ? "Pago" : "Não pago"),
         editVariant: "select",
         editSelectOptions: [
@@ -110,7 +114,13 @@ const Outflows: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Saída" />
+          <Table
+            columns={columns}
+            data={data}
+            origin="Saída"
+            route={route}
+            onRefresh={fetchData}
+          />
         </div>
       </IonContent>
     </IonPage>

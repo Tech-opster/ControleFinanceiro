@@ -12,10 +12,11 @@ type Data = {
 
 const Incomes: React.FC = () => {
   const [data, setData] = React.useState<Data[]>([]);
+  const route = "/incomes";
 
   const fetchData = async () => {
     try {
-      const outflowData = await api.get<Data[]>("/incomes");
+      const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item) => ({
         ...item,
         date: new Date(item.date),
@@ -26,18 +27,19 @@ const Incomes: React.FC = () => {
       console.error(err);
     }
   };
-  
+
   React.useEffect(() => {
     fetchData();
   }, []);
 
   const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "name", header: "Receita" },
-      { accessorKey: "amount", header: "Valor" },
+      { accessorKey: "name", header: "Receita", meta: { type: "string" } },
+      { accessorKey: "amount", header: "Valor", meta: { type: "number" } },
       {
         accessorKey: "date",
         header: "Data",
+        meta: { type: "date" },
         Cell: ({ cell }) => {
           const date = cell.getValue<Date>();
           return date.toLocaleDateString("pt-BR");
@@ -62,7 +64,13 @@ const Incomes: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <div className="h-full min-h-fit flex justify-center items-center">
-          <Table columns={columns} data={data} origin="Entrada" />
+          <Table
+            columns={columns}
+            data={data}
+            origin="Entrada"
+            route={route}
+            onRefresh={fetchData}
+          />
         </div>
       </IonContent>
     </IonPage>
