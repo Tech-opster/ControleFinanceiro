@@ -52,7 +52,15 @@ export const register = async (
 export const loginEmail = async (email: string, password: string) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    return result.user;
+    try {
+      await post<SyncUserResponse>("/users/sync-user", {});
+      console.log("✅ Usuário sincronizado com o banco");
+      return result.user;
+    } catch (err) {
+      await signOutUser(auth);
+      console.error("⚠️ Erro na sincronização:", err);
+      throw new Error("Erro ao sincronizar usuário");
+    }
   } catch (err) {
     throw new Error(getFirebaseErrorMessage(err));
   }
@@ -66,7 +74,7 @@ export const loginGoogle = async () => {
 
     // ✅ Sincroniza diretamente (usuário já tem token após signInWithPopup)
     try {
-      await post<SyncUserResponse>("/users/sync-google", {});
+      await post<SyncUserResponse>("/users/sync-user", {});
       console.log("✅ Usuário sincronizado com o banco");
       return result.user;
     } catch (err) {

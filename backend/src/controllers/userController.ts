@@ -34,6 +34,33 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+export const updateUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const { name, email, firebaseUid } = req.body;
+  const data: UpdateUserDTO = { name, email, firebaseUid };
+
+  try {
+    const user = await updateUserService({ id }, data);
+
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(404).json({ error: "Não foi possível atualizar usuário" });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  try {
+    await deleteUserService({ id });
+    res.status(204).send();
+  } catch (err) {
+    console.error(err);
+    res.status(404).json({ error: "Não foi possível deletar usuário" });
+  }
+};
+
+
 export const createUser = async (
   req: Request,
   res: Response
@@ -86,7 +113,7 @@ export const createUser = async (
   }
 };
 
-export const syncGoogleUser = async (
+export const syncUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -192,31 +219,5 @@ export const syncGoogleUser = async (
       error: "Erro ao sincronizar usuário",
       details: process.env.NODE_ENV === "development" ? err.message : undefined,
     });
-  }
-};
-
-export const updateUser = async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-  const { name, email, firebaseUid } = req.body;
-  const data: UpdateUserDTO = { name, email, firebaseUid };
-
-  try {
-    const user = await updateUserService({ id }, data);
-
-    res.json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(404).json({ error: "Não foi possível atualizar usuário" });
-  }
-};
-
-export const deleteUser = async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-  try {
-    await deleteUserService({ id });
-    res.status(204).send();
-  } catch (err) {
-    console.error(err);
-    res.status(404).json({ error: "Não foi possível deletar usuário" });
   }
 };
