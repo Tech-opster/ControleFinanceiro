@@ -105,7 +105,7 @@ const Table = <T extends { [key: string]: unknown }>({
     data,
     enableEditing: true,
     enableFullScreenToggle: false,
-    initialState: { density: "compact" },
+    initialState: { density: "compact", pagination: { pageSize: 100, pageIndex: 0 } },
     state: {
       isLoading,
     },
