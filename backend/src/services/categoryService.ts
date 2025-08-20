@@ -6,7 +6,11 @@ import {
   UpdateCategoryDTO,
 } from "../types/ICategory";
 
-export const getCategoryService = async ({ userId }: { userId: number }) => {
+export const getCategoryService = async (
+  where: Prisma.UserCategoryWhereInput
+) => {
+  const { userId } = where;
+
   return prisma.$transaction(async (tx) => {
     // 1. Buscar todas as categorias disponíveis
     const allCategories = await tx.categories.findMany({
@@ -116,9 +120,193 @@ export const updateCategoryService = async (
   where: Prisma.CategoriesWhereUniqueInput,
   data: UpdateCategoryDTO
 ) => {
-  return prisma.categories.update({
-    where,
-    data,
+  return prisma.$transaction(async (tx) => {
+    // 1. Buscar a categoria atual com todas as informações necessárias
+    const currentCategory = await tx.categories.findUnique({
+      where: { id: where.id },
+      include: {
+        UserCategory: {
+          where: { isActive: true },
+          select: {
+            userId: true,
+            isActive: true,
+            user: {
+              select: { id: true, name: true },
+            },
+          },
+        },
+        creator: {
+          select: { id: true, name: true },
+        },
+      },
+    });
+
+    if (!currentCategory) {
+      throw new Error("Categoria não encontrada");
+    }
+
+    // Verificar se o usuário tem acesso a esta categoria
+    const userHasAccess =
+      currentCategory.isDefault ||
+      currentCategory.UserCategory.some((uc) => uc.userId === data.userId);
+
+    if (!userHasAccess) {
+      throw new Error("Usuário não tem permissão para editar esta categoria");
+    }
+
+    // 2. Verificar se já existe uma categoria com o novo nome
+    const existingCategoryWithNewName = await tx.categories.findFirst({
+      where: {
+        category: data.category.trim(),
+        NOT: { id: currentCategory.id },
+      },
+    });
+
+    // 3. CENÁRIO: Nome já existe - substituir
+    if (existingCategoryWithNewName) {
+      // Desativar categoria atual
+      await tx.userCategory.upsert({
+        where: {
+          userId_categoryId: {
+            userId: data.userId,
+            categoryId: currentCategory.id,
+          },
+        },
+        update: { isActive: false },
+        create: {
+          userId: data.userId,
+          categoryId: currentCategory.id,
+          isActive: false,
+        },
+      });
+
+      // Ativar categoria existente
+      await tx.userCategory.upsert({
+        where: {
+          userId_categoryId: {
+            userId: data.userId,
+            categoryId: existingCategoryWithNewName.id,
+          },
+        },
+        update: { isActive: true },
+        create: {
+          userId: data.userId,
+          categoryId: existingCategoryWithNewName.id,
+          isActive: true,
+        },
+      });
+
+      return {
+        success: true,
+        message: `Categoria alterada para "${existingCategoryWithNewName.category}" (categoria existente)`,
+        category: existingCategoryWithNewName,
+        action: "REPLACED_WITH_EXISTING",
+        previousCategory: currentCategory,
+      };
+    }
+
+    // 4. CENÁRIO: Categoria default - sempre criar nova
+    if (currentCategory.isDefault) {
+      const newCategory = await tx.categories.create({
+        data: {
+          category: data.category.trim(),
+          createdBy: data.userId,
+          isDefault: false,
+        },
+      });
+
+      // Desativar default
+      await tx.userCategory.upsert({
+        where: {
+          userId_categoryId: {
+            userId: data.userId,
+            categoryId: currentCategory.id,
+          },
+        },
+        update: { isActive: false },
+        create: {
+          userId: data.userId,
+          categoryId: currentCategory.id,
+          isActive: false,
+        },
+      });
+
+      // Ativar nova
+      await tx.userCategory.create({
+        data: {
+          userId: data.userId,
+          categoryId: newCategory.id,
+          isActive: true,
+        },
+      });
+
+      return {
+        success: true,
+        message: `Nova categoria "${newCategory.category}" criada (categoria default não pode ser editada)`,
+        category: newCategory,
+        action: "CREATED_FROM_DEFAULT",
+        previousCategory: currentCategory,
+      };
+    }
+
+    // 5. CENÁRIO: Categoria compartilhada - criar nova
+    const activeUsers = currentCategory.UserCategory.filter(
+      (uc) => uc.isActive
+    );
+    if (activeUsers.length > 1) {
+      const newCategory = await tx.categories.create({
+        data: {
+          category: data.category.trim(),
+          createdBy: data.userId,
+          isDefault: false,
+        },
+      });
+
+      // Desativar atual para o usuário
+      await tx.userCategory.update({
+        where: {
+          userId_categoryId: {
+            userId: data.userId,
+            categoryId: currentCategory.id,
+          },
+        },
+        data: { isActive: false },
+      });
+
+      // Ativar nova para o usuário
+      await tx.userCategory.create({
+        data: {
+          userId: data.userId,
+          categoryId: newCategory.id,
+          isActive: true,
+        },
+      });
+
+      return {
+        success: true,
+        message: `Nova categoria "${newCategory.category}" criada (categoria compartilhada não pode ser editada)`,
+        category: newCategory,
+        action: "CREATED_FROM_SHARED",
+        previousCategory: currentCategory,
+        sharedWithUsers: activeUsers.map((u) => u.user?.name).filter(Boolean),
+      };
+    }
+
+    // 6. CENÁRIO: Categoria própria e exclusiva - pode editar
+    const updatedCategory = await tx.categories.update({
+      where: { id: currentCategory.id },
+      data: {
+        category: data.category.trim(),
+      },
+    });
+
+    return {
+      success: true,
+      message: `Categoria atualizada para "${updatedCategory.category}"`,
+      category: updatedCategory,
+      action: "UPDATED_IN_PLACE",
+      previousCategory: currentCategory,
+    };
   });
 };
 

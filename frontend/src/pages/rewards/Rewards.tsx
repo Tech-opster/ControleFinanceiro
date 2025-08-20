@@ -5,6 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
+  id: string | number;
   name: string;
   quantity: number;
   dueDate: Date;
@@ -18,9 +19,10 @@ const Rewards: React.FC = () => {
   const fetchData = async () => {
     try {
       const outflowData = await api.get<Data[]>(route);
-      const parsed = outflowData.map((item) => ({
+      const parsed = outflowData.map((item, idx) => ({
         ...item,
         dueDate: new Date(item.dueDate),
+        id: item.id ?? idx,
       }));
 
       setData(parsed);

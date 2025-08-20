@@ -5,6 +5,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 
 type Data = {
+  id: string | number;
   category: string;
 };
 
@@ -15,10 +16,11 @@ const Categories: React.FC = () => {
   const fetchData = async () => {
     try {
       const outflowData = await api.get<Data[]>(route);
-      const parsed = outflowData.map((item) => ({
-        ...item
+      const parsed = outflowData.map((item, idx) => ({
+        ...item,
+        id: item.id ?? idx
       }));
-
+      
       setData(parsed);
     } catch (err) {
       console.error(err);

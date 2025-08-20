@@ -4,9 +4,13 @@ export interface CreateCategoryDTO {
   categoryId: number;
 }
 
+export type UpdateCategoryDTO = {
+  id: number;
+  category: string;
+  userId: number;
+};
+
 export interface DeleteCategoryDTO {
   id: number;
   userId: number;
 }
-
-export type UpdateCategoryDTO = Partial<CreateCategoryDTO>;

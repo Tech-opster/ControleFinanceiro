@@ -19,7 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as api from "../../services/api";
 import { normalizeValues } from "../../utils/normalizerValues";
-import { createNormalizerConfigFromColumns  } from "../../utils/createNormalizerConfigFromColumns"
+import { createNormalizerConfigFromColumns } from "../../utils/createNormalizerConfigFromColumns";
 
 type Props<T extends object> = {
   columns: MRT_ColumnDef<T>[];
@@ -105,7 +105,10 @@ const Table = <T extends { [key: string]: unknown }>({
     data,
     enableEditing: true,
     enableFullScreenToggle: false,
-    initialState: { density: "compact", pagination: { pageSize: 100, pageIndex: 0 } },
+    initialState: {
+      density: "compact",
+      pagination: { pageSize: 100, pageIndex: 0 },
+    },
     state: {
       isLoading,
     },
@@ -123,14 +126,18 @@ const Table = <T extends { [key: string]: unknown }>({
       },
     },
     onCreatingRowSave: async ({ values, table }) => {
-      const config = createNormalizerConfigFromColumns (columns);
-      const normalizedValues = normalizeValues(values, config);      
+      const config = createNormalizerConfigFromColumns(columns);
+      const normalizedValues = normalizeValues(values, config);
       await handleCreateRecord(normalizedValues);
       table.setCreatingRow(null);
     },
-    onEditingRowSave: async ({ values, table }) => {
-      const config = createNormalizerConfigFromColumns (columns);
-      const normalizedValues = normalizeValues(values, config);
+    onEditingRowSave: async ({ values, row, table }) => {
+      const config = createNormalizerConfigFromColumns(columns);
+      // Garante que o id do registro original seja mantido
+      const normalizedValues = {
+        ...normalizeValues(values, config),
+        id: row.original.id,
+      };
       await handleUpdateRecord(normalizedValues);
       table.setEditingRow(null);
     },

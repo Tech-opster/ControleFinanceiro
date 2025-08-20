@@ -44,7 +44,7 @@ function tableController(service: any, entityName: string) {
       try {
         const userId = req.userId!;
 
-        const item = await service.update({ id, userId }, req.body);
+        const item = await service.update({ id, userId }, { ...req.body, userId });
         res.json(item);
       } catch (err) {
         console.error(err);
