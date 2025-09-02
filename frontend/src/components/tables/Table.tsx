@@ -20,6 +20,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import * as api from "../../services/api";
 import { normalizeValues } from "../../utils/normalizerValues";
 import { createNormalizerConfigFromColumns } from "../../utils/createNormalizerConfigFromColumns";
+import {
+  getInvalidFields,
+  validateRequired,
+} from "../../utils/validateRequired";
 
 type Props<T extends object> = {
   columns: MRT_ColumnDef<T>[];
@@ -27,6 +31,7 @@ type Props<T extends object> = {
   origin: string;
   route: string;
   onRefresh?: () => void;
+  onValidationError?: (errors: Record<string, string>) => void;
 };
 
 const Table = <T extends { [key: string]: unknown }>({
@@ -35,6 +40,7 @@ const Table = <T extends { [key: string]: unknown }>({
   origin,
   route,
   onRefresh,
+  onValidationError,
 }: Props<T>) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,13 +50,12 @@ const Table = <T extends { [key: string]: unknown }>({
     try {
       await api.post(route, values);
 
-      // Chama a função de refresh se fornecida
       if (onRefresh) {
         onRefresh();
       }
     } catch (error) {
       console.error("Erro ao criar registro:", error);
-      // Aqui você pode adicionar tratamento de erro (toast, alert, etc.)
+      // adicionar tratamento de erro (toast, alert, etc.)
     } finally {
       setIsLoading(false);
     }
@@ -128,6 +133,18 @@ const Table = <T extends { [key: string]: unknown }>({
     onCreatingRowSave: async ({ values, table }) => {
       const config = createNormalizerConfigFromColumns(columns);
       const normalizedValues = normalizeValues(values, config);
+
+      if (!validateRequired(normalizedValues)) {
+        if (onValidationError) {
+          const errors: Record<string, string> = {};
+          getInvalidFields(normalizedValues).forEach((field) => {
+            errors[field] = "Campo obrigatório";
+          });
+          onValidationError(errors);
+        }
+        return;
+      }
+
       await handleCreateRecord(normalizedValues);
       table.setCreatingRow(null);
     },
@@ -138,6 +155,18 @@ const Table = <T extends { [key: string]: unknown }>({
         ...normalizeValues(values, config),
         id: row.original.id,
       };
+
+      if (!validateRequired(normalizedValues)) {
+        if (onValidationError) {
+          const errors: Record<string, string> = {};
+          getInvalidFields(normalizedValues).forEach((field) => {
+            errors[field] = "Campo obrigatório";
+          });
+          onValidationError(errors);
+        }
+        return;
+      }
+
       await handleUpdateRecord(normalizedValues);
       table.setEditingRow(null);
     },
@@ -170,7 +199,12 @@ const Table = <T extends { [key: string]: unknown }>({
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Editar">
-          <IconButton onClick={() => table.setEditingRow(row)}>
+          <IconButton
+            onClick={() => {
+              onValidationError?.({});
+              table.setEditingRow(row);
+            }}
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>
@@ -185,6 +219,7 @@ const Table = <T extends { [key: string]: unknown }>({
       <Button
         variant="contained"
         onClick={() => {
+          onValidationError?.({});
           table.setCreatingRow(true);
         }}
       >

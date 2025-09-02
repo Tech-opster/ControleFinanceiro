@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
 import Table from "../../components/tables/Table";
 import { MRT_ColumnDef } from "material-react-table";
@@ -10,30 +10,53 @@ type Data = {
 };
 
 const Categories: React.FC = () => {
-  const [data, setData] = React.useState<Data[]>([]);
+  const [data, setData] = useState<Data[]>([]);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
   const route = "/categories";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
       const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item, idx) => ({
         ...item,
-        id: item.id ?? idx
+        id: item.id ?? idx,
       }));
-      
+
       setData(parsed);
     } catch (err) {
       console.error(err);
     }
   };
 
-  React.useEffect(() => {
-    fetchData();
-  }, []);
+  const handleValidationError = (errors: Record<string, string>) => {
+    setValidationErrors(errors);
+  };
 
-  const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
-    () => [{ accessorKey: "category", header: "Categoria", meta: { type: "string" } }],
-    []
+  const columns = useMemo<MRT_ColumnDef<Data>[]>(
+    () => [
+      {
+        accessorKey: "category",
+        header: "Categoria",
+        meta: { type: "string" },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.category,
+          helperText: validationErrors?.category,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              category: undefined,
+            }),
+        },
+      },
+    ],
+    [validationErrors]
   );
 
   return (
@@ -46,6 +69,7 @@ const Categories: React.FC = () => {
             origin="Categoria"
             route={route}
             onRefresh={fetchData}
+            onValidationError={handleValidationError}
           />
         </div>
       </IonContent>

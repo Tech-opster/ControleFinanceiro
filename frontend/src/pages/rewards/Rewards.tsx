@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
 import Table from "../../components/tables/Table";
 import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
+import { formatDatePtBr } from "../../utils/formatDatePtBr";
 
 type Data = {
   id: string | number;
   name: string;
   quantity: number;
-  dueDate: Date;
+  dueDate: Date | string;
   issuer: string;
 };
 
 const Rewards: React.FC = () => {
-  const [data, setData] = React.useState<Data[]>([]);
+  const [data, setData] = useState<Data[]>([]);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
   const route = "/rewards";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
       const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item, idx) => ({
         ...item,
-        dueDate: new Date(item.dueDate),
+        dueDate: new Date(item.dueDate).toISOString().split("T")[0],
         id: item.id ?? idx,
       }));
 
@@ -31,24 +39,66 @@ const Rewards: React.FC = () => {
     }
   };
 
-  React.useEffect(() => {
-    fetchData();
-  }, []);
-
-  const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
+  const handleValidationError = (errors: Record<string, string>) => {
+    setValidationErrors(errors);
+  };
+  const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "name", header: "Programa", meta: { type: "string" } },
-      { accessorKey: "quantity", header: "Quantidade", meta: { type: "number" } },
+      {
+        accessorKey: "name",
+        header: "Programa",
+        meta: { type: "string" },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
+      },
+      {
+        accessorKey: "quantity",
+        header: "Quantidade",
+        meta: { type: "number" },
+        muiEditTextFieldProps: {
+          type: "number",
+          required: true,
+          error: !!validationErrors?.quantity,
+          helperText: validationErrors?.quantity,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              quantity: undefined,
+            }),
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+            min: 0,
+          },
+        },
+      },
       {
         accessorKey: "dueDate",
         header: "Vencimento",
         meta: { type: "date" },
         Cell: ({ cell }) => {
-          const date = cell.getValue<Date>();
-          return date.toLocaleDateString("pt-BR");
+          const v = cell.getValue<Date | string | null>();
+          return formatDatePtBr(v);
         },
         muiEditTextFieldProps: {
           type: "date",
+          required: true,
+          error: !!validationErrors?.dueDate,
+          helperText: validationErrors?.dueDate,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              dueDate: undefined,
+            }),
           InputLabelProps: {
             shrink: true,
           },
@@ -59,9 +109,23 @@ const Rewards: React.FC = () => {
           },
         },
       },
-      { accessorKey: "issuer", header: "Emissor", meta: { type: "string" } },
+      {
+        accessorKey: "issuer",
+        header: "Emissor",
+        meta: { type: "string" },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.issuer,
+          helperText: validationErrors?.issuer,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              issuer: undefined,
+            }),
+        },
+      },
     ],
-    []
+    [validationErrors]
   );
 
   return (
@@ -74,6 +138,7 @@ const Rewards: React.FC = () => {
             origin="Pontuação"
             route={route}
             onRefresh={fetchData}
+            onValidationError={handleValidationError}
           />
         </div>
       </IonContent>

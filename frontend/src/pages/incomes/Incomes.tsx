@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
 import Table from "../../components/tables/Table";
 import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
+import { formatDatePtBr } from "../../utils/formatDatePtBr";
 
 type Data = {
   id: string | number;
   name: string;
   amount: number;
-  date: Date;
+  date: Date | string;
 };
 
 const Incomes: React.FC = () => {
-  const [data, setData] = React.useState<Data[]>([]);
+  const [data, setData] = useState<Data[]>([]);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
   const route = "/incomes";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
       const outflowData = await api.get<Data[]>(route);
       const parsed = outflowData.map((item, idx) => ({
         ...item,
-        date: new Date(item.date),
-        id: item.id ?? idx
+        date: new Date(item.date).toISOString().split("T")[0],
+        id: item.id ?? idx,
       }));
 
       setData(parsed);
@@ -30,24 +38,67 @@ const Incomes: React.FC = () => {
     }
   };
 
-  React.useEffect(() => {
-    fetchData();
-  }, []);
+  const handleValidationError = (errors: Record<string, string>) => {
+    setValidationErrors(errors);
+  };
 
-  const columns = React.useMemo<MRT_ColumnDef<Data>[]>(
+  const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
-      { accessorKey: "name", header: "Receita", meta: { type: "string" } },
-      { accessorKey: "amount", header: "Valor", meta: { type: "number" } },
+      {
+        accessorKey: "name",
+        header: "Receita",
+        meta: { type: "string" },
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
+      },
+      {
+        accessorKey: "amount",
+        header: "Valor",
+        meta: { type: "number" },
+        muiEditTextFieldProps: {
+          type: "number",
+          required: true,
+          error: !!validationErrors?.amount,
+          helperText: validationErrors?.amount,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              amount: undefined,
+            }),
+          inputProps: {
+            style: {
+              colorScheme: "light",
+            },
+            min: 0,
+          },
+        },
+      },
       {
         accessorKey: "date",
         header: "Data",
         meta: { type: "date" },
         Cell: ({ cell }) => {
-          const date = cell.getValue<Date>();
-          return date.toLocaleDateString("pt-BR");
+          const v = cell.getValue<Date | string | null>();
+          return formatDatePtBr(v);
         },
-        muiEditTextFieldProps: {
+        muiEditTextFieldProps: () => ({
           type: "date",
+          required: true,
+          error: !!validationErrors?.date,
+          helperText: validationErrors?.date,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              date: undefined,
+            }),
           InputLabelProps: {
             shrink: true,
           },
@@ -56,10 +107,10 @@ const Incomes: React.FC = () => {
               colorScheme: "light",
             },
           },
-        },
+        }),
       },
     ],
-    []
+    [validationErrors]
   );
 
   return (
@@ -72,6 +123,7 @@ const Incomes: React.FC = () => {
             origin="Entrada"
             route={route}
             onRefresh={fetchData}
+            onValidationError={handleValidationError}
           />
         </div>
       </IonContent>
