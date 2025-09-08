@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "outflows" ALTER COLUMN "status" DROP NOT NULL,
+ALTER COLUMN "status" DROP DEFAULT;

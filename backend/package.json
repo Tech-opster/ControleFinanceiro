@@ -17,7 +17,8 @@
     "seed:cryptos": "ts-node scripts/seedCryptos.ts",
     "seed:rewards": "ts-node scripts/seedRewards.ts",
     "prisma:migrate": "npx prisma migrate dev --name init",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "prisma:reset": "npx prisma migrate reset"
   },
   "keywords": [],
   "author": "",

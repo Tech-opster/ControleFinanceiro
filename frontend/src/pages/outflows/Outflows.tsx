@@ -143,6 +143,7 @@ const Outflows: React.FC = () => {
         })),
         muiEditTextFieldProps: {
           required: true,
+          select: true,
           error: !!validationErrors?.categoryId,
           helperText: validationErrors?.categoryId,
           onFocus: () =>
@@ -150,7 +151,6 @@ const Outflows: React.FC = () => {
               ...validationErrors,
               categoryId: undefined,
             }),
-          select: true,
         },
       },
       {
@@ -165,6 +165,7 @@ const Outflows: React.FC = () => {
         ],
         muiEditTextFieldProps: {
           required: true,
+          select: true,
           error: !!validationErrors?.status,
           helperText: validationErrors?.status,
           onFocus: () =>
@@ -172,7 +173,6 @@ const Outflows: React.FC = () => {
               ...validationErrors,
               status: undefined,
             }),
-          select: true,
         },
       },
     ],
@@ -190,6 +190,7 @@ const Outflows: React.FC = () => {
             route={route}
             onRefresh={fetchData}
             onValidationError={handleValidationError}
+            availableCategories={categories}
           />
         </div>
       </IonContent>

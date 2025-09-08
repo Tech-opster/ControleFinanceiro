@@ -32,6 +32,7 @@ type Props<T extends object> = {
   route: string;
   onRefresh?: () => void;
   onValidationError?: (errors: Record<string, string>) => void;
+  availableCategories?: Array<{ id: number; category: string }>;
 };
 
 const Table = <T extends { [key: string]: unknown }>({
@@ -41,10 +42,10 @@ const Table = <T extends { [key: string]: unknown }>({
   route,
   onRefresh,
   onValidationError,
+  availableCategories = [],
 }: Props<T>) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  // Função para criar novo registro
   const handleCreateRecord = async (values: T) => {
     setIsLoading(true);
     try {
@@ -61,7 +62,6 @@ const Table = <T extends { [key: string]: unknown }>({
     }
   };
 
-  // Função para atualizar registro
   const handleUpdateRecord = async (values: T) => {
     setIsLoading(true);
     try {
@@ -77,7 +77,6 @@ const Table = <T extends { [key: string]: unknown }>({
     }
   };
 
-  // Função para deletar registro
   const handleDeleteRecord = async (id: string | number) => {
     setIsLoading(true);
     try {
@@ -105,14 +104,32 @@ const Table = <T extends { [key: string]: unknown }>({
     }
   };
 
+  const isCategoryValid = (item: T): boolean => {
+    if (availableCategories.length === 0) return true;
+
+    const categoryValue = item["categoryId"];
+    if (!categoryValue) return false;
+
+    return availableCategories.some(
+      (cat) => cat.id.toString() === categoryValue.toString()
+    );
+  };
+
   const table = useMaterialReactTable({
     columns,
     data,
     enableEditing: true,
     enableFullScreenToggle: false,
+    enableColumnOrdering: true,
+    // enableRowSelection: true,
     initialState: {
       density: "compact",
       pagination: { pageSize: 100, pageIndex: 0 },
+    },
+    displayColumnDefOptions: {
+      "mrt-row-actions": {
+        header: "Ações",
+      },
     },
     state: {
       isLoading,
@@ -133,6 +150,9 @@ const Table = <T extends { [key: string]: unknown }>({
     onCreatingRowSave: async ({ values, table }) => {
       const config = createNormalizerConfigFromColumns(columns);
       const normalizedValues = normalizeValues(values, config);
+
+      console.log(normalizedValues);
+      
 
       if (!validateRequired(normalizedValues)) {
         if (onValidationError) {
@@ -156,12 +176,23 @@ const Table = <T extends { [key: string]: unknown }>({
         id: row.original.id,
       };
 
-      if (!validateRequired(normalizedValues)) {
+      if (
+        !validateRequired(normalizedValues) ||
+        !isCategoryValid(normalizedValues)
+      ) {
         if (onValidationError) {
           const errors: Record<string, string> = {};
-          getInvalidFields(normalizedValues).forEach((field) => {
-            errors[field] = "Campo obrigatório";
-          });
+
+          if (!validateRequired(normalizedValues)) {
+            getInvalidFields(normalizedValues).forEach((field) => {
+              errors[field] = "Campo obrigatório";
+            });
+          }
+
+          if (!isCategoryValid(normalizedValues)) {
+            errors["categoryId"] = "Campo obrigatório";
+          }
+
           onValidationError(errors);
         }
         return;
