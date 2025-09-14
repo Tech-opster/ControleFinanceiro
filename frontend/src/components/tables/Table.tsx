@@ -149,10 +149,7 @@ const Table = <T extends { [key: string]: unknown }>({
     },
     onCreatingRowSave: async ({ values, table }) => {
       const config = createNormalizerConfigFromColumns(columns);
-      const normalizedValues = normalizeValues(values, config);
-
-      console.log(normalizedValues);
-      
+      const normalizedValues = normalizeValues(values, config);      
 
       if (!validateRequired(normalizedValues)) {
         if (onValidationError) {

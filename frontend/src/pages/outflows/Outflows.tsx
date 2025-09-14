@@ -164,7 +164,6 @@ const Outflows: React.FC = () => {
           { value: "false", label: "Não pago" },
         ],
         muiEditTextFieldProps: {
-          required: true,
           select: true,
           error: !!validationErrors?.status,
           helperText: validationErrors?.status,
