@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
-import Table from "../../components/tables/Table";
+import Table from "../../components/table/Table";
 import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
+import { useCurrentMonth } from "../../hooks/useCurrentMonth";
+import TabTable from "../../components/tabTable/TabTable";
 
 type Data = {
   id: string | number;
@@ -19,6 +21,8 @@ type Data = {
 };
 
 const Outflows: React.FC = () => {
+  const route = "/outflows";
+
   const [data, setData] = useState<Data[]>([]);
   const [categories, setCategories] = React.useState<
     { id: number; category: string }[]
@@ -26,7 +30,7 @@ const Outflows: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  const route = "/outflows";
+  const currentMonthData = useCurrentMonth(data);
 
   useEffect(() => {
     fetchData();
@@ -181,17 +185,30 @@ const Outflows: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-        <div className="h-full min-h-fit flex justify-center items-center">
-          <Table
-            columns={columns}
-            data={data}
-            origin="Saída"
-            route={route}
-            onRefresh={fetchData}
-            onValidationError={handleValidationError}
-            availableCategories={categories}
-          />
-        </div>
+        <TabTable
+          childrenMonth={
+            <Table
+              columns={columns}
+              data={currentMonthData}
+              origin="Saída"
+              route={route}
+              onRefresh={fetchData}
+              onValidationError={handleValidationError}
+              availableCategories={categories}
+            />
+          }
+          childrenTotal={
+            <Table
+              columns={columns}
+              data={data}
+              origin="Saída"
+              route={route}
+              onRefresh={fetchData}
+              onValidationError={handleValidationError}
+              availableCategories={categories}
+            />
+          }
+        />
       </IonContent>
     </IonPage>
   );

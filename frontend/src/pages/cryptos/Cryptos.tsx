@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
-import Table from "../../components/tables/Table";
+import Table from "../../components/table/Table";
 import { MRT_ColumnDef } from "material-react-table";
 import * as api from "../../services/api";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
