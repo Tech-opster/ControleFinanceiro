@@ -32,7 +32,7 @@ type Props<T extends object> = {
   route: string;
   onRefresh?: () => void;
   onValidationError?: (errors: Record<string, string>) => void;
-  availableCategories?: Array<{ id: number; category: string }>;
+  availableCategories?: Array<{ id: number | string; category: string }>;
 };
 
 const Table = <T extends { [key: string]: unknown }>({

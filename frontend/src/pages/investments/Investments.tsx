@@ -1,52 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
+import { Data, useInvestments } from "../../hooks/useInvestments";
 import Table from "../../components/table/Table";
 import { MRT_ColumnDef } from "material-react-table";
-import * as api from "../../services/api";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
 
-type Data = {
-  id: string | number;
-  name: string;
-  investmentType: string;
-  amount: number;
-  purchaseDate: Date | string;
-  dueDate: Date | string;
-  yieldValue: number;
-  yieldType: string;
-  bank: string;
-};
-
 const Investments: React.FC = () => {
-  const [data, setData] = useState<Data[]>([]);
+  const { data, fetchInvestments, route } = useInvestments();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  const route = "/investments";
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const outflowData = await api.get<Data[]>(route);
-      const parsed = outflowData.map((item, idx) => ({
-        ...item,
-        purchaseDate: new Date(item.purchaseDate).toISOString().split("T")[0],
-        dueDate: new Date(item.dueDate).toISOString().split("T")[0],
-        id: item.id ?? idx,
-      }));
-
-      setData(parsed);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleValidationError = (errors: Record<string, string>) => {
-    setValidationErrors(errors);
-  };
 
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
@@ -223,8 +186,8 @@ const Investments: React.FC = () => {
             data={data}
             origin="Investimento"
             route={route}
-            onRefresh={fetchData}
-            onValidationError={handleValidationError}
+            onRefresh={fetchInvestments}
+            onValidationError={setValidationErrors}
           />
         </div>
       </IonContent>

@@ -1,71 +1,20 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
+import { Data, useOutflows } from "../../hooks/useOutflows";
+import { useCategories } from "../../hooks/useCategories";
 import Table from "../../components/table/Table";
+import TabTable from "../../components/tabTable/TabTable";
 import { MRT_ColumnDef } from "material-react-table";
-import * as api from "../../services/api";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
 import { useCurrentMonth } from "../../hooks/useCurrentMonth";
-import TabTable from "../../components/tabTable/TabTable";
-
-type Data = {
-  id: string | number;
-  name: string;
-  amount: number;
-  date: Date | string;
-  categoryId: number;
-  status: boolean;
-  category: {
-    id: number;
-    category: string;
-  };
-};
 
 const Outflows: React.FC = () => {
-  const route = "/outflows";
-
-  const [data, setData] = useState<Data[]>([]);
-  const [categories, setCategories] = React.useState<
-    { id: number; category: string }[]
-  >([]);
+  const { data, fetchOutflows, route } = useOutflows();
+  const { dataCategories } = useCategories();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
   const currentMonthData = useCurrentMonth(data);
-
-  useEffect(() => {
-    fetchData();
-    fetchCategories();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const outflowData = await api.get<Data[]>(route);
-      const parsed = outflowData.map((item, idx) => ({
-        ...item,
-        date: new Date(item.date).toISOString().split("T")[0],
-        id: item.id ?? idx,
-      }));
-
-      setData(parsed);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const categoryData = await api.get<{ id: number; category: string }[]>(
-        "/categories"
-      );
-      setCategories(categoryData);
-    } catch (err) {
-      console.error("Erro ao buscar categorias:", err);
-    }
-  };
-
-  const handleValidationError = (errors: Record<string, string>) => {
-    setValidationErrors(errors);
-  };
 
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
@@ -141,7 +90,7 @@ const Outflows: React.FC = () => {
         Cell: ({ row }) => {
           return row.original.category?.category || "Sem categoria";
         },
-        editSelectOptions: categories.map((cat) => ({
+        editSelectOptions: dataCategories.map((cat) => ({
           value: cat.id.toString(),
           label: cat.category,
         })),
@@ -179,7 +128,7 @@ const Outflows: React.FC = () => {
         },
       },
     ],
-    [categories, validationErrors]
+    [dataCategories, validationErrors]
   );
 
   return (
@@ -192,9 +141,9 @@ const Outflows: React.FC = () => {
               data={currentMonthData}
               origin="Saída"
               route={route}
-              onRefresh={fetchData}
-              onValidationError={handleValidationError}
-              availableCategories={categories}
+              onRefresh={fetchOutflows}
+              onValidationError={setValidationErrors}
+              availableCategories={dataCategories}
             />
           }
           childrenTotal={
@@ -203,9 +152,9 @@ const Outflows: React.FC = () => {
               data={data}
               origin="Saída"
               route={route}
-              onRefresh={fetchData}
-              onValidationError={handleValidationError}
-              availableCategories={categories}
+              onRefresh={fetchOutflows}
+              onValidationError={setValidationErrors}
+              availableCategories={dataCategories}
             />
           }
         />

@@ -1,47 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
+import { Data, useRewards } from "../../hooks/useRewards";
 import Table from "../../components/table/Table";
 import { MRT_ColumnDef } from "material-react-table";
-import * as api from "../../services/api";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
 
-type Data = {
-  id: string | number;
-  name: string;
-  quantity: number;
-  dueDate: Date | string;
-  issuer: string;
-};
-
 const Rewards: React.FC = () => {
-  const [data, setData] = useState<Data[]>([]);
+  const { data, fetchRewards, route } = useRewards();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  const route = "/rewards";
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const outflowData = await api.get<Data[]>(route);
-      const parsed = outflowData.map((item, idx) => ({
-        ...item,
-        dueDate: new Date(item.dueDate).toISOString().split("T")[0],
-        id: item.id ?? idx,
-      }));
-
-      setData(parsed);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleValidationError = (errors: Record<string, string>) => {
-    setValidationErrors(errors);
-  };
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
       {
@@ -137,8 +106,8 @@ const Rewards: React.FC = () => {
             data={data}
             origin="Pontuação"
             route={route}
-            onRefresh={fetchData}
-            onValidationError={handleValidationError}
+            onRefresh={fetchRewards}
+            onValidationError={setValidationErrors}
           />
         </div>
       </IonContent>

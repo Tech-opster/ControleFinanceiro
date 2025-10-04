@@ -1,50 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
+import { Data, useIncomes } from "../../hooks/useIncomes";
 import Table from "../../components/table/Table";
-import { MRT_ColumnDef } from "material-react-table";
-import * as api from "../../services/api";
-import { formatDatePtBr } from "../../utils/formatDatePtBr";
 import TabTable from "../../components/tabTable/TabTable";
+import { MRT_ColumnDef } from "material-react-table";
+import { formatDatePtBr } from "../../utils/formatDatePtBr";
 import { useCurrentMonth } from "../../hooks/useCurrentMonth";
 
-type Data = {
-  id: string | number;
-  name: string;
-  amount: number;
-  date: Date | string;
-};
-
 const Incomes: React.FC = () => {
-  const route = "/incomes";
-
-  const [data, setData] = useState<Data[]>([]);
+  const { data, fetchIncomes, route } = useIncomes();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
   const currentMonthData = useCurrentMonth(data);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const outflowData = await api.get<Data[]>(route);
-      const parsed = outflowData.map((item, idx) => ({
-        ...item,
-        date: new Date(item.date).toISOString().split("T")[0],
-        id: item.id ?? idx,
-      }));
-
-      setData(parsed);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleValidationError = (errors: Record<string, string>) => {
-    setValidationErrors(errors);
-  };
 
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
@@ -122,24 +90,24 @@ const Incomes: React.FC = () => {
       <IonContent className="ion-padding">
         <TabTable
           childrenMonth={
-              <Table
-                columns={columns}
-                data={currentMonthData}
-                origin="Entrada"
-                route={route}
-                onRefresh={fetchData}
-                onValidationError={handleValidationError}
-              />
+            <Table
+              columns={columns}
+              data={currentMonthData}
+              origin="Entrada"
+              route={route}
+              onRefresh={fetchIncomes}
+              onValidationError={setValidationErrors}
+            />
           }
           childrenTotal={
-              <Table
-                columns={columns}
-                data={data}
-                origin="Entrada"
-                route={route}
-                onRefresh={fetchData}
-                onValidationError={handleValidationError}
-              />
+            <Table
+              columns={columns}
+              data={data}
+              origin="Entrada"
+              route={route}
+              onRefresh={fetchIncomes}
+              onValidationError={setValidationErrors}
+            />
           }
         />
       </IonContent>

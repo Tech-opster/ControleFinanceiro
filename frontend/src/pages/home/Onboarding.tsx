@@ -1,9 +1,9 @@
 import { IonButton, IonContent, IonPage, useIonRouter } from "@ionic/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import spreadsheetapp from "../../assets/images/spreadsheetapp.png";
 import planning from "../../assets/images/planning.png";
