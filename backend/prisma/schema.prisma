@@ -43,16 +43,17 @@ model Incomes {
 }
 
 model Outflows {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(64)
-  amount     Decimal  @db.Decimal(10, 2)
-  date       DateTime @default(now())
-  categoryId Int
-  status     Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(64)
+  amount    Decimal  @db.Decimal(10, 2)
+  date      DateTime @default(now())
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId   Int
+  userId     Int
+  categoryId Int
+
   user     Users      @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Categories @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
@@ -63,11 +64,12 @@ model Categories {
   id        Int      @id @default(autoincrement())
   category  String   @unique @db.VarChar(64)
   isDefault Boolean  @default(false) // true para categorias padrão (mercado, farmácia, etc.)
-  createdBy Int? // null para categorias padrão, userId para categorias criadas por usuários
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  outflows     Outflows[]
+  createdBy Int? // null para categorias padrão, userId para categorias criadas por usuários
+
+  Outflows     Outflows[]
   UserCategory UserCategory[]
   creator      Users?         @relation("CategoryCreator", fields: [createdBy], references: [id], onDelete: SetNull)
 
@@ -75,10 +77,11 @@ model Categories {
 }
 
 model UserCategory {
+  addedAt  DateTime @default(now()) // Quando o usuário ganhou acesso a esta categoria
+  isActive Boolean  @default(true) // false quando o usuário "desativa" a categoria
+
   userId     Int
   categoryId Int
-  addedAt    DateTime @default(now()) // Quando o usuário ganhou acesso a esta categoria
-  isActive   Boolean  @default(true) // false quando o usuário "desativa" a categoria
 
   user     Users      @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -101,7 +104,8 @@ model Investments {
   updatedAt      DateTime @updatedAt
 
   userId Int
-  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("investments")
 }
@@ -114,11 +118,12 @@ model Cryptos {
   quantity     Decimal  @db.Decimal(18, 8)
   purchaseDate DateTime @default(now())
   bank         String   @db.VarChar(64)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   userId Int
-  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("cryptos")
 }
@@ -133,7 +138,8 @@ model Rewards {
   updatedAt DateTime @updatedAt
 
   userId Int
-  user   Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("rewards")
 }

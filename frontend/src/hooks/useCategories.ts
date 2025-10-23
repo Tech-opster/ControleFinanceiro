@@ -4,6 +4,7 @@ import * as api from "../services/api";
 export type Data = {
   id: string | number;
   category: string;
+  totalAmount: string;
 };
 
 export const useCategories = () => {
@@ -20,6 +21,7 @@ export const useCategories = () => {
       const parsed = categoryData.map((item, idx) => ({
         ...item,
         id: item.id ?? idx,
+        totalAmount: item.totalAmount ?? "0.00",
       }));
 
       setDataCategories(parsed);

@@ -46,7 +46,37 @@ export const getCategoryService = async (
       }
     });
 
-    return filteredCategories;
+    // 3. Fazer groupBy em outflows para somar amounts por categoryId
+    const sums = await tx.outflows.groupBy({
+      by: ["categoryId"],
+      where: {
+        userId: userId as number, // type assertion se necessário
+      },
+      _sum: {
+        amount: true,
+      },
+    });
+
+    // 4. Criar mapa de categoryId => soma
+    const sumMap = new Map<number, string>();
+    sums.forEach((s) => {
+      const catId = s.categoryId as number;
+      const totalDecimal = s._sum.amount;
+      // Converte Decimal para string formatada
+      const total = totalDecimal ? totalDecimal.toFixed(2) : "0.00";
+      sumMap.set(catId, total);
+    });
+
+    // 5. Anexar o total a cada categoria filtrada
+    const result = filteredCategories.map((cat) => {
+      const totalAmount = sumMap.get(cat.id) ?? "0.00";
+      return {
+        ...cat,
+        totalAmount, // string "1200.00"
+      };
+    });
+
+    return result;
   });
 };
 

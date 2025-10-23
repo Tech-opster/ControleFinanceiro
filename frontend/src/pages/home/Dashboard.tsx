@@ -26,8 +26,6 @@ const Dashboard: React.FC = () => {
     return acc;
   }, {});
 
-  console.log("total", Object.entries(filterDate));
-
   const barChart = Object.entries(filterDate).map(([month, amount]) => ({
     month: month,
     amount: amount,

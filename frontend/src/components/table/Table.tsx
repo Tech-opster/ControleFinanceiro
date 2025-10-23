@@ -24,6 +24,7 @@ import {
   getInvalidFields,
   validateRequired,
 } from "../../utils/validateRequired";
+import { checkEditableValues } from "../../utils/checkEditableValues";
 
 type Props<T extends object> = {
   columns: MRT_ColumnDef<T>[];
@@ -148,8 +149,9 @@ const Table = <T extends { [key: string]: unknown }>({
       },
     },
     onCreatingRowSave: async ({ values, table }) => {
+      const checkedEditableValues = checkEditableValues(values, columns);
       const config = createNormalizerConfigFromColumns(columns);
-      const normalizedValues = normalizeValues(values, config);      
+      const normalizedValues = normalizeValues(checkedEditableValues, config);
 
       if (!validateRequired(normalizedValues)) {
         if (onValidationError) {

@@ -27,6 +27,14 @@ const Categories: React.FC = () => {
             }),
         },
       },
+      {
+        accessorKey: "totalAmount",
+        header: "Total",
+        enableEditing: false,
+        muiEditTextFieldProps: {
+          hidden: true,
+        }
+      },
     ],
     [validationErrors]
   );
