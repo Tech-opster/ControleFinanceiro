@@ -91,7 +91,7 @@ const Outflows: React.FC = () => {
           return row.original.category?.category || "Sem categoria";
         },
         editSelectOptions: dataCategories.map((cat) => ({
-          value: cat.id.toString(),
+          value: cat.id,
           label: cat.category,
         })),
         muiEditTextFieldProps: {

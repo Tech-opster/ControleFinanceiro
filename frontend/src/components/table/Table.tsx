@@ -112,7 +112,7 @@ const Table = <T extends { [key: string]: unknown }>({
     if (!categoryValue) return false;
 
     return availableCategories.some(
-      (cat) => cat.id.toString() === categoryValue.toString()
+      (cat) => cat.id === categoryValue
     );
   };
 
