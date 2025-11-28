@@ -13,6 +13,8 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  ListItemIcon,
+  MenuItem,
   Tooltip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -117,15 +119,19 @@ const Table = <T extends { [key: string]: unknown }>({
   const table = useMaterialReactTable({
     columns,
     data,
-    enableEditing: true,
+    // enableEditing: true,
     enableFullScreenToggle: false,
     enableColumnOrdering: true,
     enableRowVirtualization: true,
     enablePagination: false,
+    enableRowActions: true,
     // enableRowSelection: true,
     initialState: {
       density: "compact",
       pagination: { pageSize: 100, pageIndex: 0 },
+      columnPinning: {
+        left: ["mrt-row-actions"],
+      },
     },
     displayColumnDefOptions: {
       "mrt-row-actions": {
@@ -229,9 +235,15 @@ const Table = <T extends { [key: string]: unknown }>({
         </DialogActions>
       </>
     ),
-    renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
-        <Tooltip title="Editar">
+    renderRowActionMenuItems: ({ closeMenu, row, table }) => [
+      <MenuItem
+        key={0}
+        onClick={() => {
+          closeMenu();
+        }}
+        sx={{ m: 0 }}
+      >
+        <Tooltip title="Editar" placement="right">
           <IconButton
             onClick={() => {
               onValidationError?.({});
@@ -241,13 +253,21 @@ const Table = <T extends { [key: string]: unknown }>({
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Deletar">
+      </MenuItem>,
+      <MenuItem
+        key={1}
+        onClick={() => {
+          closeMenu();
+        }}
+        sx={{ m: 0 }}
+      >
+        <Tooltip title="Deletar" placement="right">
           <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      </Box>
-    ),
+      </MenuItem>,
+    ],
     renderTopToolbarCustomActions: ({ table }) => (
       <Button
         variant="contained"
