@@ -33,8 +33,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent>
-        <div className="h-full min-h-fit flex justify-center items-center">
+      <IonContent className="ion-padding">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               width={500}
@@ -58,7 +57,6 @@ const Dashboard: React.FC = () => {
               />
             </BarChart>
           </ResponsiveContainer>
-        </div>
       </IonContent>
     </IonPage>
   );

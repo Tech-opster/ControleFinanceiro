@@ -23,8 +23,8 @@ const TabTable: React.FC<TabTableProps> = ({ childrenMonth, childrenTotal }) => 
             <Tab label="Total" value="2" />
           </TabList>
         </Box>
-        <TabPanel className="flex-1" value="1" sx={{ padding: 0 }}>{childrenMonth}</TabPanel>
-        <TabPanel className="flex-1" value="2" sx={{ padding: 0 }}>{childrenTotal}</TabPanel>
+        <TabPanel className="flex-1" value="1" sx={{ padding: 0, height: "1px" }}>{childrenMonth}</TabPanel>
+        <TabPanel className="flex-1" value="2" sx={{ padding: 0, height: "1px" }}>{childrenTotal}</TabPanel>
       </TabContext>
     </Box>
   );

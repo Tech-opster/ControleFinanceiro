@@ -111,9 +111,7 @@ const Table = <T extends { [key: string]: unknown }>({
     const categoryValue = item["categoryId"];
     if (!categoryValue) return false;
 
-    return availableCategories.some(
-      (cat) => cat.id === categoryValue
-    );
+    return availableCategories.some((cat) => cat.id === categoryValue);
   };
 
   const table = useMaterialReactTable({
@@ -122,6 +120,8 @@ const Table = <T extends { [key: string]: unknown }>({
     enableEditing: true,
     enableFullScreenToggle: false,
     enableColumnOrdering: true,
+    enableRowVirtualization: true,
+    enablePagination: false,
     // enableRowSelection: true,
     initialState: {
       density: "compact",
@@ -140,14 +140,17 @@ const Table = <T extends { [key: string]: unknown }>({
     }),
     muiTablePaperProps: {
       sx: {
-        minHeight: "100% !important",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       },
     },
-    muiTableContainerProps: {
-      sx: {
-        width: "100vw !important",
-      },
+    muiBottomToolbarProps: {
+      sx: { justifyContent: "end", alignItems: "center" },
     },
+    renderBottomToolbarCustomActions: () => (
+      <div>Registros totais: {data.length.toLocaleString("pt-BR")}</div>
+    ),
     onCreatingRowSave: async ({ values, table }) => {
       const checkedEditableValues = checkEditableValues(values, columns);
       const config = createNormalizerConfigFromColumns(columns);

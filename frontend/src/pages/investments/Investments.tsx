@@ -180,7 +180,6 @@ const Investments: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-        <div className="h-full min-h-fit flex justify-center items-center">
           <Table
             columns={columns}
             data={data}
@@ -189,7 +188,6 @@ const Investments: React.FC = () => {
             onRefresh={fetchInvestments}
             onValidationError={setValidationErrors}
           />
-        </div>
       </IonContent>
     </IonPage>
   );

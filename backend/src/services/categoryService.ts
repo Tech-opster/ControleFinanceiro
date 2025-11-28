@@ -72,7 +72,7 @@ export const getCategoryService = async (
       const totalAmount = sumMap.get(cat.id) ?? "0.00";
       return {
         ...cat,
-        totalAmount, // string "1200.00"
+        totalAmount,
       };
     });
 

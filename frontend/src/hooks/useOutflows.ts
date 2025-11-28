@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import * as api from "../services/api";
+import { useCurrentMonth } from "./useCurrentMonth";
 
 export type Data = {
   id: string | number;
@@ -17,6 +18,7 @@ export type Data = {
 export const useOutflows = () => {
   const route = "/outflows";
   const [data, setData] = useState<Data[]>([]);
+  const currentMonthData = useCurrentMonth(data);
 
   useEffect(() => {
     fetchOutflows();
@@ -37,5 +39,5 @@ export const useOutflows = () => {
     }
   };
 
-  return { data, fetchOutflows, route };
+  return { data, fetchOutflows, route, currentMonthData };
 };

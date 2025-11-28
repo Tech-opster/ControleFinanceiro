@@ -6,15 +6,13 @@ import Table from "../../components/table/Table";
 import TabTable from "../../components/tabTable/TabTable";
 import { MRT_ColumnDef } from "material-react-table";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
-import { useCurrentMonth } from "../../hooks/useCurrentMonth";
 
 const Outflows: React.FC = () => {
-  const { data, fetchOutflows, route } = useOutflows();
+  const { data, fetchOutflows, route, currentMonthData } = useOutflows();
   const { dataCategories } = useCategories();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  const currentMonthData = useCurrentMonth(data);
 
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [

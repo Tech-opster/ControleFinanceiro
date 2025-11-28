@@ -5,14 +5,12 @@ import Table from "../../components/table/Table";
 import TabTable from "../../components/tabTable/TabTable";
 import { MRT_ColumnDef } from "material-react-table";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
-import { useCurrentMonth } from "../../hooks/useCurrentMonth";
 
 const Incomes: React.FC = () => {
-  const { data, fetchIncomes, route } = useIncomes();
+  const { data, fetchIncomes, route, currentMonthData } = useIncomes();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  const currentMonthData = useCurrentMonth(data);
 
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [

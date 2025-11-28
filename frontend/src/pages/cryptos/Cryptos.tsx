@@ -144,7 +144,6 @@ const Cryptos: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-        <div className="h-full min-h-fit flex justify-center items-center">
           <Table
             columns={columns}
             data={data}
@@ -153,7 +152,6 @@ const Cryptos: React.FC = () => {
             onRefresh={fetchCryptos}
             onValidationError={setValidationErrors}
           />
-        </div>
       </IonContent>
     </IonPage>
   );
