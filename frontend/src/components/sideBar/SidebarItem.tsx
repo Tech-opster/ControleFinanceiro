@@ -42,7 +42,7 @@ const SidebarItem: React.FC<Props> = ({ icon, text, to, alert }) => {
       <div
         className="
           z-999 absolute left-full rounded-md px-2 py-1 ml-6
-          bg-indigo-100 text-indigo-800 text-sm
+          bg-indigo-100 text-indigo-800 text-sm pointer-events-none
           invisible opacity-20 -translate-x-3 transition-all
           group-hover:visible group-hover:opacity-100 group-hover:translate-x-0"
       >
