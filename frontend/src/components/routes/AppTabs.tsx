@@ -24,7 +24,7 @@ import { auth } from "../../firebase/firebase";
 
 import Dashboard from "../../pages/home/Dashboard";
 import Incomes from "../../pages/incomes/Incomes";
-import OutFlow from "../../pages/outflows/Outflows";
+import OutFlows from "../../pages/outflows/Outflows";
 import Categories from "../../pages/categories/Categories";
 import Investments from "../../pages/investments/Investments";
 import Sidebar from "../sideBar/Sidebar";
@@ -70,7 +70,7 @@ const AppTabs: React.FC = () => {
                 />
               }
               text="Saídas"
-              to="/outflow"
+              to="/outflows"
             />
             <SidebarItem
               icon={
@@ -156,7 +156,7 @@ const AppTabs: React.FC = () => {
             <IonRouterOutlet id="main-content">
               <Redirect exact path="/" to="/home" />
               <Route exact path="/incomes" component={Incomes} />
-              <Route exact path="/outflow" component={OutFlow} />
+              <Route exact path="/outflows" component={OutFlows} />
               <Route exact path="/home" component={Dashboard} />
               <Route exact path="/categories" component={Categories} />
               <Route exact path="/investments" component={Investments} />
@@ -194,7 +194,7 @@ const AppTabs: React.FC = () => {
                     <IonIcon icon={addCircle} />
                     Entradas
                   </IonTabButton>
-                  <IonTabButton tab="outflow" href="/outflow">
+                  <IonTabButton tab="outflows" href="/outflows">
                     <IonIcon icon={removeCircle} />
                     Saídas
                   </IonTabButton>

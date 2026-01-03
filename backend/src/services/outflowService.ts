@@ -8,6 +8,9 @@ export const getOutflowService = async (where?: Prisma.OutflowsWhereInput) => {
     include: {
       category: true,
     },
+    orderBy: {
+      date: 'desc'
+    },
   });
 };
 
