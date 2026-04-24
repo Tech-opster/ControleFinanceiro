@@ -8,7 +8,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
 
 const Outflows: React.FC = () => {
-  const { data, fetchOutflows, route, currentMonthData } = useOutflows();
+  const { data, fetchOutflows, route } = useOutflows();
   const { dataCategories } = useCategories();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
@@ -126,20 +126,21 @@ const Outflows: React.FC = () => {
         },
       },
     ],
-    [dataCategories, validationErrors]
+    [dataCategories, validationErrors],
   );
 
   return (
     <IonPage>
       <IonContent className="ion-padding">
         <TabTable
+          onTabChange={(tab) => fetchOutflows(tab === "total")}
           childrenMonth={
             <Table
               columns={columns}
-              data={currentMonthData}
+              data={data}
               origin="Saída"
               route={route}
-              onRefresh={fetchOutflows}
+              onRefresh={() => fetchOutflows(false)}
               onValidationError={setValidationErrors}
               availableCategories={dataCategories}
             />
@@ -150,7 +151,7 @@ const Outflows: React.FC = () => {
               data={data}
               origin="Saída"
               route={route}
-              onRefresh={fetchOutflows}
+              onRefresh={() => fetchOutflows(true)}
               onValidationError={setValidationErrors}
               availableCategories={dataCategories}
             />

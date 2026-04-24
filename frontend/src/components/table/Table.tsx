@@ -59,7 +59,7 @@ const Table = <T extends { [key: string]: unknown }>({
       }
     } catch (error) {
       console.error("Erro ao criar registro:", error);
-      // adicionar tratamento de erro (toast, alert, etc.)
+      // TODO: adicionar tratamento de erro (toast, alert, etc.)
     } finally {
       setIsLoading(false);
     }
@@ -236,37 +236,35 @@ const Table = <T extends { [key: string]: unknown }>({
       </>
     ),
     renderRowActionMenuItems: ({ closeMenu, row, table }) => [
-      <MenuItem
-        key={0}
-        onClick={() => {
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Tooltip title="Editar" placement="right">
-          <IconButton
-            onClick={() => {
-              onValidationError?.({});
-              table.setEditingRow(row);
-            }}
-          >
-            <EditIcon />
+      <Tooltip title="Editar" placement="right" disableInteractive>
+        <MenuItem
+          key={0}
+          onClick={() => {
+            closeMenu();
+            onValidationError?.({});
+            table.setEditingRow(row);
+          }}
+          sx={{ m: 0, p: 0}}
+        >
+          <IconButton disableRipple size="large">
+            <EditIcon sx={{ scale: 1.2 }}/>
           </IconButton>
-        </Tooltip>
-      </MenuItem>,
-      <MenuItem
-        key={1}
-        onClick={() => {
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Tooltip title="Deletar" placement="right">
-          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
-            <DeleteIcon />
+        </MenuItem>
+      </Tooltip>,
+      <Tooltip title="Deletar" placement="right" disableInteractive>
+        <MenuItem
+          key={1}
+          onClick={() => {
+            closeMenu();
+            openDeleteConfirmModal(row);
+          }}
+          sx={{ m: 0, p: 0 }}
+        >
+          <IconButton color="error" disableRipple size="large">
+            <DeleteIcon sx={{ scale: 1.2 }} />
           </IconButton>
-        </Tooltip>
-      </MenuItem>,
+        </MenuItem>
+      </Tooltip>,
     ],
     renderTopToolbarCustomActions: ({ table }) => (
       <Button

@@ -5,13 +5,15 @@ import { ReactNode, useState } from "react";
 type TabTableProps = {
   childrenMonth: ReactNode;
   childrenTotal: ReactNode;
+  onTabChange?: (tab: "month" | "total") => void;
 };
 
-const TabTable: React.FC<TabTableProps> = ({ childrenMonth, childrenTotal }) => {
+const TabTable: React.FC<TabTableProps> = ({ childrenMonth, childrenTotal, onTabChange }) => {
   const [tabValues, setTabValues] = useState("1");
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValues(newValue);
+    onTabChange?.(newValue === "1" ? "month" : "total");
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { useIonLoading } from "@ionic/react";
 import * as api from "../services/api";
-import { useCurrentMonth } from "./useCurrentMonth";
 
 export type Data = {
   id: string | number;
@@ -18,15 +18,18 @@ export type Data = {
 export const useOutflows = () => {
   const route = "/outflows";
   const [data, setData] = useState<Data[]>([]);
-  const currentMonthData = useCurrentMonth(data);
+  const [present, dismiss] = useIonLoading();
 
   useEffect(() => {
     fetchOutflows();
   }, []);
 
-  const fetchOutflows = async () => {
+  const fetchOutflows = async (all?: boolean) => {
     try {
-      const outflowData = await api.get<Data[]>(route);
+      await present();
+
+      const query = all ? "?all=true" : "";
+      const outflowData = await api.get<Data[]>(`${route}${query}`);
       const parsed = outflowData.map((item, idx) => ({
         ...item,
         date: new Date(item.date).toISOString().split("T")[0],
@@ -36,8 +39,10 @@ export const useOutflows = () => {
       setData(parsed);
     } catch (err) {
       console.error(err);
+    } finally {
+      await dismiss();
     }
   };
 
-  return { data, fetchOutflows, route, currentMonthData };
+  return { data, fetchOutflows, route };
 };
