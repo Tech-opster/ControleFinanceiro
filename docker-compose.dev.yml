@@ -1,0 +1,38 @@
+services:
+  frontend:
+    build: ./frontend
+    env_file:
+    - ./frontend/.env
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend:
+    build: ./backend
+    env_file:
+    - ./backend/.env
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - /app/generated
+      - ./backend/src/firebase/serviceAccountKey.json:/app/src/firebase/serviceAccountKey.json
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: myapp_dev
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
