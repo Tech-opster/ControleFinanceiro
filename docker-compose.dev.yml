@@ -20,8 +20,8 @@ services:
       - /app/node_modules
       - /app/generated
       - ./backend/src/firebase/serviceAccountKey.json:/app/src/firebase/serviceAccountKey.json
-    depends_on:
-      - db
+    environment:
+      DATABASE_URL: "postgresql://dev:dev@db:5432/myapp_dev"
 
   db:
     image: postgres:17-alpine
