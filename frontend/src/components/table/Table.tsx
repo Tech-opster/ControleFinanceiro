@@ -36,6 +36,7 @@ type Props<T extends object> = {
   onRefresh?: () => void;
   onValidationError?: (errors: Record<string, string>) => void;
   availableCategories?: Array<{ id: number | string; category: string }>;
+  isLoading?: boolean;
 };
 
 const Table = <T extends { [key: string]: unknown }>({
@@ -46,12 +47,13 @@ const Table = <T extends { [key: string]: unknown }>({
   onRefresh,
   onValidationError,
   availableCategories = [],
+  isLoading = false,
 }: Props<T>) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [internalLoading, setInternalLoading] = useState(false);
 
   const handleCreateRecord = async (values: T) => {
-    setIsLoading(true);
     try {
+      setInternalLoading(true);
       await api.post(route, values);
 
       if (onRefresh) {
@@ -61,13 +63,13 @@ const Table = <T extends { [key: string]: unknown }>({
       console.error("Erro ao criar registro:", error);
       // TODO: adicionar tratamento de erro (toast, alert, etc.)
     } finally {
-      setIsLoading(false);
+      setInternalLoading(false);
     }
   };
 
   const handleUpdateRecord = async (values: T) => {
-    setIsLoading(true);
     try {
+      setInternalLoading(true);
       await api.put(`${route}/${values.id}`, values);
 
       if (onRefresh) {
@@ -76,13 +78,13 @@ const Table = <T extends { [key: string]: unknown }>({
     } catch (error) {
       console.error("Erro ao atualizar registro:", error);
     } finally {
-      setIsLoading(false);
+      setInternalLoading(false);
     }
   };
 
   const handleDeleteRecord = async (id: string | number) => {
-    setIsLoading(true);
     try {
+      setInternalLoading(true);
       await api.del(`${route}/${id}`);
 
       if (onRefresh) {
@@ -91,7 +93,7 @@ const Table = <T extends { [key: string]: unknown }>({
     } catch (error) {
       console.error("Erro ao deletar registro:", error);
     } finally {
-      setIsLoading(false);
+      setInternalLoading(false);
     }
   };
 
@@ -100,7 +102,7 @@ const Table = <T extends { [key: string]: unknown }>({
       window.confirm(
         `Você tem certeza que quer deletar o registro ${
           row.original.name || "selecionado"
-        }?`
+        }?`,
       )
     ) {
       handleDeleteRecord(row.original.id as string | number);
@@ -139,7 +141,10 @@ const Table = <T extends { [key: string]: unknown }>({
       },
     },
     state: {
-      isLoading,
+      isLoading: isLoading || internalLoading,
+    },
+    muiSkeletonProps: {
+      animation: "wave",
     },
     mrtTheme: () => ({
       baseBackgroundColor: "rgb(160, 160, 160)",
@@ -244,10 +249,10 @@ const Table = <T extends { [key: string]: unknown }>({
             onValidationError?.({});
             table.setEditingRow(row);
           }}
-          sx={{ m: 0, p: 0}}
+          sx={{ m: 0, p: 0 }}
         >
           <IconButton disableRipple size="large">
-            <EditIcon sx={{ scale: 1.2 }}/>
+            <EditIcon sx={{ scale: 1.2 }} />
           </IconButton>
         </MenuItem>
       </Tooltip>,

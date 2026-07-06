@@ -4,14 +4,12 @@ import { Data, useCategories } from "../../hooks/useCategories";
 import Table from "../../components/table/Table";
 import TabTable from "../../components/tabTable/TabTable";
 import { MRT_ColumnDef } from "material-react-table";
-import { useCurrentMonth } from "../../hooks/useCurrentMonth";
 
 const Categories: React.FC = () => {
-  const { dataCategories, fetchCategories, route } = useCategories();
+  const { dataCategories, fetchCategories, route, isLoading } = useCategories();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  const currentMonthData = useCurrentMonth(dataCategories);
 
   const columns = useMemo<MRT_ColumnDef<Data>[]>(
     () => [
@@ -39,21 +37,23 @@ const Categories: React.FC = () => {
         },
       },
     ],
-    [validationErrors]
+    [validationErrors],
   );
 
   return (
     <IonPage>
       <IonContent className="ion-padding">
         <TabTable
+          onTabChange={(tab) => fetchCategories(tab === "total")}
           childrenMonth={
             <Table
               columns={columns}
-              data={currentMonthData}
+              data={dataCategories}
               origin="Categoria"
               route={route}
-              onRefresh={fetchCategories}
+              onRefresh={() => fetchCategories(false)}
               onValidationError={setValidationErrors}
+              isLoading={isLoading}
             />
           }
           childrenTotal={
@@ -62,8 +62,9 @@ const Categories: React.FC = () => {
               data={dataCategories}
               origin="Categoria"
               route={route}
-              onRefresh={fetchCategories}
+              onRefresh={() => fetchCategories(true)}
               onValidationError={setValidationErrors}
+              isLoading={isLoading}
             />
           }
         />

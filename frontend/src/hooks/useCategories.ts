@@ -10,14 +10,18 @@ export type Data = {
 export const useCategories = () => {
   const route = "/categories";
   const [dataCategories, setDataCategories] = useState<Data[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (all?: boolean) => {
     try {
-      const categoryData = await api.get<Data[]>(route);
+      setIsLoading(true);
+
+      const query = all ? "?all=true" : "";
+      const categoryData = await api.get<Data[]>(`${route}${query}`);
       const parsed = categoryData.map((item, idx) => ({
         ...item,
         id: item.id ?? idx,
@@ -27,8 +31,10 @@ export const useCategories = () => {
       setDataCategories(parsed);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { dataCategories, fetchCategories, route };
+  return { dataCategories, fetchCategories, route, isLoading };
 };

@@ -8,7 +8,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import { formatDatePtBr } from "../../utils/formatDatePtBr";
 
 const Outflows: React.FC = () => {
-  const { data, fetchOutflows, route } = useOutflows();
+  const { data, fetchOutflows, route, isLoading } = useOutflows();
   const { dataCategories } = useCategories();
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
@@ -143,6 +143,7 @@ const Outflows: React.FC = () => {
               onRefresh={() => fetchOutflows(false)}
               onValidationError={setValidationErrors}
               availableCategories={dataCategories}
+              isLoading={isLoading}
             />
           }
           childrenTotal={
@@ -154,6 +155,7 @@ const Outflows: React.FC = () => {
               onRefresh={() => fetchOutflows(true)}
               onValidationError={setValidationErrors}
               availableCategories={dataCategories}
+              isLoading={isLoading}
             />
           }
         />

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useIonLoading } from "@ionic/react";
 import * as api from "../services/api";
 
 export type Data = {
@@ -18,7 +17,7 @@ export type Data = {
 export const useOutflows = () => {
   const route = "/outflows";
   const [data, setData] = useState<Data[]>([]);
-  const [present, dismiss] = useIonLoading();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchOutflows();
@@ -26,7 +25,7 @@ export const useOutflows = () => {
 
   const fetchOutflows = async (all?: boolean) => {
     try {
-      await present();
+      setIsLoading(true);      
 
       const query = all ? "?all=true" : "";
       const outflowData = await api.get<Data[]>(`${route}${query}`);
@@ -40,9 +39,9 @@ export const useOutflows = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      await dismiss();
+      setIsLoading(false);
     }
   };
 
-  return { data, fetchOutflows, route };
+  return { data, fetchOutflows, route, isLoading };
 };

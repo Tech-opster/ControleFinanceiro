@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as api from "../services/api";
-import { useCurrentMonth } from "./useCurrentMonth";
 
 export type Data = {
   id: string | number;
@@ -12,15 +11,18 @@ export type Data = {
 export const useIncomes = () => {
   const route = "/incomes";
   const [data, setData] = useState<Data[]>([]);
-  const currentMonthData = useCurrentMonth(data);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchIncomes();
   }, []);
 
-  const fetchIncomes = async () => {
+  const fetchIncomes = async (all?: boolean) => {
     try {
-      const incomeData = await api.get<Data[]>(route);
+      setIsLoading(true);      
+
+      const query = all ? "?all=true" : "";
+      const incomeData = await api.get<Data[]>(`${route}${query}`);
       const parsed = incomeData.map((item, idx) => ({
         ...item,
         date: new Date(item.date).toISOString().split("T")[0],
@@ -30,8 +32,10 @@ export const useIncomes = () => {
       setData(parsed);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { data, fetchIncomes, route, currentMonthData };
+  return { data, fetchIncomes, route, isLoading };
 };
