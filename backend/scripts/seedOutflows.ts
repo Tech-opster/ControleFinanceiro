@@ -20,7 +20,7 @@ async function main() {
   
   console.log(`📊 Criando saídas para ${userIds.length} usuários e ${categoriesDB.length} categorias`);
 
-  const outflowData = Array.from({ length: 30 }).map(() => ({
+  const outflowData = Array.from({ length: 1000 }).map(() => ({
     name: faker.helpers.arrayElement([
       'Supermercado',
       'Gasolina',

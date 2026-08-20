@@ -12,7 +12,7 @@ async function main() {
   const userIds = usersDB.map(user => user.id);
   console.log(`📊 Criando criptomoedas para ${userIds.length} usuários`);
 
-  const cryptoData = Array.from({ length: 15 }).map(() => {
+  const cryptoData = Array.from({ length: 30 }).map(() => {
     const cryptoInfo = faker.helpers.arrayElement([
       { name: 'Bitcoin', symbol: 'BTC', priceRange: { min: 200000, max: 400000 } },
       { name: 'Ethereum', symbol: 'ETH', priceRange: { min: 8000, max: 20000 } },

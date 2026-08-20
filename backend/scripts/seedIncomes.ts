@@ -12,7 +12,7 @@ async function main() {
   const userIds = usersDB.map((user) => user.id);
   console.log(`📊 Criando entradas para ${userIds.length} usuários`);
 
-  const incomeData = Array.from({ length: 20 }).map(() => ({
+  const incomeData = Array.from({ length: 1000 }).map(() => ({
     name: faker.helpers.arrayElement([
       'Salário',
       'Cashback',

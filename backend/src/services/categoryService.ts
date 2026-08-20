@@ -7,9 +7,15 @@ import {
 } from "../types/ICategory";
 
 export const getCategoryService = async (
-  where: Prisma.UserCategoryWhereInput
+  where: {
+    userId: number;
+    date?: {
+      gte?: Date;
+      lt?: Date;
+    };
+  }
 ) => {
-  const { userId } = where;
+  const { userId, date } = where;
 
   return prisma.$transaction(async (tx) => {
     // 1. Buscar todas as categorias disponíveis
@@ -40,17 +46,17 @@ export const getCategoryService = async (
       if (category.isDefault) {
         // Default: mostrar EXCETO se foi explicitamente desativada
         return !userAssociation || userAssociation.isActive !== false;
-      } else {
-        // Customizada: mostrar APENAS se foi explicitamente ativada
-        return userAssociation && userAssociation.isActive === true;
       }
+      // Customizada: mostrar APENAS se foi explicitamente ativada
+      return userAssociation && userAssociation.isActive === true;
     });
 
     // 3. Fazer groupBy em outflows para somar amounts por categoryId
     const sums = await tx.outflows.groupBy({
       by: ["categoryId"],
       where: {
-        userId: userId as number, // type assertion se necessário
+        userId,
+        ...(date ? { date } : {}), // Se date estiver definido, aplica o filtro de data
       },
       _sum: {
         amount: true,
@@ -59,6 +65,7 @@ export const getCategoryService = async (
 
     // 4. Criar mapa de categoryId => soma
     const sumMap = new Map<number, string>();
+
     sums.forEach((s) => {
       const catId = s.categoryId as number;
       const totalDecimal = s._sum.amount;
@@ -68,13 +75,19 @@ export const getCategoryService = async (
     });
 
     // 5. Anexar o total a cada categoria filtrada
-    const result = filteredCategories.map((cat) => {
-      const totalAmount = sumMap.get(cat.id) ?? "0.00";
-      return {
-        ...cat,
-        totalAmount,
-      };
-    });
+    const result = filteredCategories
+      .map((cat) => {
+        const totalAmount = sumMap.get(cat.id) ?? "0.00";
+        return {
+          ...cat,
+          totalAmount,
+        };
+      })
+      .filter((cat) => {
+        if (!date) return true; // aba "Total"
+        // Retornar apenas categorias com totalAmount > 0 para aba "Mês atual"
+        return Number(cat.totalAmount) > 0;
+      });
 
     return result;
   });

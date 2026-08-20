@@ -12,7 +12,7 @@ async function main() {
   const userIds = usersDB.map(user => user.id);
   console.log(`📊 Criando investimentos para ${userIds.length} usuários`);
 
-  const investmentData = Array.from({ length: 25 }).map(() => {
+  const investmentData = Array.from({ length: 100 }).map(() => {
     const purchaseDate = faker.date.between({ 
       from: new Date('2023-01-01'), 
       to: new Date() 

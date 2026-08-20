@@ -12,7 +12,7 @@ async function main() {
   const userIds = usersDB.map(user => user.id);
   console.log(`📊 Criando recompensas para ${userIds.length} usuários`);
 
-  const rewardData = Array.from({ length: 20 }).map(() => {
+  const rewardData = Array.from({ length: 40 }).map(() => {
     const rewardInfo = faker.helpers.arrayElement([
       { 
         name: 'Pontos Livelo', 

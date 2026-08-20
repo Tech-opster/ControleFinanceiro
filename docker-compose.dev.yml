@@ -21,16 +21,16 @@ services:
       - /app/generated
       - ./backend/src/firebase/serviceAccountKey.json:/app/src/firebase/serviceAccountKey.json
     environment:
-      DATABASE_URL: "postgresql://dev:dev@db:5432/myapp_dev"
+      DATABASE_URL: "postgresql://postgres:1234@db:5432/financeiro"
 
   db:
     image: postgres:17-alpine
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev
-      POSTGRES_DB: myapp_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: financeiro
     volumes:
       - pg_data:/var/lib/postgresql/data
 
