@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  createRow,
   MaterialReactTable,
   MRT_EditActionButtons,
   useMaterialReactTable,
@@ -276,7 +277,12 @@ const Table = <T extends { [key: string]: unknown }>({
         variant="contained"
         onClick={() => {
           onValidationError?.({});
-          table.setCreatingRow(true);
+          table.setCreatingRow(
+            createRow(table, {
+              date: new Date().toISOString().split("T")[0],
+              purchaseDate: new Date().toISOString().split("T")[0],
+            } as unknown as T),
+          );
         }}
       >
         Adicionar {origin}
